@@ -4,13 +4,6 @@ body{
     background-image: url(../../resources/background.jpg);
     background-size: 125px;
     background-repeat: repeat;
-    /* bc i want to use custom cursor heh */
-    cursor: url(../../resources/pointer.png), auto; /* have to add auto so that it becomes the default */
-}
-
-/* custom text cursor */
-h1, h2, h3, h4, h5, h6, p{
-    cursor: url(../../resources/type.png), auto;
 }
 
 /* styling the header */
@@ -118,6 +111,4 @@ button{
   button:hover{
     background-color: rgba(193, 205, 210, 1);
     color: rgba(86, 102, 107, 0.8);
-    /* this changes the cursor into the pointer when hovering over the button so that it's more obvious the button can be clicked */
-    cursor: url(../../resources/hand.png), auto;
   }
