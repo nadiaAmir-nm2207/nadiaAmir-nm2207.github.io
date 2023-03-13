@@ -1,0 +1,69 @@
+/* STYLING BOXES */
+
+/* styling the page background */
+body{
+    background-color: #dda15e; /* backup bg col */
+    background-size: 125px;
+    background-repeat: repeat;
+}
+/* styling the header */
+header{
+    width: 100%;
+    background-color: #d9ed92;
+}
+
+/* STYLING CONTENT IN SECTION */
+
+/* styling canvas */
+#chartPreview{
+    width: 100%;
+    height: 100%;
+    background-color: #fff9f5;
+}
+
+/* styling "sidebar" where all the options and buttons will go */
+#options{
+    background-color: blue;
+    width: 100%;
+}
+
+/* styling swatches */
+#swatchBox{
+    width: 100%;
+    background-color: #d9ed92;
+    margin: auto;
+    padding: 2% 4%; /* to centralise the swatches */
+    height: 20%;
+}
+
+.swatch{
+    margin: 1%;
+    text-align: center; /* align colourLabel in the middle */
+    line-height: 25px;
+    border-radius: 50px; /* for pill shape */
+}
+
+.colourLabel{
+    line-height: 4rem;
+}
+
+/* STYLING TEXT */
+
+/* styling individual h1 & h2 */
+h1{
+    font-family: 'Josefin Sans', serif;
+    color: #55a630;
+}
+
+h2{
+    font-family: 'Quicksand', sans-serif;
+    color: #007f5f;
+    line-height: 100px;
+    text-align: right;
+}
+
+/* to vertically align the title text with each other */
+.headings{
+    line-height: 6rem; /* set line-height to be more than the size of the biggest element (display-1). display-1 font size is 5rem according to Bootstrap documentation. */
+    margin: 1% 3% 0 3%; /* to centralise the text more */
+}

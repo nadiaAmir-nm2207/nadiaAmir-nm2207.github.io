@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<meta charset="UTF-8">
+
+<html>
+    <head>
+        <!-- linking to google fonts -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@200&family=Quicksand:wght@500&display=swap" rel="stylesheet">
+        <!-- Bootstrap https://getbootstrap.com/docs/5.3/getting-started/introduction/ -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+        <!-- Clipboard.js plugin for copy-paste https://preview.keenthemes.com/good/documentation/forms/clipboard.html-->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.10/clipboard.min.js"></script>
+        <!-- chartjs -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.0.1/chart.js"></script>
+        <!-- my stylesheet -->
+        <link rel="stylesheet" type="text/css" href="css/css.css">
+        <!-- my JS -->
+        <script defer type="text/javascript" src="js/main.js"></script>
+        <title>Charteruse – chart colour generator</title>
+    </head>
+    <body>
+        <header>
+            <div class="row">
+                <!-- col-sm means small column, helps the column be responsive. one row has 12 units, so -6 means that the column should take up half the space -->
+                <!-- align-middle is a Bootstrap class that centralises inline/inline-block etc. elements vertically -->
+                <div class="col-sm-6">
+                    <!-- display-1 to display-6 are Bootstrap CSS classes to style heading classes text -->
+                    <h1 class="display-1 headings">Charteruse</h1>
+                </div>
+                <div class="col-sm-6">
+                    <h2 class="headings">colour generator for charts.</h2>
+                </div>
+            </div>
+        </header>
+        <section>
+            <!-- g-0 is the Bootstrap class for no-gutters, which clears the margins & padding for the columns. I did this so that my columns will not have a gap between them -->
+            <div class="row g-0">
+                <div class="col-sm-9">
+                    <div> <!-- chart preview section here -->
+                        <canvas id="chartPreview"></canvas>
+                    </div>
+                        <!-- create a row -->
+                        <div class="row" id="swatchBox">
+                            <!-- create 6 columns, each one col-2 (since 12/6 = 2) -->
+                            <!-- each div should have a unique data-clipboard-target ID & a <p> with an ID to be linked to the JS for style & innerHTML changes -->
+                            <div class="col-sm-2 swatch" data-clipboard-target="#label1"><span class="colourLabel" id="label1">#colour</span></div>
+                            <div class="col-sm-2 swatch" data-clipboard-target="#label2"><span class="colourLabel" id="label2">#colour</span></div>
+                            <div class="col-sm-2 swatch" data-clipboard-target="#label3"><span class="colourLabel" id="label3">#colour</span></div>
+                            <div class="col-sm-2 swatch" data-clipboard-target="#label4"><span class="colourLabel" id="label4">#colour</span></div>
+                            <div class="col-sm-2 swatch" data-clipboard-target="#label5"><span class="colourLabel" id="label5">#colour</span></div>
+                        </div>
+                </div>
+                <div class="col-sm-3">
+                    <div id="options">options column
+                        <p><button id="changeBtn">Generate</button></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </body>
+
+</html>
