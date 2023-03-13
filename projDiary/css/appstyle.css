@@ -30,7 +30,7 @@ h2{
     color: rgba(86, 102, 107, 1);
 }
 
-p{
+p, body{
     font-family: 'Nunito', sans-serif;
     font-size: 20;
     color: rgba(86, 102, 107, 1);
@@ -77,6 +77,20 @@ section{
 .col-3{
     border-right: 1px solid #c1cdd2;
   }
+
+/* styling for table */
+.col-sm-4, .col-sm-8{
+    border-right: 1px solid #56666B;
+    border-bottom: 1px solid #56666B;
+    padding: 2%;
+}
+
+.concepts{
+    border: 1px solid #56666B;
+    padding: 2%;
+    border-left: 0px;
+    border-top: 0px;
+}
 
 /* styling nav bar */
 #topMenu {
