@@ -6,6 +6,12 @@ body{
     background-repeat: repeat;
 }
 
+.image{
+    width: 25%;
+    margin: 1% auto;
+    border-radius: 5%;
+  }
+
 /* styling the header */
 header{
     max-width: 100%;
@@ -106,7 +112,8 @@ section{
 
 /* styling the buttons */
 button{
-    width: 200px;
+    width: 150px;
+    height: 80px;
     border-radius: 50px;
     border: 0;
     /* rgba bg color allows me to set alpha value (transparency) – I do this because I'm lazy to think of a darker hex colour for hover state, I can just adjust alpha to 1 in hover state and it will look like a darker shade */
@@ -121,8 +128,9 @@ button{
     text-decoration: none; /* to remove the underline from links in the button */
   }
   
-  /* :hover state to change colour of button bg & link text colour when hovered over */
-  button:hover{
+/* :hover state to change colour of button bg & link text colour when hovered over */
+button:hover{
     background-color: rgba(193, 205, 210, 1);
     color: rgba(86, 102, 107, 0.8);
   }
+  
