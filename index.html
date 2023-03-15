@@ -6,111 +6,44 @@
         <!-- linking to google fonts -->
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Delius&family=Homemade+Apple&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200&family=Quicksand&display=swap" rel="stylesheet">
         <!-- Bootstrap https://getbootstrap.com/docs/5.3/getting-started/introduction/ -->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
         <!-- my stylesheet -->
-        <link rel="stylesheet" type="text/css" href="css/appstyle.css">
+        <link rel="stylesheet" type="text/css" href="styles/style.css">
         <title>Nadia's Homepage</title>
-        <script defer type="text/javascript" src="appscripts/main.js">
+        <!-- Fontawesome link -->
+        <script src="https://kit.fontawesome.com/845e277b28.js" crossorigin="anonymous"></script> <!-- using the CSS method doesn't work as well -->
+        <!-- my JS -->
+        <script defer type="text/javascript" src="scripts/main.js">
         </script>
     </head>
     <body>
-        <header class="text-center no-gutters"> <!-- the class is a Bootstrap class that aligns the text to the center -->
-            <h2>nadia amir's</h2>
-            <h1>Homepage</h1>
-        </header>
-        <section class="linkBox">
-            <div class="row">
-                <div class="col-6 number">important <br>links</div>
-                <div class="col-6">
-                    <a href="https://nadiaamir-nm2207.github.io"><button>GitHub Page</button></a>
-                    <a href="https://nadiaamir-nm2207.github.io/projDiary/index.html"><button>Final Project Diary</button></a>
+        <!-- to contain all the content -->
+        <div class="container">
+            <section id="main" class="row">
+                <div class="col-sm-4">
+                    <!-- profile picture here -->
+                    <img src="resources/profilePic.png" id="profilePic">
                 </div>
-            </div>
-        </section>
-        <section class="linkBox"> 
-            <div class="row">
-                <div class="col-6 number">Week 9</div>
-                <div class="col-6">
-                    <a href="Session09.class/index.html"><button>Session 09 Classwork</button></a>
-                    <a href="Session09.codealong/index.html"><button>Session 09 Codealong</button></a>
+                <div class="col-sm-8">
+                    <hr>
+                    <h1 class="display-3">Nadia Amir</h1>
+                    <p><i class="fa-solid fa-school"></i> Y2 | CNM & Sociology | NUS</p>
+                    <p><i class="fa-solid fa-envelope"></i> nadia.amir@u.nus.edu</p>
+                    <hr>
                 </div>
-            </div>
-        </section>
-        <section class="linkBox"> 
-            <div class="row">
-                <div class="col-6 number">Week 8</div>
-                <div class="col-6">
-                    <a href="Session08.codealong/happinessbarChart.html"><button>Session 08 Codealong</button></a>
-                    <a href="Session08.class/graduatebarChart.html"><button>Graduate Bar Chart</button></a>
-                    <a href="projDiary/index.html#week8.html"><button>Final Project Diary</button></a>
-                </div>
-            </div>
-        </section>
-        <section class="linkBox"> 
-            <div class="row">
-                <div class="col-6 number">Week 7</div>
-                <div class="col-6">
-                    <a href="Session07.barplot/index.html"><button>Session 07 Barplot</button></a>
-                    <a href="Session07.linegraph/index.html"><button>Session 07 Line Graph</button></a>
-                    <a href="FPidea/index.html"><button>Final Project Ideas</button></a>
-                    <a href="Session07.class/sharing_deepfakes_barChart.html"><button>Deepfakes Chart</button></a>
-                </div>
-            </div>
-        </section>
-        <section class="linkBox"> 
-            <div class="row">
-                <div class="col-6 number">Week 6</div>
-                <div class="col-6"><a href="grasshopperProgress/index.html"><button>Grasshopper Progress</button></a></div>
-            </div>
-        </section>
-        <section class="linkBox"> 
-            <div class="row">
-                <div class="col-6 number">Week 5</div>
-                <div class="col-6"><a href="Session05.class/index.html"><button>Session 05 (Events)</button></a></div>
-            </div>
-        </section>
-        <section class="linkBox"> 
-            <div class="row">
-                <div class="col-6 number">Week 4</div>
-                <div class="col-6"><a href="Session04.class/index.html"><button>Session 04 (functions)</button></a></div>
-            </div>
-        </section>
-        <section class="linkBox">
-            <div class="row">
-                <div class="col-6 number">Week 3</div>
-                <div class="col-6">
-                    <a href="Session03.class/index.html"><button>Session 03 Pseudocode</button></a>
-                    <a href="Session03.codealong/myFirstJavaScript/www/temp.html"><button>Temp Converter</button></a>
-                    <a href="Session03.codealong/myFirstJavaScript/www/index.html"><button>Session 03 (codealong)</button></a>
-                </div>
-            </div>
-        </section>
-        <section class="linkBox">
-            <div class="row">
-                <div class="col-6 number">Week 2</div>
-                <div class="col-6">
-                    <a href="Session02.assignment/index.html"><button>Session 02 Assignment</button></a>
-                    <a href="Session02.class/table.html"><button>Session 02 (table.html)</button></a>
-                    <a href="Session02.class/index.html"><button>Session 02 (index.html)</button></a>
-                </div>
-            </div>
-        </section>
-        <section class="linkBox">
-            <div class="row">
-                <div class="col-6 number">Week 1</div>
-                <div class="col-6"><a href="Session01.class/index.html"><button>Session 01 Classwork</button></a></div>
-            </div>
-        </section>
-        <section class="linkBox">
-            <div class="row">
-                <div class="col-6 number">Extra <br>Practices</div>
-                <div class="col-6">
-                    <a href="Session02.practice/index.html"><button>Interactive Novel</button></a>
-                    <a href="ColorGenProject/index.html"><button>Colour Generator</button></a>
-                </div>
-            </div>
-        </section>
+            </section>
+            <section id="links">
+                <h2 class="display-5" id="navHeading"><i class="fa-solid fa-folder"></i> Projects</h2>
+                <nav>
+                    <a href ="storyboard.html"><button>Storyboard</button></a>
+                    <a href ="projDiary/index.html"><button>Project Diary</button></a>
+                    <a href ="finalProj/index.html"><button>Final Project</button></a>
+                    <a href ="url"><button>wip</button></a>
+                </nav>
+                <hr>
+            </section>
+        </div>
     </body>
 </html>
