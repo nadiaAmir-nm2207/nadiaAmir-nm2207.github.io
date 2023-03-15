@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<meta charset="UTF-8">
+
+<html>
+    <head>
+        <!-- linking to google fonts -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Delius&family=Homemade+Apple&family=Nunito&display=swap" rel="stylesheet">
+        <!-- Bootstrap https://getbootstrap.com/docs/5.3/getting-started/introduction/ -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+        <!-- my stylesheet -->
+        <link rel="stylesheet" type="text/css" href="../projDiary/css/appstyle.css">
+        <title>Nadia's Homepage</title>
+        <!-- Fontawesome link -->
+        <script src="https://kit.fontawesome.com/845e277b28.js" crossorigin="anonymous"></script> <!-- using the CSS method doesn't work as well -->
+        <!-- my JS -->
+        <script defer type="text/javascript" src="scripts/main.js">
+        </script>
+    </head>
+    <body>
+        <header class="text-center no-gutters"> <!-- the class is a Bootstrap class that aligns the text to the center -->
+            <h2>nadia's final project</h2>
+            <h1>storyboard</h1>
+        </header>
+        <section class="content">
+            <div class="row">
+                <div class="col-sm-2"></div>
+                <div class="col-8">
+                    <h6>&#9830; The 20-worder</h6>
+                    <p>For the final project, I am planning to build a simple colour generator for linecharts. </p>
+                    <h6>Motivations</h6>
+                    <p>Colours are an important communication tool in any visual design. But they can be tricky to work with and colour-picking takes time to perfect, even with a background in design and colour theory. I want to build something that can ease the process of picking colours for data visualisations. On a personal note though, I just really like colours and wanted to find a way to focus on them in the final project.</p>
+                    <h6>Objectives</h6>
+                    <p>The goal of the app is to make it easier for people to use aesthetic and accessible palettes for their linecharts. Linecharts are one of the most popular graphs, which is why the app focuses on them. To reach this goal, a number of sub-objectives have to be achieved:</p>
+                    <p class="point">• generating colour palettes</p>
+                    <p class="point">• making sure the colours generated contrast well against each other</p>
+                    <p class="point">• feature that allows designer to preview the chart with colour-blind filters so they can make an informed decision</p>
+                    <p class="point">• allowing people to export the palettes/previews, whether through copypasting or downloading an image (even better, both!)</p>
+                    <p class="point">• allow people to "lock" certain colours when generating palettes so that locked colours don't change</p>
+                    <p class="point">• allowing people to input their own data so that the linechart preview can be customised (low-priority & optional because I'm not sure if I have the time to work this out)</p>
+                    <h6>Data + Analysis</h6>
+                    <p>In this section, I first highlight what I need to track about the user. This is followed by a brief description on what js I can use to get the desired function.</p>
+                    <p>The first, most obvious data needed is to know whether the user clicked on the "generate" button so that the colour palette will change. This can be done with an eventListener.</p>
+                    <p>Depending on the algorithm being used to generate the colours, there may be a need to know how many times the user has generated the palette so that a new set of random values can be generated. This can be done with a function and an if statement.</p>
+                    <p>If I want users to be able to download the image, then I will also need a button that can detect if the user wants this.</p>
+                    <p>If I want users to be able to lock colours, I will also need a button to detect this. In the js, I will then need an "if statement" to determine if each colour is locked or not before generating a new random colour for it.</p>
+                    <h6>Findings</h6>
+                    <p>???</p>
+                    <h6>Recommendations</h6>
+                    <p>???</p>
+                </div>
+                <div class="col-sm-2"></div>
+            </div>
+        </section>
+    </body>
+</html>
