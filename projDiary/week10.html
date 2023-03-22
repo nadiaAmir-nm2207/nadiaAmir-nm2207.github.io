@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<meta charset="UTF-8">
+
+<html>
+    <head>
+        <!-- linking to google fonts -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Delius&family=Homemade+Apple&family=Nunito&display=swap" rel="stylesheet">
+        <!-- Bootstrap https://getbootstrap.com/docs/5.3/getting-started/introduction/ -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+        <!-- my stylesheet -->
+        <link rel="stylesheet" type="text/css" href="css/appstyle.css">
+        <title>Week 10</title>
+        <script defer type="text/javascript" src="js/main.js">
+        </script>
+    </head>
+    <body>
+        <header class="text-center no-gutters"> <!-- the class is a Bootstrap class that aligns the text to the center -->
+            <h2>nadia's final project</h2>
+            <h1>journey</h1>
+        </header>
+        <nav id="topMenu">
+            <a href="../index.html"><button>home</button></a>
+            <a href="week8.html"><button>Week 8</button></a>
+            <a href="intermediate.html"><button>Week 9</button></a>
+            <a href="week10.html"><button>Week 10</button></a>
+            <a href="week11.html"><button>Week 11</button></a>
+            <a href="week12.html"><button>Week 12</button></a>
+            <a href="week13.html"><button>Week 13</button></a>
+        </nav>
+        <section class="content">
+            <div class="row">
+                <div class="col-3">
+                <h2>&#10002; Week 10</h2>
+                </div>
+                <div class="col-9">
+                    <h6>&#9830; Project Title: Charteruse</h6>
+                    <p>This title is a play on words from the colour Chartreuse. I thought it was interesting since it's one of the only colours I know with the word chart in it!</p>
+                    <p>This project is going to be a colour generator for charts.</p>
+                    <h6>&#9830; What does the Colour Generator do?</h6>
+                    <p>A colour generator helps people develop colour palettes for their charts by giving them a starting point.</p>
+                    <p>To reach this goal, there are 3 steps:</p>
+                    <p>1. The Starting Point: this can be created by generating random colours for the palette.</p>
+                    <p>2. Tweaking: for the palette to reach the next stage of being "developed" instead of just "generated", the palette should be editable too.</p>
+                    <p>3. Exporting: for the palette to be used elsewhere, the option to copy paste colour codes or export an image to be colour-dropped should be made available.</p>
+                    <p>Throughout the process, chart previews should be made available so that the user can judge if they like the palettes. An inspiration I found is a tool called <a href="https://projects.susielu.com/viz-palette">Viz Palette</a>. I really like the layout they use and I might tweak my current layout to suit something like that. </p>
+                    <p>So, instead of having radio buttons to switch between charts, I'd have a div with smaller canvas within to display different types of charts. Oh and, I will be using Bootstrap to help me with all the alignment pains, but I will be making the CSS & any other design assets or choices myself. Except the svg icons, those will be sourced online.</p>
+                    <h6>&#9830; What are the "rules" of this generator?</h6>
+                    <p>For a palette to be useful for a data visualisation, it should have sufficient contrast so that readers can distinguish the different lines or pie segments from each other.</p>
+                    <p>After doing some reading, I found <a href="https://chartio.com/learn/charts/how-to-choose-colors-data-visualization/">this article</a> which talked about the different types of palettes: qualitative, sequential and diverging. I think the palette that this project would suit best is qualitative palettes.</p>
+                    <p>As such, I think the most important "rule" this generator must incorporate is generating random colours that do not overlap.</p>
+                    <p>In week 8 I mentioned that I might not understand the maths behind generating pleasing palettes, but after some Googling, I found <a href="https://stackoverflow.com/questions/43044/algorithm-to-randomly-generate-an-aesthetically-pleasing-color-palette/43235#43235">this StackOverflow thread about generating pleasing/contrasting colour palettes.</a> The responses offer many ideas and I'm interested in trying out the Golden Angle solution.</p>
+                    <p>The Golden Angle, which is around 137˚, involves looking at the HSL values of colours and treating hue as an angle. <a href="https://medium.com/@winwardo/simple-non-repeating-colour-generation-6efc995832b8">This Medium article</a> was very informative in helping me understand it. When we treat Hue as an angle, it means looking at colour in terms of a colour wheel where red is at 0˚.</p>
+                    <p>I sketched this image to help me understand the math and also to help me work out my thoughts in writing.</p>
+                    <img src="resources/colWheel.jpg">
+                    <p>Going by colour theory, the two sets of complementary colours are:</p>
+                    <p class="point">1. red, green, blue (indicated by squares)</p>
+                    <p class="point">2. purple, yellow, teal (indicated by triangles)</p>
+                    <p>By starting at 0˚, we get a shade of red. Then, increasing the angle by 137˚ will bring us to green. Repeating this brings us to blue. The same logic of skipping a segment of the colour wheel to reach a contrasting colour by rotating 137˚ can be applied to any other starting point.</p>
+                    <p>However, in order to make the palette accessible, some combinations have to be avoided, such as red and green.<a href="https://venngage.com/blog/color-blind-friendly-palette/"> This article has a list of combinations to avoid,</a> and I will be referring to it later on in the coding. </p>
+                    <p>If I want the generator to avoid certain combination, I can try getting it to select two base hues that the palette is based on, then comparing the base hues to see if they form any of the inaccessible combinations.</p>
+                    <p class="point">1. Select Hue 1</p>
+                    <p class="point">2. Select Hue 2</p>
+                    <p class="point">3. Conduct a series of tests that might look something like this: If Hue1 = red && Hue2 = green, regenerate Hue2</p>
+                    <p class="point">4. Generate the other colours of the palette by varying saturation & lightness</p>
+                    <p>Even then, I think additional tests have to be slotted in to ensure that the saturation & lightness values are properly contrasting. I'm a very visual person, so I think instead of guessing the numbers, I will try coding this first and see what kind of results I get haha.</p>
+                    <h6>&#9830; What can the user do?</h6>
+                    <p>This partially overlaps with my answer to the first question. I will break down the available user actions for each step.</p>
+                    <p>1. Starting Point: generating colours</p>
+                    <p class="point">• press a button to generate random colours</p>
+                    <p>2. Tweaking</p>
+                    <p class="point">• editing swatches directly (either through entering another hex value or maybe I can somehow insert a colour wheel)</p>
+                    <p class="point">• locking colours they like so that those colours don't change while the rest do. I am suddenly uncomfortably aware that this might mess up my colour-blind tests but I shall cross that bridge when I get to it heh</p>
+                    <p>3. Exporting</p>
+                    <p class="point">• clicking on a swatch to copy the hex code</p>
+                    <p class="point">• clicking a button to download a screenshot of the canvas (read somewhere that canvas.toBlob might work, but I have yet to try it so who knows, it might and probably will go wrong)</p>
+                    <h6>&#9830; What does the program do for each user action?</h6>
+                    <p>In this section, I will list the user action followed by bullet point(s) on what the program will do.</p>
+                    <p>1. press a button to generate random colours</p>
+                    <p class="point">1.1 there must be an eventListener for that button</p>
+                    <p class="point">1.2 there must be function(s) that will be activated when the button is pressed</p>
+                    <p class="point">1.3 these functions must activate random colour generation and put those colours through the combination tests</p>
+                    <p class="point">1.4 these values must then be looped through the array of swatch divs and also the objects in the dataset to change the colours of the swatches and the graph</p>
+                    <p>2. editing swatches directly</p>
+                    <p class="point">2.1 the swatches colourLabel must be able to take input, therefore I think it should have the input tag</p>
+                    <p class="point">2.2 the page must be able to detect when this new input is sent to it and...</p>
+                    <p class="point">2.3 ... reassign the corresponding variable to that new input</p>
+                    <p>3. locking colours they like</p>
+                    <p class="point">3.1 there must be a button to press</p>
+                    <p class="point">3.2 when this button is pressed, it should activate a "locked" state for the variable</p>
+                    <p class="point">3.3 this locked state should be detectable. To do this, perhaps an icon for "locked" and "unlocked" could be used for the button. The state is "understood" by the js through testing which image the lock button is using?</p>
+                    <p class="point">3.4 the function should be instructed to skip generating a new colour for locked swatches. I think this entails adding an if statement in the loop before the new values are calculated.</p>
+                    <p>4. clicking on a swatch to copy the hex code</p>
+                    <p class="point">4.1 to use clipboardJS, I need to use this bit of code: var clipboard = new ClipboardJS(".copyBtn")</p>
+                    <p class="point">4.2 a data-clipboard-label has to be assigned to each swatch div element with a unique id</p>
+                    <p class="point">4.3 use the function provided in the clipboardjs documentation for it to work (sorry I don't have a detailed explanation on how this works right now, still trying to understand!)</p>
+                    <p>5. clicking a button to download a screenshot of the canvas</p>
+                    <p class="point">I still haven't explored this much yet, so I'm not sure. I will write down what I think I need though!</p>
+                    <p class="point">5.1 a download button that activates a function Download when pressed</p>
+                    <p class="point">5.2 the browser needs to know which div to target when Download is called, so the div with all the canvases should have a unique id</p>
+                    <p class="point">5.3 somehow convert that target into an image that is saved into the computer</p>
+                    <h6>&#9830; When does the generator end?</h6>
+                    <p>Whenever the user likes or when GitHub falls</p>
+                </div>
+            </div>
+        </section>
+    </body>
+</html>
