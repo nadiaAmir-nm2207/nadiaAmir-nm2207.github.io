@@ -38,13 +38,13 @@ h2{
 
 p, body{
     font-family: 'Nunito', sans-serif;
-    font-size: 20;
+    font-size: 18px;
     color: rgba(86, 102, 107, 1);
 }
 
 h6{
     font-family: 'Delius', sans-serif;
-    font-size: 20;
+    font-size: 20px;
     color: #fff9f5;
     font-weight: bold;
     background-color:rgba(86, 102, 107, 1);
@@ -70,7 +70,7 @@ h6{
 section{
     border: 2px solid #C1CDD2;
     margin: 2% 10%;
-    background-color: rgba(255, 249, 245, 0.8);
+    background-color: rgba(255, 249, 245, 0.9);
     border-radius: 20px;
 }
 
@@ -133,4 +133,13 @@ button:hover{
     background-color: rgba(193, 205, 210, 1);
     color: rgba(86, 102, 107, 0.8);
   }
+
+img {
+    width: 400px;
+    border-radius: 10px;
+}
+
+.col-9{
+    padding: 0 5%;
+}
   
