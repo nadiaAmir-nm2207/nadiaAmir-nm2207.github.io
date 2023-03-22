@@ -1,0 +1,145 @@
+/* styling the page background */
+body{
+    background-color: #C1CDD2; /* backup bg col */
+    background-image: url(../../resources/background.jpg);
+    background-size: 125px;
+    background-repeat: repeat;
+}
+
+.image{
+    width: 25%;
+    margin: 1% auto;
+    border-radius: 5%;
+  }
+
+/* styling the header */
+header{
+    max-width: 100%;
+    height: 300px;
+    background-color: #c1cdd2; /* backup bg color */
+    background-image: url(../../resources/header.jpg);
+    background-size: cover;
+    background-position: center;
+    padding: 5% 1%; /* to centralise the headers vertically */
+}
+
+/* styling individual h1 & h2 */
+h1{
+    font-family: 'Homemade Apple', serif;
+    font-size: 80px;
+    color: rgba(86, 102, 107, 1);
+}
+
+h2{
+    font-family: 'Delius', sans-serif;
+    font-size: 30px;
+    color: rgba(86, 102, 107, 1);
+}
+
+p, body{
+    font-family: 'Nunito', sans-serif;
+    font-size: 18px;
+    color: rgba(86, 102, 107, 1);
+}
+
+h6{
+    font-family: 'Delius', sans-serif;
+    font-size: 20px;
+    color: #fff9f5;
+    font-weight: bold;
+    background-color:rgba(86, 102, 107, 1);
+    border-radius: 0 20px 20px 0;
+    line-height: 30px;
+    padding-left: 1%;
+}
+/* styling an indentation for bullet points */
+.point{
+    margin-left: 20px;
+}
+
+/* styling the numbers */
+.number{
+    text-align: right;
+    color: #56666B;
+    font-family: 'Homemade Apple', serif;
+    font-size: 20px;
+    text-transform: lowercase; /* this changes all the words in number div to lowercase without me having to individually change it in the html */
+}
+
+/* styling linkBox */
+section{
+    border: 2px solid #C1CDD2;
+    margin: 2% 10%;
+    background-color: rgba(255, 249, 245, 0.9);
+    border-radius: 20px;
+}
+
+/* styling columns to have padding because if I put it in section, my col-3 border will not go all the way through as it is obstructed by the section padding */
+.col-3, .col-8, section{
+    padding: 5%;
+}
+
+/* styling the col-3 to have a border on the right so that it separates the columns */
+.col-3{
+    border-right: 1px solid #c1cdd2;
+  }
+
+/* styling for table */
+.col-sm-4, .col-sm-8{
+    border-right: 1px solid #56666B;
+    border-bottom: 1px solid #56666B;
+    padding: 2%;
+}
+
+.concepts{
+    border: 1px solid #56666B;
+    padding: 2%;
+    border-left: 0px;
+    border-top: 0px;
+}
+
+/* styling nav bar */
+#topMenu {
+    background-color: #fff9f5cc;
+    text-align: center;
+    top: 0;
+    width: 100%;
+}
+
+#homeMenu{
+    text-align: center;
+}
+
+/* styling the buttons */
+button{
+    width: 150px;
+    height: 80px;
+    border-radius: 50px;
+    border: 0;
+    /* rgba bg color allows me to set alpha value (transparency) – I do this because I'm lazy to think of a darker hex colour for hover state, I can just adjust alpha to 1 in hover state and it will look like a darker shade */
+    background-color: rgba(193, 205, 210, 0.8);
+    text-align: center;
+    color: rgba(86, 102, 107, 1);
+    font-family: 'Delius', sans-serif;
+    margin: 1% 0;
+  }
+
+  a{
+    text-decoration: none; /* to remove the underline from links in the button */
+  }
+  
+/* :hover state to change colour of button bg & link text colour when hovered over */
+button:hover{
+    background-color: rgba(193, 205, 210, 1);
+    color: rgba(86, 102, 107, 0.8);
+  }
+
+img {
+    width: 400px;
+    border-radius: 10px;
+}
+
+.col-9{
+    padding: 0 5%;
+}
+  
