@@ -65,6 +65,55 @@
                     <p class="point">3. Conduct a series of tests that might look something like this: If Hue1 = red && Hue2 = green, regenerate Hue2</p>
                     <p class="point">4. Generate the other colours of the palette by varying saturation & lightness</p>
                     <p>Even then, I think additional tests have to be slotted in to ensure that the saturation & lightness values are properly contrasting. I'm a very visual person, so I think instead of guessing the numbers, I will try coding this first and see what kind of results I get haha.</p>
+                    <h6>UPDATE: trying to code the formula</h6>
+                    <p>I have returned alive from my attempt! This week, I tried working on a bunch of things including fixing some styling issues. If I write about everything though, this post is going to be ridiculously long so I will focus on the problems that left a lasting (and frustrating) impression.</p>
+                    <p>There are quite a few things to cover, but let's start with my thought process for how the colour generation process should be structured. This was my plan:</p>
+                    <p class="point">1. Randomly generate Hue 1</p>
+                    <p class="point">2. Randomly generate Hue 2</p>
+                    <p class="point">3. Test if Hue 1 & Hue 2 are a combination of red & green</p>
+                    <p class="point">4. If not, proceed with generating saturation & brightness values of the colours</p>
+                    <p class="point">5. Change what needs to be changed (swatch backgrounds, labels, graph)</p>
+                    <p>I started by building smaller, basic mathematical functions that I knew I would call repeatedly e.g. random(min, max) to generate a random value. 
+                    <h6>1 & 2. Getting the baseHues down </h6>
+                    <p>I wanted two hue values that would form the base of the other colours after it (1 more colour for hue1 and 2 more colours for hue2). </p>
+                    <p><img src="resources/basehueGen.jpg"></p>
+                    <p>baseHue was basically <code>document.getElementsByClassName("baseHue")</code>. However, the function was only returning me one value though, when it should return two since there are two div elements with class baseHue. I checked the line where I getElementsByClassName and yes, two divs show up. I realised it was the return statement that broke the loop, so I removed it. However, now I started getting 5 values, which was weird to me.</p>
+                    <p>I decided to try another approach by using forEach, but it gave the error <code>baseHue.forEach is not a function</code>. After some googling, I realised that error indicated that baseHue was likely not being treated as an array or array-like object. So I used <code>Array.from</code> to wrap the <code>document.getElementsByClassName</code>. I had learned this technique previously from the Extra Practice where I tried changing the backgrounds of several divs with the same class name. Using this with <code>for...in</code> worked.</p>
+                    <p>But now I had a problem. I was writing small functions one at a time because I did not want my final function, changeColour(), to be super long. At the time of my first attempt, the function was so long because I was trying not to use global variables but also needed a lot of values to be used in mathematics and .innerHTML magic. As a result, I had to cram all the variables I needed into one function so they could be accessed. </p>
+                    <p>And then I remembered the recent lessons about creating empty arrays and using <code>.push</code>. So I made a new empty array called baseHueArray where I will push the newly generated hue values.</p>
+                    <h6>3. Testing the hues for red-green combination – writing testHue()</h6>
+                    <p>After that, I moved on to write the function testHue() for comparing the 2 basic hues to check if they were a combination of red and green. I used preset values while testing the function instead of linking it to baseHueGen() because I wanted to make sure the logic in testHue() was correct.</p>
+                    <p><img src="resources/testHue01.jpg"></p>
+                    <p>Of course, things didn't go as planned.</p>
+                    <p><img src="resources/testHue02.jpg"></p>
+                    <p>A quick search then revealed that I should use <code>else if</code> for the second part of the if statement. It continued to return the statement "this is a forbidden condition" though.</p>
+                    <p>I then realised that you can’t use 0 <= hue1 < 30 to get js to test for a range. It has to be broken up into <code>0 <= hue1 && hue1 < 30</code>. You can’t test hue1 and hue2 together in one statement either. So I decided to make use of boolean values: </p>
+                    <p><img src="resources/boolean.jpg"></p>
+                    <p>And repeat this same process if hue1 & hue2 are swapped. This was my next version of the function:</p>
+                    <p><img src="resources/testHue03.jpg"></p>
+                    <p>But it persisted in giving me "this is forbidden". I did some console.logging and then realised that if both <code>testHue()</code> returned false, then it also fulfills the condition <code>testHue(hue1) == testHue(hue2)</code> which is why it was returning me "this is forbidden" when it shouldn't. I then changed the condition to <code>(testHue(hue1) == true && testHue(hue2) == true)</code> to test for both returning true at the same time, which worked!</p>
+                    <h6>4. Loop to test & reset (compareHue())</h6>
+                    <p>I wanted the loop to test if compareHue() was true (i.e., there was a redGreen combination); to repeat the random generation if it was; to stop if it wasn’t. I tried recursion and it was pretty scary haha!</p>
+                    <p><img src="resources/testHue04.jpg"></p>
+                    <p>I realised from the console.log that the first few values were always the same. That made me realise that I had to break the recursion. To do that, I would have to clear the baseHueArray everytime baseHueGen() is called, otherwise, the initial 2 incompatible hues are going to stay in their position with new hues added to the ends. To clear the baseHueArray, I set <code>baseHueArray.length = 0;</code> (<a href="https://stackoverflow.com/questions/1232040/how-do-i-empty-an-array-in-javascript">source</a>) at the beginning of baseHueGen(). It worked.</p>
+                    <p>Then I remembered I was supposed to use the golden angle for contrasting colours, which means I should work with just 1 base hue and then apply maths to it. See, this is what happens when you don’t plan enough ;; In any case, it wasn’t hard to fix, I just had to remove the for loop and add a couple of lines.</p>
+                    <p><img src="resources/basehueGen2.jpg"></p>
+                    <p>The circleBack function was written to make the value not exceed 360.</p>
+                    <p><img src="resources/circleback.jpg"></p>
+                    <h6>5. generating S & B values then putting together the HSBstrings()</h6>
+                    <p>When making the HSBstrings() function, I initially placed <code>HSBstringsArray.length = 0;</code> in the first line for that function. However, I realised that this clears the values I have generated for hue1 if my call stack is like this:</p>
+                    <p><img src="resources/hsbStrings.jpg"></p>
+                    <p>So I moved the line to the top of changeColour() so that the array only clears when the button is pressed, and not each time HSBstrings is called.</p>
+                    <h6>6. the... end?</h6>
+                    <p>Nope! Prof/TAs, you've probably seen my mistake from a mile away HAHA </p>
+                    <p>When I finally coded everything, the button wouldn’t work! I used console.log to try and debug each function, try to see where the values were being pushed wrongly etc. Strangely enough, the strings were generated and all, but the colours weren't changing. </p>
+                    <p>I figured there was something wrong with what I was replacing the CSS with, so I googled how to write HSB values into CSS. That was when I realised you can’t use HSB in CSS, so I changed everything to HSL instead. I also realised I have to add the % sign behind the saturation and lightness values for the HSLstrings() (formerly HSBstrings()), so I put them in.</p>
+                    <p>And finally the basic function worked. When I pressed the button, the colours of the swatches would change to match the generated HSLstring().</p>
+                    <h6>Extras</h6>
+                    <p>After getting the basic flow to work, I tried to work on adding more conditions to what kind of values would be generated so that the colour palette would:</p> 
+                    <p class="point">1. contrast within itself: means that the L values have to be spaced out from each other</p>
+                    <p class="point">2. contrast with the background depending on whether it was light or dark: means the changeColour() has to detect whether the user has opted for a dark or light background</p>
+                    <p>This entry is very long at this point, so I think I will leave it to the next entry or to put in the final write-up only. They're still being worked on.</p>
                     <h6>&#9830; What can the user do?</h6>
                     <p>This partially overlaps with my answer to the first question. I will break down the available user actions for each step.</p>
                     <p>1. Starting Point: generating colours</p>
@@ -102,6 +151,18 @@
                     <p class="point">5.3 somehow convert that target into an image that is saved into the computer</p>
                     <h6>&#9830; When does the generator end?</h6>
                     <p>Whenever the user likes or when GitHub falls</p>
+                    <h6>Tasks I Have Left (in order of priority)</h6>
+                    <p class="point">• clean up the additional features I put in this week (locking colours, dark mode light mode, copy button)</p>
+                    <p class="point">• figure out the download function</p>
+                    <p class="point">• make a copy all button maybe?</p>
+                    <p class="point">• colour change transition animation for the swatches and stuff... it's so abrupt right now</p>
+                    <p class="point">• add more chart types</p>
+                    <p class="point">• figure out how to give user feedback when copied successfully (basically stare harder at the clipboardJS documentation zzz)</p>
+                    <p class="point">• figure out my svg icons for buttons</p>
+                    <p class="point">• styling</p>
+                    <br>
+                    <p>Sorry for the long post, I made a lot of mistakes this week and wanted to document them hehe ^^"".</p>
+                    
                 </div>
             </div>
         </section>
