@@ -13,52 +13,87 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.10/clipboard.min.js"></script>
         <!-- chartjs -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.0.1/chart.js"></script>
+        <!-- raphaeljs -->
+        <script src="resources/raphaeljs/raphael.js"></script>
         <!-- my stylesheet -->
         <link rel="stylesheet" type="text/css" href="css/css.css">
         <!-- my JS -->
         <script defer type="text/javascript" src="js/main.js"></script>
         <title>Charteruse – chart colour generator</title>
     </head>
-    <body>
-        <header>
-            <div class="row">
-                <!-- col-sm means small column, helps the column be responsive. one row has 12 units, so -6 means that the column should take up half the space -->
-                <!-- align-middle is a Bootstrap class that centralises inline/inline-block etc. elements vertically -->
-                <div class="col-sm-6">
-                    <!-- display-1 to display-6 are Bootstrap CSS classes to style heading classes text -->
-                    <h1 class="display-1 headings">Charteruse</h1>
-                </div>
-                <div class="col-sm-6">
-                    <h2 class="headings">colour generator for charts.</h2>
-                </div>
-            </div>
-        </header>
-        <section>
-            <!-- g-0 is the Bootstrap class for no-gutters, which clears the margins & padding for the columns. I did this so that my columns will not have a gap between them -->
-            <div class="row g-0">
-                <div class="col-sm-9">
-                    <div> <!-- chart preview section here -->
-                        <canvas id="chartPreview"></canvas>
-                    </div>
-                        <!-- create a row -->
-                        <div class="row" id="swatchBox">
-                            <!-- create 6 columns, each one col-2 (since 12/6 = 2) -->
-                            <!-- each div should have a unique data-clipboard-target ID & a <p> with an ID to be linked to the JS for style & innerHTML changes -->
-                            <div class="col-sm-2 swatch" data-clipboard-target="#label1"><span class="colourLabel" id="label1">#colour</span></div>
-                            <div class="col-sm-2 swatch" data-clipboard-target="#label2"><span class="colourLabel" id="label2">#colour</span></div>
-                            <div class="col-sm-2 swatch" data-clipboard-target="#label3"><span class="colourLabel" id="label3">#colour</span></div>
-                            <div class="col-sm-2 swatch" data-clipboard-target="#label4"><span class="colourLabel" id="label4">#colour</span></div>
-                            <div class="col-sm-2 swatch" data-clipboard-target="#label5"><span class="colourLabel" id="label5">#colour</span></div>
+    <!-- g-0 is the Bootstrap class for no-gutters, which clears the margins & padding for the columns. I did this so that my columns will not have a gap between them -->
+    <!-- I added the class container-fluid because I read that without it, rows will cause horizontal scrolling on some screens (source: https://stackoverflow.com/questions/61003484/i-need-to-fix-bootstrap-h-100-class-it-is-not-working)-->
+    <body class="container-fluid g-0">
+        <div class="row g-0">
+            
+            <!-- col-sm means small column, helps the column be responsive. one row has 12 units, so col-sm-3 means that the column should take up 1/4 of the space -->
+            <div class="col-sm-9">
+                <!-- vh-100 is a Bootstrap class that means the height is set to 100vh. 100vh means the height should be 100 relative to the viewport, which refers to the area of the window where content is visible-->
+                <div id="previews" class="vh-100">
+                    <!-- chart preview section here -->
+                    <div class ="row"> <!-- make it easier to put the canvases side by side-->
+                        <div class = "col-sm-6 canvasBox">
+                            <canvas id="lnPrvw"></canvas>
+                            <canvas id="barPrvw"></canvas>
                         </div>
+                        <div class = "col-sm-6 canvasBox">
+                            <canvas id="piePrvw"></canvas>
+                        </div>
+                    </div>
+                    <button id="download">download</button>
                 </div>
-                <div class="col-sm-3">
-                    <div id="options">options column
-                        <p><button id="changeBtn">Generate</button></p>
+            </div>
+            <div class="col-sm-3">
+                <div id="options" class="vh-100">
+                    <div>
+                        <h1>Charteruse</h1>
+                        <h2>colour generator for charts.</h2>
+                    </div>
+                    <div id="colourBox">
+                        <div id="swatchBox">
+                            <!-- each div should have a unique data-clipboard-target ID & a <p> with an ID to be linked to the JS for style & innerHTML changes -->
+                            <!-- add the lock ids for the locking & unlocking. has to be ids because each one will have unique counter & action when clicked -->
+                            <!-- add the copy ids for Raphael -->
+                            <div class="swatch baseHue hue1" id="topSwatch">
+                                <div class="colourLabel" id="label1">#colour</div>
+                                <button class="copy" id="copy1" data-clipboard-target="#label1">&#10063;</button> <!-- data-clipboard-target should go to the trigger element i.e. the thing that is being clicked to activate the copying-->
+                                <button id="lock1">&#x1f513;</button>
+                            </div>
+                            <div class="swatch hue1">
+                                <div class="colourLabel" id="label2">#colour</div>
+                                <button class="copy" id="copy2" data-clipboard-target="#label2">&#10063;</button>
+                                <button id="lock2">&#x1f513;</button>
+                            </div>
+                            <div class="swatch baseHue hue2">
+                                <div class="colourLabel" id="label3">#colour</div>
+                                <button class="copy" id="copy3" data-clipboard-target="#label3">&#10063;</button>
+                                <button id="lock3">&#x1f513;</button>
+                            </div>
+                            <div class="swatch hue2">
+                                <div class="colourLabel" id="label4">#colour</div>
+                                <button class="copy" id="copy4" data-clipboard-target="#label4">&#10063;</button>
+                                <button id="lock4">&#x1f513;</button>
+                            </div>
+                            <div class="swatch hue2" data-clipboard-target="#label5">
+                                <div class="colourLabel" id="label5">#colour</div>
+                                <button class="copy" id="copy5" data-clipboard-target="#label5">&#10063;</button>
+                                <button id="lock5">&#x1f513;</button>
+                            </div>
+                        </div>
+                        <!-- HTML entities & special characters source (the biggest one I've found so far): https://www.whatsmyip.org/html-characters/ kinda hard to navigat tho -.- i almost want to make a visual guide for special characters as my final proj now -->
+                        <div class="row g-0">
+                            <div class="col-sm-4 g-0"><button id="changeBtn" class="btn">&#x25a7; Generate</button></div>
+                            <div class="col-sm-4 g-0"><button id="modeBtn" class="btn">Dark Mode</button> </div><!-- text always opposite of the default mode. default mode is light, .: text should read dark mode -->
+                        </div>
+                        <div class="row g-0">
+                            <div class="col-sm-4 g-0"><button id="unlock" class="btn">&#x25a7; Unlock All </button></div>
+                            <div class="col-sm-4 g-0"><button id="lockAll" class="btn">&#x25a7; Lock All </button></div>
+                        </div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </section>
-
+        </div>
     </body>
 
 </html>

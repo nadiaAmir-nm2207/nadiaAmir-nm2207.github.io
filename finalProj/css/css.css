@@ -3,67 +3,146 @@
 /* styling the page background */
 body{
     background-color: #dda15e; /* backup bg col */
-    background-size: 125px;
-    background-repeat: repeat;
-}
-/* styling the header */
-header{
-    width: 100%;
-    background-color: #d9ed92;
 }
 
-/* STYLING CONTENT IN SECTION */
+/* STYLING CONTENT */
 
 /* styling canvas */
-#chartPreview{
-    width: 100%;
-    height: 100%;
-    background-color: #fff9f5;
+#lnPrvw, #piePrvw{
+    width: 50%;
+    background-color: none;
+}
+
+.canvasBox{
+    width: 50%;
+    padding: 5%;
+}
+
+/* the box that the canvas(es) are in */
+#previews{
+    background: #fff9f5;
+    padding-top: 5%;
+    overflow-y: scroll;
 }
 
 /* styling "sidebar" where all the options and buttons will go */
 #options{
-    background-color: blue;
-    width: 100%;
+    background-color: #011627;
+    padding: 5% 0; /* want the swatches to be full width */
+    overflow-y: scroll;
 }
 
 /* styling swatches */
 #swatchBox{
-    width: 100%;
-    background-color: #d9ed92;
     margin: auto;
-    padding: 2% 4%; /* to centralise the swatches */
+    padding: 2% 0%; /* to centralise the swatches */
     height: 20%;
 }
 
 .swatch{
-    margin: 1%;
+    width: 100%;
+    margin: 0%; /* margin: top-bottom left-right – wanted a bigger margin for the top & bottom than for the sides */
     text-align: center; /* align colourLabel in the middle */
-    line-height: 25px;
-    border-radius: 50px; /* for pill shape */
+    border-bottom: 2px solid rgb(255, 249, 245); /* bottom only so they don't double */
+}
+
+#topSwatch{
+    border-top: 2px solid rgb(255, 249, 245); /* extra id for the one at the top to add the extra top border
+}
+
+#colourBox{
+    padding-top: 5%; /* space between the title & the start of the swatches */
 }
 
 .colourLabel{
-    line-height: 4rem;
+    color: rgb(255, 249, 245);
+    line-height: 3.6vmin;
+    font-size: 2.5vmin;
+    font-family: "Quicksand", sans-serif;
+    display: inline-block; /* so the colour text doesn't line break with the lock button even as a div */
+    width:  50%; /* this make sit much tidier, labels & locks */
+}
+
+/* center class */
+.center{
+    text-align: center;
 }
 
 /* STYLING TEXT */
 
 /* styling individual h1 & h2 */
 h1{
-    font-family: 'Josefin Sans', serif;
+    font-family: 'Quicksand', serif;
     color: #55a630;
+    font-size: 6vmin; /* 3 * 16px */
+    margin-left: 5%;
 }
 
 h2{
     font-family: 'Quicksand', sans-serif;
     color: #007f5f;
-    line-height: 100px;
-    text-align: right;
+    font-size: 3vmin;
+    margin-left: 6%; /* visually without this, the h2 doesn't line up with the h1 for font reasons I think */
 }
 
-/* to vertically align the title text with each other */
-.headings{
-    line-height: 6rem; /* set line-height to be more than the size of the biggest element (display-1). display-1 font size is 5rem according to Bootstrap documentation. */
-    margin: 1% 3% 0 3%; /* to centralise the text more */
+/* STYLING BUTTONS */
+
+.btn{
+    /* styling button appearance */
+    border: 0px;
+    border-radius: 10px;
+    width: 100%;
+    padding: 3%;
+    margin: 5% 1%;
+    /* styling button text */
+    color: rgb(255, 249, 245);
+    font-family: 'Quicksand', sans-serif;
+}
+
+#changeBtn{
+    /* styling button bg */
+    background-color: rgba(0, 127, 95, 0.8); /* backup in case linear gradient does not work */
+    background: linear-gradient(to right, rgba(0, 127, 95, 0.8), rgba(85, 166, 48,0.8)); /* linear-gradient(to direction, color stop 1, color stop 2) source: https://developer.mozilla.org/en-US/docs/Web/CSS/gradient/linear-gradient */
+    font-size: 2vmin;
+}
+
+/* to darken the button when hover over it */
+#changeBtn:hover{
+    /* styling button bg */
+    background-color: rgba(0, 127, 95, 1); /* backup in case linear gradient does not work */
+    background: linear-gradient(to right, rgba(0, 127, 95, 1), rgba(85, 166, 48, 1));
+}
+
+/* unlock all & lock all buttons */
+#unlock, #lockAll, #modeBtn{
+    /* styling button bg */
+    background-color: rgba(1, 22, 39, 1);
+    border: 1px solid rgba(85, 166, 48, 1);
+    font-size: 2vmin;
+}
+
+#unlock:hover, #lockAll:hover, #modeBtn:hover{
+    /* styling button bg */
+    background-color: rgba(0, 127, 95, 1);
+    color: rgb(255, 249, 245);
+}
+
+/* copy & lock buttons */
+.copy, #lock1, #lock2, #lock3, #lock4, #lock5{
+    /* styling button bg */
+    background-color: rgba(1, 22, 39, 0.6);
+    /* styling button appearance */
+    border: 0px;
+    border-radius: 10px;
+    width: 40px;
+    height: 40px;
+    margin: 5% 2%;
+    /* styling button text */
+    color: rgb(255, 249, 245);
+    font-family: 'Quicksand', sans-serif;
+    font-size: 3vmin;
+}
+
+.copy:hover, #lock1:hover, #lock2:hover, #lock3:hover, #lock4:hover, #lock5:hover{
+    background-color: rgba(1, 22, 39, 1);
 }
