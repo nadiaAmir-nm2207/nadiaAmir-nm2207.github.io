@@ -390,6 +390,7 @@ function changeColour(){
             Swatches[x].style.backgroundColor = HSLstringsArray[x]; // change the background color of the xth Swatches element to the xth HSL value stored in HSLstringsArray
             rgbString(); // generate rgbStrings from the HSL values
             labelCol(x); // function to change label text colour based on the background of the swatch
+            bdrCol(); // change border colours
             colourLabels[x].innerHTML = rgbToHex(rgbVal[x][0], rgbVal[x][1], rgbVal[x][2]); // change the text of the xth colourLabels element to the xth rgbToHex value – this is why i had hslrgb() return an object – so that I can separate the r, g, b values to convert to hex
             chartCol(); // changing the charts
         }
@@ -492,7 +493,6 @@ let barPrvw = new Chart("barPrvw", {
                 label: "",
                 borderWidth: 2,
                 borderColor: [],
-                borderRadius: 10.20,
                 backgroundColor: ["pink", "red", "green", "blue", "yellow"]
             },
             ]
