@@ -114,6 +114,7 @@ const lvals1 = []; // to store lightness values (separate hue1 & hue2)
 const lvals2 = []; // to store lightness values (separate hue1 & hue2)
 const sat1 = []; // to store saturation values of each generated colour
 const sat2 = []; // to store saturation values of each generated colour
+const rgbVal = []; // use to push rgb strings
 
 // BASIC FUNCTIONS
 // clear arrays
@@ -123,9 +124,11 @@ function clearArr(){
     lvals2.length = 0;
     sat1.length = 0; // clear array when fn called
     sat2.length = 0; // clear array when fn called
+    rgbVal.length = 0;
 }
 
 // update charts AHAHAHAHAHA I DID IT!! EXCUSE THE UNPROFESSIONAL EXCITEMENT BUT THIS IS THE KEY the chart has to be "regenerated" for the colour changes in the function to show since this function has to come after the chart is declared (otherwise cannot access the properties)
+// source: https://www.chartjs.org/docs/latest/developers/updates.html
 function updateChart(){
     lnPrvw.update();
     barPrvw.update();
@@ -154,7 +157,7 @@ function satValGen(){
 
 function ltValGen(){
     if (mode == true){ // if light mode
-        let ltVal = random(0, 50); // return a lightness value between 0 - 50 i.e. darker colours
+        let ltVal = random(0, 60); // return a lightness value between 0 - 60 i.e. darker colours. max after the stacking later will be 80.
         return ltVal; 
     }
     else if (mode == false){ // if dark mode
@@ -163,6 +166,11 @@ function ltValGen(){
         return ltVal;
     }
 };
+
+// test if hue falls between 2 values (source: https://stackoverflow.com/questions/6454198/check-if-a-value-is-within-a-range-of-numbers)
+function between(hue, min, max){
+    return hue >= min && hue <= max
+}
 
 // get the value to "circle back" if the sum with a constant exceeds the maximum
 function circleBack(base, max, x){ // base: base value, max: maximum value, x: constant that is added/subtracted
@@ -179,9 +187,9 @@ function circleBack(base, max, x){ // base: base value, max: maximum value, x: c
 // CONVERTERS
 
 // HSLtoRGB (formula explanation: https://www.had2know.org/technology/hsl-rgb-color-converter.html)
-function hslrgb(h1, s1, l1){
-    // kept getting massive numbers for the rgb, did more digging and realised you need to make sure your hue is hue/360 and s & l are /100
-    let h = h1/360;
+function hslrgb(h, s1, l1){
+    // kept getting massive numbers for the rgb, did more digging and realised you need to make sure your s & l are /100
+    // divided hue by 360 at first but after looking at the source again, realise don't have to
     let s = s1/100;
     let l = l1/100;
     // formula start – I don't really understand the maths fully but I tried my best to "translate" it into js and it seems accurate so far!
@@ -225,6 +233,9 @@ function hslrgb(h1, s1, l1){
     return [r, g ,b]; // reason for returning as an object is explained in labelText(), around line 236
 };
 
+// TEST FORMULA: light blue, hsl(188, 33, 74), rgb(165, 204, 210), hex #A5CCD2
+// console.log(hslrgb(188, 33, 74)); // expected 165, 204, 210. got 166, 204, 210. +/-1 is okay because the colour still quite similar
+
 // rgb to hex
 // RGB TO HEX FUNCTIONS: to convert RGB values to HEX for nicer presentation of colour codes
 // formula function from https://stackoverflow.com/questions/5623838/rgb-to-hex-and-hex-to-rgb
@@ -243,11 +254,6 @@ function rgbToHex(r, g, b) {
 }
 
 // TESTS
-
-// test if hue falls between 2 values (source: https://stackoverflow.com/questions/6454198/check-if-a-value-is-within-a-range-of-numbers)
-function between(hue, min, max){
-    return hue >= min && hue <= max
-}
 
 // test all the hues
 function testHue(hue){
@@ -352,6 +358,14 @@ function chartCol(){ // since I have so many charts now, separate out the code
     piePrvw.data.datasets[0].backgroundColor[x] = HSLstringsArray[x]; // have to direct it to datasets[0] specifically for it to change pie segment bg colours
 };
 
+function rgbString(){ // function that creates 
+    const hues = [baseHueArray[0], baseHueArray[0], baseHueArray[1], baseHueArray[1], baseHueArray[1]]; // to get an array of the 5 base hues
+    const sat = sat1.concat(sat2); // to get an array of all 5 saturation values
+    const lvals = lvals1.concat(lvals2); // to get an array of all 5 lightness values
+    let rgb = hslrgb(hues[x], sat[x], lvals[x]); // convert the hsl to rgb for the [r, g, b]
+    rgbVal.push(rgb);
+}
+
 // FINAL STEP: function that changes the colours
 function changeColour(){
     clearArr(); // clear arrays
@@ -361,22 +375,18 @@ function changeColour(){
     // 2. generate HSLstrings for hue1 & hue2
     hslString(0, hue1, sat1, lvals1);
     hslString(1, hue2, sat2, lvals2);
-    // console.log(HSLstringsArray); // works – expected: 5 HSL strings
-    
-    // to use for changing borderColor (around line 252)
-    const hues = [baseHueArray[0], baseHueArray[0], baseHueArray[1], baseHueArray[1], baseHueArray[1]]; 
-    const sat = sat1.concat(sat2);
-    const lvals = lvals1.concat(lvals2);
+    // console.log(HSLstringsArray); // works – expected: 5 HSL strings    
 
     for (x in Swatches){ // for all the div elements with the class="swatch" and are .: in the Swatches array
         if (lockState[x]==false){ // to test if the colour should be changed or not
             // changing the swatches
             Swatches[x].style.backgroundColor = HSLstringsArray[x]; // change the background color of the xth Swatches element to the xth HSL value stored in HSLstringsArray
-            let rgb = hslrgb(hues[x], sat[x], lvals[x]); // convert the hsl to rgb for the [r, g, b]
-            // Swatches[x].style.borderColor = "rgb(" + 0.9 * rgb[0] + ", " + 0.9 * rgb[1] + ", " +  0.9 * rgb[2] + ")";// adding a factor to RGB values makes them darker – smaller factors = darker colours source: https://stackoverflow.com/questions/6615002/given-an-rgb-value-how-do-i-create-a-tint-or-shade
-            // ^^ this piece of code came from https://www.chartjs.org/docs/latest/developers/updates.html
+            rgbString();
+            // changing borders of swatches & piechart: adding a factor to RGB values makes them darker – smaller factors = darker colours source: https://stackoverflow.com/questions/6615002/given-an-rgb-value-how-do-i-create-a-tint-or-shade
+            Swatches[x].style.borderColor = "rgb(" + 0.75 * rgbVal[x][0] + ", " + 0.75 * rgbVal[x][1] + ", " +  0.75 * rgbVal[x][2] + ")";
+            piePrvw.data.datasets[0].borderColor[x]= "rgb(" + 0.75 * rgbVal[x][0] + ", " + 0.75 * rgbVal[x][1] + ", " +  0.75 * rgbVal[x][2] + ")";
             labelCol(x); // function to change label text colour based on the background of the swatch
-            colourLabels[x].innerHTML = rgbToHex(rgb[0], rgb[1], rgb[2]); // change the text of the xth colourLabels element to the xth rgbToHex value – this is why i had hslrgb() return an object – so that I can separate the r, g, b values to convert to hex
+            colourLabels[x].innerHTML = rgbToHex(rgbVal[x][0], rgbVal[x][1], rgbVal[x][2]); // change the text of the xth colourLabels element to the xth rgbToHex value – this is why i had hslrgb() return an object – so that I can separate the r, g, b values to convert to hex
             chartCol(); // changing the charts
         }
     };
@@ -450,10 +460,19 @@ data: {
         ]
     },
     options:{
+        aspectRatio: 1, // this makes the chart square (source: cmd-f "square" https://www.chartjs.org/docs/latest/getting-started/usage.html)
+        scales:{ // the following code hides the x & y axes of the chart (source: https://www.chartjs.org/docs/latest/axes/)
+            x:{
+                display: false, // hide x-axis
+            },
+            y:{
+                display: false, // hide y-axis
+            }
+        },
         plugins:{
             legend:{
                 display: false
-            }
+            },
         }
     }
 });
@@ -473,6 +492,15 @@ let barPrvw = new Chart("barPrvw", {
             ]
         },
         options:{
+            aspectRatio: 1,
+            scales:{ // the following code hides the x & y axes of the chart (source: https://www.chartjs.org/docs/latest/axes/)
+                x:{
+                    display: false, // hide x-axis
+                },
+                y:{
+                    display: false, // hide y-axis
+                }
+            },
             plugins:{
                 legend:{
                     display: false
@@ -497,6 +525,7 @@ let piePrvw = new Chart("piePrvw", { // I decided to put the chart into a consta
         },
         options:{
             plugins:{
+                aspectRatio: 1,
                 legend:{
                     display: false
                 }
