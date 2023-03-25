@@ -23,24 +23,28 @@
     </head>
     <!-- g-0 is the Bootstrap class for no-gutters, which clears the margins & padding for the columns. I did this so that my columns will not have a gap between them -->
     <!-- I added the class container-fluid because I read that without it, rows will cause horizontal scrolling on some screens (source: https://stackoverflow.com/questions/61003484/i-need-to-fix-bootstrap-h-100-class-it-is-not-working)-->
-    <body class="container-fluid g-0">
-        <div class="row g-0">
-            
+    <body>
+        <div class="row g-0"> <!-- always include g-0 class for rows so that won't get horizontal scroll (I came up with the solution, but realised it after reading that rows automatically have 15px margins in bootstrap. source: https://stackoverflow.com/questions/27758457/how-to-remove-this-horizontal-scrollbar-in-bootstrap-3)-->
             <!-- col-sm means small column, helps the column be responsive. one row has 12 units, so col-sm-3 means that the column should take up 1/4 of the space -->
             <div class="col-sm-9">
                 <!-- vh-100 is a Bootstrap class that means the height is set to 100vh. 100vh means the height should be 100 relative to the viewport, which refers to the area of the window where content is visible-->
                 <div id="previews" class="vh-100">
                     <!-- chart preview section here -->
-                    <div class ="row"> <!-- make it easier to put the canvases side by side-->
-                        <div class = "col-sm-6 canvasBox">
-                            <canvas id="lnPrvw"></canvas>
-                            <canvas id="barPrvw"></canvas>
-                        </div>
-                        <div class = "col-sm-6 canvasBox">
-                            <canvas id="piePrvw"></canvas>
-                        </div>
+                    <div class ="row g-0"> <!-- make it easier to put the canvases side by side-->
+                        <div class="col-sm-4"><canvas id="lnPrvw" class="canvasBox"></canvas></div> <!-- 3 charts in one row -->
+                        <div class="col-sm-4"><canvas id="barPrvw" class="canvasBox"></canvas></div>
+                        <div class="col-sm-4"><canvas id="piePrvw" class="canvasBox"></canvas></div>
                     </div>
-                    <button id="download">download</button>
+                    <p>Download your Chart Previews</p>
+                    <p>
+                        <button id="download">download</button>
+                        <input type="checkbox" id="allDl"><label for="allDl">select all</label>
+                    </p>
+                    <p>
+                        <input type="checkbox" id="lnDl"><label for="lnDl">linechart</label>
+                        <input type="checkbox" id="barDl"><label for="barDl">barchart</label>
+                        <input type="checkbox" id="pieDl"><label for="pieDl">piechart</label>
+                    </p>
                 </div>
             </div>
             <div class="col-sm-3">
