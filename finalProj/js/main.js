@@ -80,13 +80,13 @@ let lnChartBg = document.getElementById("lnPrvw");
 function changeMode(){
     if (mode == true){ // if mode is true, i.e. in light mode
         mode = false; // reassign value to false i.e. dark mode
-        modeBtn.innerHTML = "light mode"; // change the text to read light mode instead of dark mode (text option always opposite of the current mode)
+        modeBtn.innerHTML = "&#9728; light bg"; // change the text to read light mode instead of dark mode (text option always opposite of the current mode)
         document.getElementById("previews").style.backgroundColor = "#011627";
         return mode;
     }
     else if (mode == false){ // if mode is false, i.e. in dark mode
         mode = true; // reassign value to true i.e. light mode
-        modeBtn.innerHTML = "dark mode"; // change the text to read dark mode instead of light mode (text option always opposite of the current mode)
+        modeBtn.innerHTML = "&#9790; dark bg"; // change the text to read dark mode instead of light mode (text option always opposite of the current mode)
         document.getElementById("previews").style.backgroundColor = "#fff9f5";
         return mode;
     }

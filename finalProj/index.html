@@ -6,7 +6,7 @@
         <!-- linking to google fonts -->
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@200&family=Quicksand:wght@500&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200&family=Quicksand:wght@500&display=swap" rel="stylesheet">
         <!-- Bootstrap https://getbootstrap.com/docs/5.3/getting-started/introduction/ -->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
         <!-- Clipboard.js plugin for copy-paste https://preview.keenthemes.com/good/documentation/forms/clipboard.html-->
@@ -23,38 +23,36 @@
     </head>
     <!-- g-0 is the Bootstrap class for no-gutters, which clears the margins & padding for the columns. I did this so that my columns will not have a gap between them -->
     <!-- I added the class container-fluid because I read that without it, rows will cause horizontal scrolling on some screens (source: https://stackoverflow.com/questions/61003484/i-need-to-fix-bootstrap-h-100-class-it-is-not-working)-->
-    <body>
+    <body class="container-fluid g-0">
+        <header class="row g-0">
+            <span><h1>charteruse</h1><h2>by Nadia Amir</h2></span>
+        </header>
         <div class="row g-0"> <!-- always include g-0 class for rows so that won't get horizontal scroll (I came up with the solution, but realised it after reading that rows automatically have 15px margins in bootstrap. source: https://stackoverflow.com/questions/27758457/how-to-remove-this-horizontal-scrollbar-in-bootstrap-3)-->
-            <!-- col-sm means small column, helps the column be responsive. one row has 12 units, so col-sm-3 means that the column should take up 1/4 of the space -->
-            <div class="col-sm-9">
+            <!-- col-sm means small column, helps the column be responsive. one row has 12 units -->
+            <!-- chart preview area -->
+            <div class="col-sm-9" id="chartBox">
                 <!-- vh-100 is a Bootstrap class that means the height is set to 100vh. 100vh means the height should be 100 relative to the viewport, which refers to the area of the window where content is visible-->
-                <div id="previews" class="vh-100">
+                <div id="previews">
                     <!-- chart preview section here -->
                     <div class ="row g-0"> <!-- make it easier to put the canvases side by side-->
                         <div class="col-sm-4"><canvas id="lnPrvw" class="canvasBox"></canvas></div> <!-- 3 charts in one row -->
                         <div class="col-sm-4"><canvas id="barPrvw" class="canvasBox"></canvas></div>
                         <div class="col-sm-4"><canvas id="piePrvw" class="canvasBox"></canvas></div>
                     </div>
-                    <p>Download your Chart Previews</p>
-                    <p>
-                        <button id="download">download</button>
-                        <input type="checkbox" id="allDl"><label for="allDl">select all</label>
-                    </p>
-                    <p>
-                        <input type="checkbox" id="lnDl"><label for="lnDl">linechart</label>
-                        <input type="checkbox" id="barDl"><label for="barDl">barchart</label>
-                        <input type="checkbox" id="pieDl"><label for="pieDl">piechart</label>
-                    </p>
                 </div>
             </div>
-            <div class="col-sm-3">
-                <div id="options" class="vh-100">
-                    <div>
-                        <h1>Charteruse</h1>
-                        <h2>colour generator for charts.</h2>
-                    </div>
+            <!-- sidebar -->
+            <div class="col-sm-3 g-0">
+                <div id="options">
                     <div id="colourBox">
                         <div id="swatchBox">
+                            <div class="ctrlBox"> <!-- generate button -->
+                                <div class="row g-0">
+                                    <div class="col-sm-6 btnBox"><h3>Choose colours</h3></div>
+                                    <!-- HTML entities & special characters source (https://www.w3schools.com/charsets/ref_utf_symbols.asp)-->
+                                    <div class="col-sm-6 btnBox"><button id="modeBtn" class="btn">&#9790; dark bg</button></div><!-- text always opposite of the default mode. default mode is light, .: text should read dark mode -->
+                                </div>
+                            </div>
                             <!-- each div should have a unique data-clipboard-target ID & a <p> with an ID to be linked to the JS for style & innerHTML changes -->
                             <!-- add the lock ids for the locking & unlocking. has to be ids because each one will have unique counter & action when clicked -->
                             <!-- add the copy ids for Raphael -->
@@ -84,15 +82,36 @@
                                 <button id="lock5">&#x1f513;</button>
                             </div>
                         </div>
-                        <!-- HTML entities & special characters source (the biggest one I've found so far): https://www.whatsmyip.org/html-characters/ kinda hard to navigat tho -.- i almost want to make a visual guide for special characters as my final proj now -->
-                        <div class="row g-0">
-                            <div class="col-sm-4 g-0"><button id="changeBtn" class="btn">&#x25a7; Generate</button></div>
-                            <div class="col-sm-4 g-0"><button id="modeBtn" class="btn">Dark Mode</button> </div><!-- text always opposite of the default mode. default mode is light, .: text should read dark mode -->
+                        <div class="ctrlBox"> <!-- unlock all & lock all options -->
+                            <div class="row g-0">
+                                <div class="col-sm-6 btnBox"><button id="unlock" class="btn">&#x1f513; Unlock All </button></div>
+                                <div class="col-sm-6 btnBox"><button id="lockAll" class="btn">&#128274; Lock All </button></div><!-- text always opposite of the default mode. default mode is light, .: text should read dark mode -->
+                            </div>
                         </div>
-                        <div class="row g-0">
-                            <div class="col-sm-4 g-0"><button id="unlock" class="btn">&#x25a7; Unlock All </button></div>
-                            <div class="col-sm-4 g-0"><button id="lockAll" class="btn">&#x25a7; Lock All </button></div>
+                        <div class="ctrlBox"> <!-- generate button -->
+                            <div class="row g-0">
+                                <div class="col-sm-6"></div><!-- spacer -->
+                                <div class="col-sm-6 btnBox"><button id="changeBtn" class="btn">&#9732; Generate</button></div>
+                            </div>
                         </div>
+                        <div class="ctrlBox"> <!-- download options -->
+                            <div class="row g-0">
+                                <h3 class="btnBox">Export options (not working yet)</h3>
+                                <div class="col-sm-6 btnBox">
+                                    <p><input type="checkbox" id="allDl"><label for="allDl">&nbsp;select all</label></p> <!-- if don't use &nbsp; the space is ignored-->
+                                    <p><input type="checkbox" id="lnDl"><label for="lnDl">&nbsp;linechart</label></p>
+                                    <p><input type="checkbox" id="barDl"><label for="barDl">&nbsp;barchart</label></p>
+                                    <p><input type="checkbox" id="pieDl"><label for="pieDl">&nbsp;piechart</label></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ctrlBox"> <!-- download button (separate so that it appears below the options)-->
+                            <div class="row g-0">
+                                <div class="col-sm-6 btnBox"></div><!-- spacer -->
+                                <div class="col-sm-6 btnBox">
+                                    <button id="download" class="btn">Download</button> <!-- text always opposite of the default mode. default mode is light, .: text should read dark mode -->
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

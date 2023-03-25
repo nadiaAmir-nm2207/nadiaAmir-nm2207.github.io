@@ -2,10 +2,21 @@
 
 /* styling the page background */
 body{
-    background-color: #dda15e; /* backup bg col */
+    background-color: #007f5f; /* backup bg col */
+    background-image: linear-gradient(to right, rgba(0, 127, 95, 1), rgba(172, 207, 66, 1));
+    height: 100%;
+    color: rgb(255, 249, 245);
+    font-family: 'Quicksand', sans-serif;
 }
 
 /* STYLING CONTENT */
+
+/* style header (where the title etc. are */
+header{
+    background-color: #011627;
+    text-align: center;
+    height: 10vh; /* 10 units to header, 90 units to content = 100vh = fixed to viewport size */
+}
 
 /* styling canvas */
 #lnPrvw, #piePrvw{
@@ -19,15 +30,34 @@ body{
 
 /* the box that the canvas(es) are in */
 #previews{
-    background: #fff9f5;
+    /* behaviour */
     overflow-y: scroll;
+    transition-duration: 0.5s; /* for gradual colour change between dark mode & light mode */
+    /* layout */
+    width: 90%;
+    height: 90vh;
+    margin: auto;
+    margin-top: 1%;
+    padding: 5%;
+    /* aesthetics */
+    background: #fff9f5;
+    border-radius: 20px;
 }
 
 /* styling "sidebar" where all the options and buttons will go */
-#options{
-    background-color: #011627;
+#options, #chartBox{
     padding: 5% 0; /* want the swatches to be full width */
     overflow-y: scroll;
+    height: 90vh;
+}
+
+#options{
+    background-color: #011627; /* bg colour of sidebar */
+}
+
+/* styling content on top of the swatches */
+.ctrlBox{
+    padding: 3%;
 }
 
 /* styling swatches */
@@ -42,14 +72,11 @@ body{
     margin: 0%; /* margin: top-bottom left-right – wanted a bigger margin for the top & bottom than for the sides */
     text-align: center; /* align colourLabel in the middle */
     border-bottom: 2px solid rgb(255, 249, 245); /* bottom only so they don't double */
+    transition-duration: 0.5s; /* colour change slows down, no idea why it took me so long to find this simple answer haha (source: https://stackoverflow.com/questions/70993915/how-to-change-the-speed-of-the-color-switch-when-button-is-clicked) */
 }
 
 #topSwatch{
-    border-top: 2px solid rgb(255, 249, 245); /* extra id for the one at the top to add the extra top border
-}
-
-#colourBox{
-    padding-top: 5%; /* space between the title & the start of the swatches */
+    border-top: 2px solid rgb(255, 249, 245); /* extra id for the one at the top to add the extra top border*/
 }
 
 .colourLabel{
@@ -70,17 +97,27 @@ body{
 
 /* styling individual h1 & h2 */
 h1{
-    font-family: 'Quicksand', serif;
-    color: #55a630;
-    font-size: 3vmin; /* 24px / 16 * 2 = 3 */
-    margin-left: 5%;
+    font-family: 'Poppins', serif;
+    color: #ACCF42;
+    font-size: 4vmin;
+    display: inline-block; /* so that it can be next to the h2 */
+    margin-right: 5%;
+    font-weight: bold;
+    padding: 1%;
 }
 
 h2{
     font-family: 'Quicksand', sans-serif;
     color: #007f5f;
-    font-size: 2.75vmin; /* 22px / 16 * 2 = 2.75 */
-    margin-left: 6%; /* visually without this, the h2 doesn't line up with the h1 for font reasons I think */
+    font-size: 2.5vmin; /* 22px / 16 * 2 = 2.75 */
+    display: inline-block; /* so that it can be next to the h1 */
+}
+
+h3{
+    font-family: 'Quicksand', sans-serif;
+    color: #ACCF42;
+    font-size: 2.5vmin;
+    padding: 3%; /* to match .btn padding so it looks more aligned */
 }
 
 /* STYLING BUTTONS */
@@ -89,33 +126,37 @@ h2{
     /* styling button appearance */
     border: 0px;
     border-radius: 10px;
-    width: 100%;
+    width: 80%;
     padding: 3%;
-    margin: 5% 1%;
     /* styling button text */
     color: rgb(255, 249, 245);
     font-family: 'Quicksand', sans-serif;
 }
 
-#changeBtn{
+.btnBox{ /* to centralise buttons within their columns */
+    text-align: center;
+}
+
+#changeBtn, #download, #copyAll{
     /* styling button bg */
     background-color: rgba(0, 127, 95, 0.8); /* backup in case linear gradient does not work */
-    background: linear-gradient(to right, rgba(0, 127, 95, 0.8), rgba(85, 166, 48,0.8)); /* linear-gradient(to direction, color stop 1, color stop 2) source: https://developer.mozilla.org/en-US/docs/Web/CSS/gradient/linear-gradient */
+    background: linear-gradient(to right, rgba(0, 127, 95, 0.8), rgba(172, 207, 66,0.8)); /* linear-gradient(to direction, color stop 1, color stop 2) source: https://developer.mozilla.org/en-US/docs/Web/CSS/gradient/linear-gradient */
     font-size: 2vmin;
 }
 
 /* to darken the button when hover over it */
-#changeBtn:hover{
+#changeBtn:hover, #download:hover, #copyAll:hover{
     /* styling button bg */
     background-color: rgba(0, 127, 95, 1); /* backup in case linear gradient does not work */
-    background: linear-gradient(to right, rgba(0, 127, 95, 1), rgba(85, 166, 48, 1));
+    background: linear-gradient(to right, rgba(0, 127, 95, 1), rgba(172, 207, 66, 1));
+    color: rgb(255, 249, 245);
 }
 
 /* unlock all & lock all buttons */
 #unlock, #lockAll, #modeBtn{
     /* styling button bg */
     background-color: rgba(1, 22, 39, 1);
-    border: 1px solid rgba(85, 166, 48, 1);
+    border: 1px solid rgba(172, 207, 66, 1);
     font-size: 2vmin;
 }
 
