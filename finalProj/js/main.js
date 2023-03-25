@@ -81,13 +81,13 @@ function changeMode(){
     if (mode == true){ // if mode is true, i.e. in light mode
         mode = false; // reassign value to false i.e. dark mode
         modeBtn.innerHTML = "&#9728; light bg"; // change the text to read light mode instead of dark mode (text option always opposite of the current mode)
-        document.getElementById("previews").style.backgroundColor = "#011627";
+        document.getElementById("chartPrvws").style.backgroundColor = "#011627";
         return mode;
     }
     else if (mode == false){ // if mode is false, i.e. in dark mode
         mode = true; // reassign value to true i.e. light mode
         modeBtn.innerHTML = "&#9790; dark bg"; // change the text to read dark mode instead of light mode (text option always opposite of the current mode)
-        document.getElementById("previews").style.backgroundColor = "#fff9f5";
+        document.getElementById("chartPrvws").style.backgroundColor = "#fff9f5";
         return mode;
     }
     console.log(mode);
@@ -414,17 +414,25 @@ function rgbToHex(r, g, b) {
     return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
 }
 
-// CODE FOR THE CHART PREVIEWS
+// CODE FOR THE CHARTS
 
 // labels for x-axis
 let xLabels = ["", "", "", "", ""];
 
-// For drawing the lines
+// datasets (random numbers)
 let data1 = [1, 3, 4, 5, 1];
 let data2 = [2, 5, 6, 1, 5];
 let data3 = [6, 10, 5, 8, 2];
 let data4 = [7, 6, 2, 5, 3];
 let data5 = [3, 0, 9, 8, 4];
+
+function randomise(){ // to generate random datasets, between 1 - 10
+    data1 = [random(1,10), random(1,10), random(1,10), random(1,10), random(1,10)]
+    data2 = [random(1,10), random(1,10), random(1,10), random(1,10), random(1,10)]
+    data3 = [random(1,10), random(1,10), random(1,10), random(1,10), random(1,10)]
+    data4 = [random(1,10), random(1,10), random(1,10), random(1,10), random(1,10)]
+    data5 = [random(1,10), random(1,10), random(1,10), random(1,10), random(1,10)]
+}
 
 let lnPrvw = new Chart("lnPrvw", { // I decided to put the chart into a variable because without that, I'm very confused as to how to refer to the borderColor
 type: "line",

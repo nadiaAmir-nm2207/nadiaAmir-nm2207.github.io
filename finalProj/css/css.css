@@ -3,7 +3,7 @@
 /* styling the page background */
 body{
     background-color: #007f5f; /* backup bg col */
-    background-image: linear-gradient(to right, rgba(0, 127, 95, 1), rgba(172, 207, 66, 1));
+    background-image: url(../resources/gridBg.jpg);
     height: 100%;
     color: rgb(255, 249, 245);
     font-family: 'Quicksand', sans-serif;
@@ -14,8 +14,9 @@ body{
 /* style header (where the title etc. are */
 header{
     background-color: #011627;
-    text-align: center;
     height: 10vh; /* 10 units to header, 90 units to content = 100vh = fixed to viewport size */
+    padding: 0 5%;
+    border-bottom: 1px solid #ACCF42;
 }
 
 /* styling canvas */
@@ -29,13 +30,12 @@ header{
 }
 
 /* the box that the canvas(es) are in */
-#previews{
+#chartPrvws, #aboutBox{
     /* behaviour */
-    overflow-y: scroll;
     transition-duration: 0.5s; /* for gradual colour change between dark mode & light mode */
     /* layout */
     width: 90%;
-    height: 90vh;
+    height: auto; /* if set to, for e.g., 100%, it may not enclose all the charts especially when they stack on smaller screens */
     margin: auto;
     margin-top: 1%;
     padding: 5%;
@@ -44,11 +44,18 @@ header{
     border-radius: 20px;
 }
 
+#aboutBox{
+    background-color: #011627;
+}
+
 /* styling "sidebar" where all the options and buttons will go */
-#options, #chartBox{
-    padding: 5% 0; /* want the swatches to be full width */
+#options, #prvwBox{
     overflow-y: scroll;
     height: 90vh;
+}
+
+#prvwBox{
+    padding: 1% 0;
 }
 
 #options{
@@ -57,35 +64,43 @@ header{
 
 /* styling content on top of the swatches */
 .ctrlBox{
-    padding: 3%;
+    padding: 8%;
+    border-bottom: 1px solid #ACCF42;
+}
+
+.lastBox{
+    border:0; /* to get rid of the bottom border */
 }
 
 /* styling swatches */
 #swatchBox{
     margin: auto;
-    padding: 2% 0%; /* to centralise the swatches */
     height: 20%;
 }
 
 .swatch{
     width: 100%;
-    margin: 0%; /* margin: top-bottom left-right – wanted a bigger margin for the top & bottom than for the sides */
+    height: 100%;
     text-align: center; /* align colourLabel in the middle */
     border-bottom: 2px solid rgb(255, 249, 245); /* bottom only so they don't double */
     transition-duration: 0.5s; /* colour change slows down, no idea why it took me so long to find this simple answer haha (source: https://stackoverflow.com/questions/70993915/how-to-change-the-speed-of-the-color-switch-when-button-is-clicked) */
 }
 
-#topSwatch{
-    border-top: 2px solid rgb(255, 249, 245); /* extra id for the one at the top to add the extra top border*/
+#ctrlPanel{ /* column with buttons */
+    padding-top: 2%;
 }
 
 .colourLabel{
     color: rgb(255, 249, 245);
-    line-height: 3.6vmin;
-    font-size: 2.5vmin;
+    line-height: 3rem;
+    font-size: 1.5rem;
     font-family: "Quicksand", sans-serif;
     display: inline-block; /* so the colour text doesn't line break with the lock button even as a div */
     width:  50%; /* this make sit much tidier, labels & locks */
+}
+
+.colOpt{ /* div wrapped around the colourLabel, copyBtn and lockBtn in a swatch */
+    padding-top: 15%;
 }
 
 /* center class */
@@ -96,27 +111,25 @@ header{
 /* STYLING TEXT */
 
 /* styling individual h1 & h2 */
-h1{
-    font-family: 'Poppins', serif;
+.h1, h1{
+    font-family: 'Yeseva One', serif;
     color: #ACCF42;
-    font-size: 4vmin;
-    display: inline-block; /* so that it can be next to the h2 */
-    margin-right: 5%;
-    font-weight: bold;
-    padding: 1%;
+    font-size: 2rem;
+    line-height: 5rem; /* 1 rem usually = 16px */
 }
 
-h2{
+.h2, h2{
     font-family: 'Quicksand', sans-serif;
     color: #007f5f;
-    font-size: 2.5vmin; /* 22px / 16 * 2 = 2.75 */
-    display: inline-block; /* so that it can be next to the h1 */
+    font-size: 1.5rem;
+    line-height: 5rem; /* 1 rem usually = 16px */
+    margin-left: 5%; /* to put some spacing between "by Nadia Amir" and "charter#use" */
 }
 
 h3{
     font-family: 'Quicksand', sans-serif;
     color: #ACCF42;
-    font-size: 2.5vmin;
+    font-size: 1.3rem;
     padding: 3%; /* to match .btn padding so it looks more aligned */
 }
 
@@ -127,10 +140,13 @@ h3{
     border: 0px;
     border-radius: 10px;
     width: 80%;
-    padding: 3%;
+    padding: 4%;
     /* styling button text */
     color: rgb(255, 249, 245);
     font-family: 'Quicksand', sans-serif;
+    /* to align them center */
+    display: block;
+    margin: auto;
 }
 
 .btnBox{ /* to centralise buttons within their columns */
@@ -141,7 +157,8 @@ h3{
     /* styling button bg */
     background-color: rgba(0, 127, 95, 0.8); /* backup in case linear gradient does not work */
     background: linear-gradient(to right, rgba(0, 127, 95, 0.8), rgba(172, 207, 66,0.8)); /* linear-gradient(to direction, color stop 1, color stop 2) source: https://developer.mozilla.org/en-US/docs/Web/CSS/gradient/linear-gradient */
-    font-size: 2vmin;
+    font-size: 1rem;
+    font-family: "Yeseva One", sans-serif;
 }
 
 /* to darken the button when hover over it */
@@ -152,21 +169,22 @@ h3{
     color: rgb(255, 249, 245);
 }
 
-/* unlock all & lock all buttons */
-#unlock, #lockAll, #modeBtn{
+/* all outline buttons */
+.outlineBtn{
     /* styling button bg */
     background-color: rgba(1, 22, 39, 1);
     border: 1px solid rgba(172, 207, 66, 1);
-    font-size: 2vmin;
+    font-size: 1rem;
+    margin-top: 5%;
 }
 
-#unlock:hover, #lockAll:hover, #modeBtn:hover{
+.outlineBtn:hover{
     /* styling button bg */
     background-color: rgba(0, 127, 95, 1);
     color: rgb(255, 249, 245);
 }
 
-/* copy & lock buttons */
+/* copy & lock icons */
 .copy, #lock1, #lock2, #lock3, #lock4, #lock5{
     /* styling button bg */
     background-color: rgba(1, 22, 39, 0.6);
@@ -179,7 +197,7 @@ h3{
     /* styling button text */
     color: rgb(255, 249, 245);
     font-family: 'Quicksand', sans-serif;
-    font-size: 3vmin;
+    font-size: 1.5rem;
 }
 
 .copy:hover, #lock1:hover, #lock2:hover, #lock3:hover, #lock4:hover, #lock5:hover{
