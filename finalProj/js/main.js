@@ -358,6 +358,13 @@ function chartCol(){ // since I have so many charts now, separate out the code
     piePrvw.data.datasets[0].backgroundColor[x] = HSLstringsArray[x]; // have to direct it to datasets[0] specifically for it to change pie segment bg colours
 };
 
+function bdrCol(){ // to change the border of swatches & relevant charts
+    // changing borders of swatches & piechart: adding a factor to RGB values makes them darker – smaller factors = darker colours source: https://stackoverflow.com/questions/6615002/given-an-rgb-value-how-do-i-create-a-tint-or-shade
+    Swatches[x].style.borderColor = "rgb(" + 0.75 * rgbVal[x][0] + ", " + 0.75 * rgbVal[x][1] + ", " +  0.75 * rgbVal[x][2] + ")";
+    barPrvw.data.datasets[0].borderColor[x]= "rgb(" + 0.75 * rgbVal[x][0] + ", " + 0.75 * rgbVal[x][1] + ", " +  0.75 * rgbVal[x][2] + ")"; // border for bar chart
+    piePrvw.data.datasets[0].borderColor[x]= "rgb(" + 0.75 * rgbVal[x][0] + ", " + 0.75 * rgbVal[x][1] + ", " +  0.75 * rgbVal[x][2] + ")"; // border for pie chart
+}
+
 function rgbString(){ // function that creates 
     const hues = [baseHueArray[0], baseHueArray[0], baseHueArray[1], baseHueArray[1], baseHueArray[1]]; // to get an array of the 5 base hues
     const sat = sat1.concat(sat2); // to get an array of all 5 saturation values
@@ -381,10 +388,7 @@ function changeColour(){
         if (lockState[x]==false){ // to test if the colour should be changed or not
             // changing the swatches
             Swatches[x].style.backgroundColor = HSLstringsArray[x]; // change the background color of the xth Swatches element to the xth HSL value stored in HSLstringsArray
-            rgbString();
-            // changing borders of swatches & piechart: adding a factor to RGB values makes them darker – smaller factors = darker colours source: https://stackoverflow.com/questions/6615002/given-an-rgb-value-how-do-i-create-a-tint-or-shade
-            Swatches[x].style.borderColor = "rgb(" + 0.75 * rgbVal[x][0] + ", " + 0.75 * rgbVal[x][1] + ", " +  0.75 * rgbVal[x][2] + ")";
-            piePrvw.data.datasets[0].borderColor[x]= "rgb(" + 0.75 * rgbVal[x][0] + ", " + 0.75 * rgbVal[x][1] + ", " +  0.75 * rgbVal[x][2] + ")";
+            rgbString(); // generate rgbStrings from the HSL values
             labelCol(x); // function to change label text colour based on the background of the swatch
             colourLabels[x].innerHTML = rgbToHex(rgbVal[x][0], rgbVal[x][1], rgbVal[x][2]); // change the text of the xth colourLabels element to the xth rgbToHex value – this is why i had hslrgb() return an object – so that I can separate the r, g, b values to convert to hex
             chartCol(); // changing the charts
@@ -486,7 +490,9 @@ let barPrvw = new Chart("barPrvw", {
             {
                 data: data3,
                 label: "",
-                borderColor: "",
+                borderWidth: 2,
+                borderColor: [],
+                borderRadius: 10.20,
                 backgroundColor: ["pink", "red", "green", "blue", "yellow"]
             },
             ]
@@ -518,7 +524,7 @@ let piePrvw = new Chart("piePrvw", { // I decided to put the chart into a consta
             {
                 data: data1,
                 label: "",
-                borderColor: "",
+                borderColor: [],
                 backgroundColor: ["pink", "red", "green", "blue", "yellow"]
             },
             ]
