@@ -370,7 +370,7 @@ function rgbString(){ // function that creates
     const sat = sat1.concat(sat2); // to get an array of all 5 saturation values
     const lvals = lvals1.concat(lvals2); // to get an array of all 5 lightness values
     let rgb = hslrgb(hues[x], sat[x], lvals[x]); // convert the hsl to rgb for the [r, g, b]
-    rgbVal.push(rgb);
+    rgbVal[x] = rgb;
 }
 
 // FINAL STEP: function that changes the colours
@@ -389,10 +389,10 @@ function changeColour(){
             // changing the swatches
             Swatches[x].style.backgroundColor = HSLstringsArray[x]; // change the background color of the xth Swatches element to the xth HSL value stored in HSLstringsArray
             rgbString(); // generate rgbStrings from the HSL values
+            chartCol(); // change chart colours
             labelCol(x); // function to change label text colour based on the background of the swatch
-            bdrCol(); // change border colours
             colourLabels[x].innerHTML = rgbToHex(rgbVal[x][0], rgbVal[x][1], rgbVal[x][2]); // change the text of the xth colourLabels element to the xth rgbToHex value – this is why i had hslrgb() return an object – so that I can separate the r, g, b values to convert to hex
-            chartCol(); // changing the charts
+            bdrCol();
         }
     };
     updateChart(); // updating the charts
@@ -493,6 +493,7 @@ let barPrvw = new Chart("barPrvw", {
                 label: "",
                 borderWidth: 2,
                 borderColor: [],
+                borderRadius: 10.20,
                 backgroundColor: ["pink", "red", "green", "blue", "yellow"]
             },
             ]
