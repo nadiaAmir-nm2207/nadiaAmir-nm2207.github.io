@@ -9,19 +9,17 @@ body{
 
 /* styling canvas */
 #lnPrvw, #piePrvw{
-    width: 50%;
     background-color: none;
 }
 
 .canvasBox{
-    width: 50%;
     padding: 5%;
+    /* border: 1px solid black; */
 }
 
 /* the box that the canvas(es) are in */
 #previews{
     background: #fff9f5;
-    padding-top: 5%;
     overflow-y: scroll;
 }
 
@@ -74,14 +72,14 @@ body{
 h1{
     font-family: 'Quicksand', serif;
     color: #55a630;
-    font-size: 6vmin; /* 3 * 16px */
+    font-size: 3vmin; /* 24px / 16 * 2 = 3 */
     margin-left: 5%;
 }
 
 h2{
     font-family: 'Quicksand', sans-serif;
     color: #007f5f;
-    font-size: 3vmin;
+    font-size: 2.75vmin; /* 22px / 16 * 2 = 2.75 */
     margin-left: 6%; /* visually without this, the h2 doesn't line up with the h1 for font reasons I think */
 }
 
