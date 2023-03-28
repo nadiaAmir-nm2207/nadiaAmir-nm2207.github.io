@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <meta charset="UTF-8">
 
-<html>
+<html lang="en">
     <head>
         <!-- linking to google fonts -->
         <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -25,81 +25,101 @@
     <!-- I added the class container-fluid because I read that without it, rows will cause horizontal scrolling on some screens (source: https://stackoverflow.com/questions/61003484/i-need-to-fix-bootstrap-h-100-class-it-is-not-working)-->
     <body class="container-fluid g-0">
         <header class="row g-0">
-            <p><span class="h1">charter#use</span>&nbsp;<span class="h2">by Nadia Amir</span></p> <!-- had to make new h1 & h2 classes because using the tags and then display:inline still wasn't putting them side by side for me-->
+            <p><span id="logo">charter#use</span>&nbsp;<span id="tagline">by Nadia Amir</span></p> <!-- had to make new h1 & h2 classes because using the tags and then display:inline still wasn't putting them side by side for me-->
         </header>
         <div class="row g-0"> <!-- always include g-0 class for rows so that won't get horizontal scroll (I came up with the solution, but realised it after reading that rows automatically have 15px margins in bootstrap. source: https://stackoverflow.com/questions/27758457/how-to-remove-this-horizontal-scrollbar-in-bootstrap-3)-->
-            <!-- col-sm means small column, helps the column be responsive. one row has 12 units -->
+            <!-- col col-md means small column, helps the column be responsive. one row has 12 units -->
             <!-- content preview area -->
-            <div class="col-sm-8" id="prvwBox">
+            <div class="col-12 col-md-8" id="prvwBox">
                 <!--charts area-->
                 <!-- vh-100 is a Bootstrap class that means the height is set to 100vh. 100vh means the height should be 100 relative to the viewport, which refers to the area of the window where content is visible-->
                 <div id="chartPrvws">
                     <!-- chart preview section here -->
                     <!-- first row of charts -->
                     <div class ="row g-0"> <!-- make it easier to put the canvases side by side-->
-                        <div class="col-sm-4"><canvas id="lnPrvw" class="canvasBox"></canvas></div> <!-- 3 charts in one row -->
-                        <div class="col-sm-4"><canvas id="barPrvw" class="canvasBox"></canvas></div>
-                        <div class="col-sm-4"><canvas id="piePrvw" class="canvasBox"></canvas></div>
+                        <div class="col col-md-4"><canvas id="lnPrvw" class="canvasBox"></canvas></div> <!-- 3 charts in one row -->
+                        <div class="col col-md-4"><canvas id="barPrvw" class="canvasBox"></canvas></div>
+                        <div class="col col-md-4"><canvas id="piePrvw" class="canvasBox"></canvas></div>
                     </div>
                     <!-- second row of charts -->
                     <div class ="row g-0"> <!-- make it easier to put the canvases side by side-->
-                        <div class="col-sm-4"><canvas id="donutPrvw" class="canvasBox"></canvas></div>
-                        <div class="col-sm-4"><canvas id="polarPrvw" class="canvasBox"></canvas></div>
-                        <div class="col-sm-4"><canvas id="bubblePrvw" class="canvasBox"></canvas></div>
+                        <div class="col col-md-4"><canvas id="donutPrvw" class="canvasBox"></canvas></div>
+                        <div class="col col-md-4"><canvas id="polarPrvw" class="canvasBox"></canvas></div>
+                        <div class="col col-md-4"><canvas id="bubblePrvw" class="canvasBox"></canvas></div>
                     </div>
                 </div>
                 <div id="aboutBox">
                     <h1>about charter#use</h1>
-                    <p>blah blah lorem ipsum</p>
+                    <p class="quote">&#10077; Color, you see, was the universal sign of magic. &#10078;</p>
+                    <p class="quoteSource">- Tahereh Mafi, Furthermore</p>
+                    <p>Getting the right colours for your charts can take a lot of time! This project was created to help :) </p>
+                    <p>Charter#use is a colour generator that focuses on generating qualitative palettes. Generally, this means palettes for data that are made of names rather than numbers. It is best used for chart types that demand use of more than 2 colours to distinguish data. Some examples of such charts include pie charts, doughnut charts and polar area charts!</p>
+                    <p>The algorithm was written to avoid palettes that combined red and green, since that's the most common type of colour-blindness. But of course, it is not the only type of colour-blindness! We highly suggest also running your generated palette through colour-blind tests and tweaking it so that it's as accessible as possible.</p>
                 </div>
             </div>
             <!-- sidebar -->
-            <div class="col-sm-4 g-0">
+            <div class="col-12 col-md-4 g-0">
                 <div id="options" class="g-0 row">
-                    <div class="col-sm-6 g-0">
+                    <div class="col col-md-7 g-0">
                         <div id="swatchBox">
                             <!-- SWATCHES -->
                             <!-- each div should have a unique data-clipboard-target ID & a <p> with an ID to be linked to the JS for style & innerHTML changes -->
                             <!-- add the lock ids for the locking & unlocking. has to be ids because each one will have unique counter & action when clicked -->
                             <!-- add the copy ids for Raphael -->
                             <div class="swatch baseHue hue1" id="topSwatch">
-                                <div class="colOpt">
-                                    <div class="colourLabel" id="label1">#colour</div>
-                                    <button class="copy" id="copy1" data-clipboard-target="#label1">&#10063;</button> <!-- data-clipboard-target should go to the trigger element i.e. the thing that is being clicked to activate the copying-->
-                                    <button id="lock1">&#x1f513;</button>
+                                <div class="colOpt row">
+                                    <div class="colourLabel col-12 col-md-6" id="label1">#colour</div>
+                                    <div class="col-12 col-md-6">
+                                        <!-- data-clipboard-target should go to the trigger element i.e. the thing that is being clicked to activate the copying-->
+                                        <button class="copy optBtn" id="copy1" data-clipboard-target="#label1">&#10063;</button> <!-- copy button -->
+                                        <button class="optBtn" id="lock1">&#x1f513;</button><!-- lock button -->
+                                        <button class="optBtn" id="edit1">&#9998;</button> <!-- edit button (tentative wip) -->
+                                    </div>
                                 </div>
                             </div>
                             <div class="swatch hue1">
-                                <div class="colOpt">
+                                <div class="colOpt row">
                                     <div class="colourLabel" id="label2">#colour</div>
-                                    <button class="copy" id="copy2" data-clipboard-target="#label2">&#10063;</button>
-                                    <button id="lock2">&#x1f513;</button>
+                                    <div class="col-12 col-md-6">
+                                        <button class="copy optBtn" id="copy2" data-clipboard-target="#label2">&#10063;</button>
+                                        <button class="optBtn" id="lock2">&#x1f513;</button>
+                                        <button class="optBtn" id="edit2">&#9998;</button>
+                                    </div>
                                 </div>
                             </div>
                             <div class="swatch baseHue hue2">
-                                <div class="colOpt">
+                                <div class="colOpt row">
                                     <div class="colourLabel" id="label3">#colour</div>
-                                    <button class="copy" id="copy3" data-clipboard-target="#label3">&#10063;</button>
-                                    <button id="lock3">&#x1f513;</button>
+                                    <div class="col-12 col-md-6">
+                                        <button class="copy optBtn" id="copy3" data-clipboard-target="#label3">&#10063;</button>
+                                        <button class="optBtn" id="lock3">&#x1f513;</button>
+                                        <button class="optBtn" id="edit3">&#9998;</button>
+                                    </div>
                                 </div>
                             </div>
                             <div class="swatch hue2">
-                                <div class="colOpt">
+                                <div class="colOpt row">
                                     <div class="colourLabel" id="label4">#colour</div>
-                                    <button class="copy" id="copy4" data-clipboard-target="#label4">&#10063;</button>
-                                    <button id="lock4">&#x1f513;</button>
+                                    <div class="col-12 col-md-6">
+                                        <button class="copy optBtn" id="copy4" data-clipboard-target="#label4">&#10063;</button>
+                                        <button class="optBtn" id="lock4">&#x1f513;</button>
+                                        <button class="optBtn" id="edit4">&#9998;</button>
+                                    </div>
                                 </div>
                             </div>
                             <div class="swatch hue2 lastBox" data-clipboard-target="#label5">
-                                <div class="colOpt">
+                                <div class="colOpt row">
                                     <div class="colourLabel" id="label5">#colour</div>
-                                    <button class="copy" id="copy5" data-clipboard-target="#label5">&#10063;</button>
-                                    <button id="lock5">&#x1f513;</button>
+                                    <div class="col-12 col-md-6">
+                                        <button class="copy optBtn" id="copy5" data-clipboard-target="#label5">&#10063;</button>
+                                        <button class="optBtn" id="lock5">&#x1f513;</button>
+                                        <button class="optBtn" id="edit5">&#9998;</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-sm-6 g-0" id="ctrlPanel"> <!-- where all the buttons go-->
+                    <div class="col col-md-5 g-0" id="ctrlPanel"> <!-- where all the buttons go-->
                         <!-- HTML entities & special characters source (https://www.w3schools.com/charsets/ref_utf_symbols.asp)-->
                         <!-- colour buttons -->
                         <div class="ctrlBox">
@@ -109,27 +129,26 @@
                         </div>
                         <!-- buttons that customise the previews -->
                         <div class="ctrlBox">
-                            <p><button id="modeBtn" class="btn outlineBtn">&#9790; dark bg</button></p><!-- text always opposite of the default mode. default mode is light, .: text should read dark mode -->
+                            <p><button id="modeBtn" class="btn outlineBtn">&#9728; light bg</button></p><!-- text always opposite of the default mode. default mode is light, .: text should read dark mode -->
                             <p><button id="randBtn" class="outlineBtn btn">randomise data</button></p>
+                            <p><button id="resetBtn" class="outlineBtn btn">reset data</button></p>
                         </div>
                         <!-- export options-->
                         <div class="ctrlBox lastBox"> <!-- download/export options -->
-                            <h3 class="btnBox">Export options (wip)</h3>
+                            <h2>Export options (wip)</h2>
                             <!-- select all btn -->
                             <div class="row g-0">
-                                <div class="col-sm-6 btnBox"><p><input type="checkbox" id="allDl"><label for="allDl">&nbsp;select all</label></p></div> <!-- if don't use &nbsp; the space is ignored-->
+                                <div class="col col-md-6 btnBox"><p><input type="checkbox" id="allDl"><label for="allDl">&nbsp;select all</label></p></div> <!-- if don't use &nbsp; the space is ignored-->
                             </div>
                             <!-- indiv options btns -->
                             <div class="row g-0">
-                                <div class="col-sm-6 btnBox">
+                                <div class="btnBox">
                                     <p><input type="checkbox" id="lnDl"><label for="lnDl">&nbsp;linechart</label></p>
                                     <p><input type="checkbox" id="barDl"><label for="barDl">&nbsp;barchart</label></p>
                                     <p><input type="checkbox" id="pieDl"><label for="pieDl">&nbsp;piechart</label></p>
-                                </div>
-                                <div class="col-sm-6 btnBox">
-                                    <p><input type="checkbox" id=""><label for="">&nbsp;option</label></p>
-                                    <p><input type="checkbox" id=""><label for="">&nbsp;option</label></p>
-                                    <p><input type="checkbox" id=""><label for="">&nbsp;option</label></p>
+                                    <p><input type="checkbox" id="donutDl"><label for="donutDl">&nbsp;donut chart</label></p>
+                                    <p><input type="checkbox" id="polarDl"><label for="polarDl">&nbsp;polar area chart</label></p>
+                                    <p><input type="checkbox" id="bubbleDl"><label for="bubbleDl">&nbsp;bubble chart</label></p>
                                 </div>
                                 <p><button id="download" class="btn">Download </button></p>
                             </div>
