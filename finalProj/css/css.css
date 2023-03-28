@@ -4,6 +4,7 @@
 body{
     background-color: #007f5f; /* backup bg col */
     background-image: url(../resources/gridBg.jpg);
+    background-size: cover;
     height: 100%;
     color: rgb(255, 249, 245);
     font-family: 'Quicksand', sans-serif;
@@ -20,10 +21,6 @@ header{
 }
 
 /* styling canvas */
-#lnPrvw, #piePrvw{
-    background-color: none;
-}
-
 .canvasBox{
     padding: 5%;
     /* border: 1px solid black; */
@@ -40,19 +37,30 @@ header{
     margin-top: 1%;
     padding: 5%;
     /* aesthetics */
-    background: #fff9f5;
+    background: #011627;
     border-radius: 20px;
 }
 
-#aboutBox{
-    background-color: #011627;
+/* styling "sidebar" where all the options and buttons will go */
+
+
+/* source: https://www.w3schools.com/css/css3_mediaqueries.asp */
+@media screen and (min-width: 720px){ /* overflow-y only scrolls if the screen is 720px or bigger. this corresponds to the col-12 col-md-x classes where the columns stack at 720px or lower. Essentially, I want the scroll to only apply if the columns are not stacking. */
+    #prvwBox, #options, #swatchBox, #ctrlPanel{ /* #prvwBox: where the charts are, #options: contains the two columns #swatchBox (where the colours are) & #ctrlPanel (where the buttons are) */
+        overflow-y: scroll;
+        height: 90vh;
+    }
 }
 
-/* styling "sidebar" where all the options and buttons will go */
-#options, #prvwBox{
-    overflow-y: scroll;
-    height: 90vh;
+@media screen and (max-width: 720px){ /* this applies when the viewport is smaller than 720px. */
+    #swatchBox{
+        height: auto; /* to be replaced by js windowRespond() later to match height of #ctrlPanel */
+    }
+    #ctrlPanel{
+        height: auto; 
+    }
 }
+
 
 #prvwBox{
     padding: 1% 0;
@@ -73,15 +81,10 @@ header{
 }
 
 /* styling swatches */
-#swatchBox{
-    margin: auto;
-    height: 20%;
-}
 
 .swatch{
     width: 100%;
-    height: 100%;
-    text-align: center; /* align colourLabel in the middle */
+    height: 20%; /* height of entire column = 100%, 100% / 5 swatches = 20% */
     border-bottom: 2px solid rgb(255, 249, 245); /* bottom only so they don't double */
     transition-duration: 0.5s; /* colour change slows down, no idea why it took me so long to find this simple answer haha (source: https://stackoverflow.com/questions/70993915/how-to-change-the-speed-of-the-color-switch-when-button-is-clicked) */
 }
@@ -91,15 +94,18 @@ header{
 }
 
 .colourLabel{
-    color: rgb(255, 249, 245);
-    line-height: 3rem;
-    font-size: 1.5rem;
-    font-family: "Quicksand", sans-serif;
+    /* layout */
     display: inline-block; /* so the colour text doesn't line break with the lock button even as a div */
     width:  50%; /* this make sit much tidier, labels & locks */
+    /* text styles */
+    font-size: 1.5rem;
+    font-family: "Quicksand", sans-serif;
+    text-align: center; /* align colourLabel in the middle */
+    color: rgb(255, 249, 245);
+    line-height: 3.5rem;
 }
 
-.colOpt{ /* div wrapped around the colourLabel, copyBtn and lockBtn in a swatch */
+.colOpt{ /* div wrapped around the swatch colourLabel & option buttons */
     padding-top: 15%;
 }
 
@@ -111,26 +117,46 @@ header{
 /* STYLING TEXT */
 
 /* styling individual h1 & h2 */
-.h1, h1{
+#logo, h1{
     font-family: 'Yeseva One', serif;
     color: #ACCF42;
     font-size: 2rem;
-    line-height: 5rem; /* 1 rem usually = 16px */
+    line-height: 6rem; /* 1 rem usually = 16px */
 }
 
-.h2, h2{
+#tagline{
     font-family: 'Quicksand', sans-serif;
-    color: #007f5f;
-    font-size: 1.5rem;
-    line-height: 5rem; /* 1 rem usually = 16px */
+    color: #fff9f5;
+    font-size: 1.2rem;
+    line-height: 6rem; /* 1 rem usually = 16px */
     margin-left: 5%; /* to put some spacing between "by Nadia Amir" and "charter#use" */
 }
 
-h3{
+h2{
     font-family: 'Quicksand', sans-serif;
     color: #ACCF42;
     font-size: 1.3rem;
     padding: 3%; /* to match .btn padding so it looks more aligned */
+    text-align: center;
+    margin-bottom: 8%; /* add some space between heading & options */
+}
+
+/* styling quote & quote source */
+.quote, .quoteSource{
+    margin: 2%; /* so that it's indented from main paragraphs */
+    font-size: 1.2rem;
+}
+
+.quote{
+    border-top: 1px solid #ACCF42;
+    padding-top: 3%; /* space between text & top border */
+}
+
+.quoteSource{
+    text-align: right; /* to align the name to the right */
+    border-bottom: 1px solid #ACCF42;
+    padding-bottom: 3%; /* space between text & bottom border */
+    margin-bottom: 5%; /* space between bottom border & text below */
 }
 
 /* STYLING BUTTONS */
@@ -150,7 +176,7 @@ h3{
 }
 
 .btnBox{ /* to centralise buttons within their columns */
-    text-align: center;
+    text-align: left;
 }
 
 #changeBtn, #download, #copyAll{
@@ -169,6 +195,10 @@ h3{
     color: rgb(255, 249, 245);
 }
 
+#download{ /* add space between options & button */
+    margin-top: 8%; /* make it equal to h3{margin-bottom:;} */
+}
+
 /* all outline buttons */
 .outlineBtn{
     /* styling button bg */
@@ -184,8 +214,8 @@ h3{
     color: rgb(255, 249, 245);
 }
 
-/* copy & lock icons */
-.copy, #lock1, #lock2, #lock3, #lock4, #lock5{
+/* styling buttons on the swatch (copy, lock, edit) */
+.optBtn{
     /* styling button bg */
     background-color: rgba(1, 22, 39, 0.6);
     /* styling button appearance */
@@ -200,6 +230,6 @@ h3{
     font-size: 1.5rem;
 }
 
-.copy:hover, #lock1:hover, #lock2:hover, #lock3:hover, #lock4:hover, #lock5:hover{
+.optBtn:hover{
     background-color: rgba(1, 22, 39, 1);
 }
