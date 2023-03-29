@@ -85,7 +85,7 @@ section{
   }
 
 /* styling for table */
-.col-sm-4, .col-sm-8{
+.col col-md-4, .col col-md-8{
     border-right: 1px solid #56666B;
     border-bottom: 1px solid #56666B;
     padding: 2%;

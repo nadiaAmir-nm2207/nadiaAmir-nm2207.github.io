@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<meta charset="UTF-8">
+
+<html>
+    <head>
+        <!-- linking to google fonts -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Delius&family=Homemade+Apple&family=Nunito&display=swap" rel="stylesheet">
+        <!-- Bootstrap https://getbootstrap.com/docs/5.3/getting-started/introduction/ -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+        <!-- my stylesheet -->
+        <link rel="stylesheet" type="text/css" href="css/appstyle.css">
+        <title>Week 11</title>
+        <script defer type="text/javascript" src="js/main.js">
+        </script>
+    </head>
+    <body>
+        <header class="text-center no-gutters"> <!-- the class is a Bootstrap class that aligns the text to the center -->
+            <h2>nadia's final project</h2>
+            <h1>journey</h1>
+        </header>
+        <nav id="topMenu">
+            <a href="../index.html"><button>home</button></a>
+            <a href="week8.html"><button>Week 8</button></a>
+            <a href="intermediate.html"><button>Week 9</button></a>
+            <a href="week10.html"><button>Week 10</button></a>
+            <a href="week11.html"><button>Week 11</button></a>
+            <a href="week12.html"><button>Week 12</button></a>
+            <a href="week13.html"><button>Week 13</button></a>
+            <a href="https://nadiaamir-nm2207.github.io/finalProj/index.html"><button>final project</button></a>
+        </nav>
+        <section class="content">
+            <div class="row">
+                <div class="col-3">
+                <h2>&#10002; Week 11</h2>
+                </div>
+                <div class="col-9">
+                    <p>I have quite a bit to cover this entry. As with last week, I will try to focus on segments of the project that I learned the most from. </p>
+                    <p>Time is kinda blending for me so I can't remember if these were things I worked on already by the time I updated the GitHub files, I just know these weren't covered in the previous diary entry and were worked on at some point.</p>
+                    <p>Here is a brief outline of the content:</p>
+                    <p>1. STYLING</p>
+                    <p class="point">a. Bootstrap grid system classes</p>
+                    <p class="point">b. using js to help with responsiveness</p>
+                    <p>2. ALGORITHM FLEXIBILITY</p>
+                    <p class="point">a. adding a third hue</p>
+                    <p class="point">b. tweaking ranges for various functions</p>
+                    <p>3. CHART PREVIEWS</p>
+                    <p class="point">a. adding more charts</p>
+                    <p class="point">b. styling them to be squares</p>
+                    <p>4. SIDEBAR OPTIONS</p>
+                    <p class="point">a. copy-paste button</p>
+                    <p class="point">b. locking colours</p>
+                    <p class="point">c. updateCharts()</p>
+                    <p class="point">d. randomising data in the previews</p>
+                    <p class="point">e. light & dark mode</p>
+                    <p class="point">f. export options</p>
+                    <h6>&#9830; 1. STYLING</h6>
+                    <p>Last week, I was feedbacked that the layout is okay. This week, I decided to work more on getting it to be more responsive so that it was still accessible, particularly for smaller screens. I thought this was important so that I have some level of certainty that whatever appears on someone else's screen is still a usable version of the app.</p>
+                    <h6>&#9830; 1a. Bootstrap grid system classes</h6>
+                    <p>Before this week, my understanding of Bootstrap was mostly informed by various forum threads on obscure art sites, and I have never actually read through and understood the documentation properly. The biggest issue I was facing was that my columns weren't stacking properly when I made the window smaller. It was even worse on mobile.</p>
+                    <p>Luckily, I found <a href="https://stackoverflow.com/questions/34966998/bootstrap-columns-are-not-stacking-on-small-mobile-screen">this StackOverflow thread</a> that advised the OP to read the <a href="https://getbootstrap.com/docs/4.0/layout/grid/">grid system documentation</a> carefully.</p>
+                    <p>After doing so, I realised I was working with the wrong classes the entire time. I was using col-sm-x, where x is a number between 1 - 12 since a row is made of 12 units in Bootstrap. However, the -sm- part of col-sm-x meant that I was setting the column layout for small devices (576px < size < 768px). So, for example, two columns with the classes col-sm-4 and col-sm-8 would remain side by side even on small windows and would not stack.</p>
+                    <p>I then decided two things for the layout.</p>
+                    <p class="point"><strong>1. side-by-side layout should only apply for bigger screens (i.e. at least 768 pixels)</strong></p>
+                    <p class="point">The solution to this is to use col-md-x, because this sets the layout for screens at least 768px (assuming there isn't another col class that overrides it, like col-lg-x)</p>
+                    <p class="point"><strong>2. therefore, columns should stack on smaller screens.</strong></p>
+                    <p class="point">The solution to this is to use col-12. col-x applies to all screen sizes unless it is overridden by a more specific class, such as col-md-x. Hence, col-12 indicates to the browser that the section should take up the whole row on smaller screens, i.e. stack.</p>
+                    <p>The following image was also something I made to help my understanding. I made an error in the drawing though, 720px is supposed to be 768px haha.</p>
+                    <p><img src="resources/columns.jpg"></p>
+                    <h6>&#9830; 1b. using js for responsiveness</h6>
+                    <p>One issue I was facing was the big gap below the swatches column when all the columns stacked on each other for smaller screens.</p>
+                    <p><img src="resources/response1.jpg"></p>
+                    <p>I wanted to get the swatches column (#swatchBox) to be the same height as that of the options column (#ctrlPanel). I didn't know how to do this in CSS, but then I suddenly wondered if I could manipulate the CSS values with JS! The steps I needed were:</p>
+                    <p class="point">1. Get #swatchbox element</p>
+                    <p class="point">2. Get #ctrlPanel element</p>
+                    <p class="point">3. Test if the viewport width is < x (x refers to the minimum value for the columns to stay “unstacked”. For now, this is 768px which aligns with the col col-md-x classes, but I might increase it in the future)</p>
+                    <p class="point">4. If the viewport width < x, then…</p>
+                    <p class="point">5. Get height of ctrlPanel</p>
+                    <p class="point">6. Set swatchBox height to ctrlPanel height</p>
+                    <p>Most of the function, <code>windowRespond()</code>, consisted of things I was familiar with e.g. <code>document.getElements</code> and setting a CSS property. However, the 2 things I didn’t know how to do were:</p>
+                    <p class="point">1. Getting the width of the viewport</p>
+                    <p class="point">I found out that the <code>innerWidth</code> property for the window could help with this. (<a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/innerWidth">source</a>)</p>
+                    <p class="point">2. Getting the height of an element</p>
+                    <p class="point">Initially, I thought I would just have to access the <code>.style.height</code>. It did not work when I tried this, however. I did more research and found out that we can use <code>.offsetHeight</code> to get the total height of margin + border + padding + content. (<a href="https://www.javascripttutorial.net/javascript-dom/javascript-width-height/">source</a>)</p>
+                    <p>After this, I called <code>windowRespond()</code> once to activate it on load and added an eventListener for resizing activity.</p>
+                    <p>Even though it worked if you resized the window to < 768px, resizing back to a width that is > 768px also applied the same code and the swatchBox would become a scroll box. This is not something I wanted – at screens >768px, i.e. when the columns are not stacked, I wanted the swatchBox to take up only 100vh so that users don’t have to scroll to see the colours.</p>
+                    <p>I decided I had to add <code>else if()</code> to reset it back to the original code (see image below). This worked!</p>
+                    <p><img src="resources/response2.jpg"></p>
+                    <h6>&#9830; 2. ALGORITHM TWEAKING</h6>
+                    <p>After obsessively clicking my Generate button many times, I began to feel like the generated palettes didn't have a good contrast most of the time. So I decided to add more flexibility to the algorithm.</p>
+                    <h6>&#9830; 2a. adding a third hue</h6>
+                    <p>I decided to add a third hue (hue3) because only having 2 made it hard to have good contrast. I did this by changing the class of the last swatch from hue2 and hue3, then adding the relevant extra arrays and edits to the existing functions.</p>
+                    <p>I didn't face too many errors doing this because thankfully, my functions were not too tangled with each other. Previously I had separated them out purely for aesthetic purposes, but now I realise how much it helps for things to be separated. It makes it a lot easier to tweak and debug.</p>
+                    <p>One error I did face was that after editing the functions,  hue2 and hue3 seemed weirdly similar in hue when they should be spaced out.</p>
+                    <p>I went through the different parts of the function where the colour is involved, dreading that maybe it was a calculation error. But each step appeared to be using the correct string and hex code. Even the colourLabel was the right hex code, though the background was something different. So it had to do with what was being fed to the swatch background colour change. The line of code in charge of this is:</p>
+                    <p><code>Swatches[x].style.backgroundColor = HSLstringsArray[x];</code></p>
+                    <p>So I went to check the functions that involved HSLstringsArray. The function was hslString(). There did not appear to be anything wrong with hslString(), but when I checked how it was called in changeColour(), I realised that the error was a simple typo.</p>
+                    <p>I was using <code>hslString(1, hue3, sat3, lvals3)</code> instead of <code>hslString(2, hue3, sat3, lvals3);</code>. So, hslString() was looking at HSLstringsArray[1] instead of HSLstringsArray[2]. This meant it was looking at hue2 instead of hue3, which explains why hue2 and hue3 looked so similar for some combinations.</p>
+                    <h6>&#9830; 2b. changing ranges</h6>
+                    <p>I noticed that I kept generating the same types of combinations with barely any yellow or orange. I suspected that my condition in <code>redGreen()</code> was probably too strict. So I hunted for another hsl wheel to check the ranges and found <a href="https://i7x7p5b7.stackpathcdn.com/codrops/wp-content/uploads/2015/01/hsl-color-wheel.png">this more specific one.</a></p>
+                    <p>I won't go into too much detail here, but I basically made the range defining red & green smaller based on the referenced wheel. This gave the algorithm more freedom.</p>
+                    <p>I also played around with using <code>random()</code> to generate random values where they were previously fixed. For example, the space between the lightness values for 2 colours was previously fixed at 20. This time, I changed it to <code>10 + random(10, 70);</code>.</p>
+                    <p>Actually, I kept forgetting that <code>random()</code> only generates a range of numbers that always starts from 0. So <code>random(0, 100)</code> and <code>random(100, 200)</code> both result in numbers from 0 to 100 and not 100 - 200 for the second one. In order to get numbers within a certain range, the constant has to be added e.g. <code>100 + random(0, 100)</code>.</p>
+                    <p>I also tweaked the range for satValGen to <code>10 + random(0, 50)</code> for richer colours. Previously, saturation started from 0 which could generate very greyish colours.</p>
+                    <h6>&#9830; 3. CHART PREVIEWS</h6>
+                    <h6>&#9830; 3a. adding more charts</h6>
+                    <p>My preview section felt very bare, so I decided to add 3 more charts. I chose doughnut, polar area and bubble charts because the other charts would not make sense to place in this project. Radar and area fill charts, for example, would be very confusing to have more than 2 or 3 colours and therefore are not the target of this project anyway.</p>
+                    <h6>&#9830; 3b. styling size</h6>
+                    <p>Some of the chart proportions differed from each other. For example, the pie chart was in a square while the linegraph was in a rectangle. I didn't like the inconsistency, so I looked up how to make the chart square and also how to hide the axes. The code I used was all from the chartjs documentation.</p>
+                    <p><img src="resources/aspectRatio.jpg"></p>
+                    <h6>&#9830; 4. SIDEBAR OPTIONS</h6>
+                    <p>Some of these were carried over from previous weeks that I finalised this week. These involve the buttons in the rightmost column of the app.</p>
+                    <h6>&#9830; 4a. copy-paste button (copyBtn)</h6>
+                    <p>For the copy-paste button, I used <a href="https://clipboardjs.com">clipboard.js</a> and adapted the code I had written for the extra practice to do this.</p>
+                    <p><img src="resources/copyBtn.jpg"></p>
+                    <p>It also requires the element containing the target text in the HTML to have a unique ID. The button that calls the clipboard function should have an attribute called <code>data-clipboard-target = targetID</code>.</p>
+                    <p>I'm still having trouble understanding the code enough to tailor a custom user feedback e.g. changing the innerHTML to something like "copied" or a tick icon on successful copying. It's not about how to change, but more of how does JS "understand" when something is successfully copied?</p>
+                    <p>I probably have to just trial and error a little more to figure it out.</p>
+                    <h6>&#9830; 4b. locking colours</h6>
+                    <p>The goal of this function was to be able to "lock" certain colours so that they would not change when Generate is clicked. The steps that I would need are:</p>
+                    <p class="point">1. Store the state of the lock somewhere</p>
+                    <p class="point">2. Test the state of the lock when lock() is called</p>
+                    <p class="point">3. lock() has to lock or unlock depending on the current state (alternation)</p>
+                    <p>Initially, I tried using a counter to detect the state. Every click would add 1 to the counter, and the state would be locked or unlocked depending on whether the counter was odd or even. However, I noticed that in some situations, I had to double-click on the locks to get it to change state.</p>
+                    <p>Furthermore, there are multiple lock buttons. Each one of them would need their own unique counter to track their states. I felt this was very messy, so I decided to use a single variable to store the lockStates for all the lock buttons.</p>
+                    <p><img src="resources/lock.jpg"></p>
+                    <p>As seen in the image, the variable lockState is an array of values. Each index corresponds to the state of a lock button – lock1 state is in lockState[0], lock2 in lockState[1] etc. Then, I used <code>if... else if</code> statements in <code>lock()</code> to check and change the states.</p>
+                    <p><img src="resources/lock2.jpg"></p>
+                    <p>With this, I was able to change the lockState of each lock when it was clicked. I could then use the lockState as an if condition in the for loop for changeColour()</p>
+                    <p><img src="resources/lock3.jpg"></p>
+                    <p>This feature broke later on when I stored the rgb values in an array <code>rgbVal</code>, because everytime I clicked the button, the array was cleared. Then, the locked colour didn’t have any value in it. So, instead of pushing the rgb strings one by one into rgbVal, I would do this:</p>
+                    <p class="point">1. For x in Swatches</p>
+                    <p class="point">2. if colour x is not locked (i.e. <code>lockState[x] == false</code></p>
+                    <p class="point">3. replace rgbVal[x] with a new rgbString</p>
+                    <p>What this meant was just changing <code>rgbVal.push</code> to <code>rgbVal[x] = rgb</code>. It became an array of arrays containing r, g, b values. This way, I could skip regenerating colours for <code>rgbVal[x]</code> if <code>lock[x]</code> was locked.</p>
+                    <h6>&#9830; 4c. updateCharts()</h6>
+                    <p>Back in Week 9 when I started coding the project, the biggest problem was getting the charts to change colour. I realised that the colours did not change because the charts are declared before changeColour() is called. I also can't call changeColour() before I declare the charts, because changeColour() has to access the properties of the charts to change them.</p>
+                    <p>So, there had to be a way to "regenerate" the charts to incorporate the newly generated colours when changeColour() is called.</p>
+                    <p>As we also learned this week, the code to do this with Chartjs is to use <code>chart.update()</code>. I have the different <code>chart.update()</code> lines for my various charts tucked into a function in the code called <code>updateCharts()</code>, which I call at the end of <code>changeColour()</code>.</p>
+                    <h6>&#9830; 4d. randomise() & reset() </h6>
+                    <p><code>randomise()</code> and <code>reset()</code></p>
+                    <p>I noticed that Viz Palette had a randomise data button that randomised some of the charts so that people could get a better idea of what different types of data would look like. Since I was not able to let people edit the data for themselves, I thought this would be a good idea to implement for charter#use as well.</p>
+                    <p>I kept the initial datasets with standard numbers, but created <code>randomise()</code> which would generate random values between 1 to 10 for each array. </p>
+                    <p><img src="resources/randomise.jpg"></p>
+                    <p>Then I added an event listener to randBtn which would call randomise() when randBtn was clicked. Unfortunately, while this did generate new arrays for the datasets, the charts did not change.</p>
+                    <p>I did more reading and while I could not find a thread with my specific problem, I did notice that in threads where the OP wanted to change the data shown in the chart, they would have to go inside the chart to get the data to change. I inferred that this meant I have to replace the data in the chart when randomise() is called in order for the data to change, and cannot just change it externally through the array. So, here is the new version of randomise():</p>
+                    <p><img src="resources/randomise02.jpg"></p>
+                    <p>I wrote the for loop for the linechart and bubble chart without packing them into other functions because they were pretty unique in how I would have to access the data property. As for the bar, pie, polar area and doughnut charts, they were similar in that all the data was in <code>chartName.data.datasets[0].data</code>, so I could write a function <code>oneDataset(chartName)</code> for them with chartName as a parameter.</p>
+                    <p>However, I realised that sometimes random() generated values of 0 because it used <code>Math.floor</code>. I needed Math.floor in random() because those 0 values were wanted in other functions I had used it in e.g. in hueGen() which generates hue values. So, I made another function <code>randomup()</code> which used <code>Math.ceil</code> instead of Math.floor to round up to the nearest integer rather than round down. This stopped the 0 values.</p>
+                    <p>Also, the randomisation wasn’t working for the bubble chart. I noticed two errors with my initial code:</p>
+                    <p class="point">1. I did not specify which dataset the code should look at. I fixed this by using dataset[0] instead of just dataset</p>
+                    <p class="point">2. I did not specifically target the x, y and r properties. I fixed this by adding individual lines of code doing so</p>
+                    <p>And randomise() worked! Now to reset the values XD</p>
+                    <p>I wanted to use a resetBtn to call reset() that would change the charts back to the initial, fixed datasets. I started to face a problem with the linechart code:</p>
+                    <p><img src="resources/resetlnchrt.jpg"></p>
+                    <p>What I wanted this for loop to do was to replace each <code>data</code> with <code>data1, data2, data3, data4, data5</code> – which are variables with arrays of data in them. However, what it was doing was replacing each <code>data</code> with <code>data[0], data[1], data[2]</code> etc. i.e. single numbers inside the data array. So, I created a new array called <code>allData = [data1, data2, data3, data4, data5];</code> (I really love arrays at this point, they are so useful)</p>
+                    <p>allData stored the 5 arrays while still preserving them as individual arrays (as opposed to if I had used .concat()). Then, I rewrote the for loop like this instead: </p>
+                    <p><code>lnPrvw.data.datasets[x].data = allData[x];</code></p>
+                    <p>And it worked!</p>
+                    <h6>&#9830; 4e. light mode & dark mode </h6>
+                    <p>The goal of this was to have a button that could change the background of the previews to a light or dark background, then generate colours of lightness values suitable for that background. So, darker colours for light mode and lighter colours for dark mode.</p>
+                    <p>Similar to what I used with the lock-unlock buttons, I used a global variable called <code>mode</code> to track the state. Depending on the mode, I also set limits on the lightness values that could be generated. Initially, this was 0 - 50 for light mode, and 50 - 100 for dark mode. I have since modified the ranges to get less dark colours and to suit the stacking maths etc.</p>
+                    <p>Though the numbers are a little different (and may change in future as I continue to work on it), the logic of using an if condition to test whether <code>mode == true/false</code> (light/dark) and then choosing to generate within a certain range remains the same.</p>
+                    <p>I didn't really face many errors implementing it since most of it is stuff that I learned from creating the other functions.</p>
+                    <h6>&#9830; 4f. export options </h6>
+                    <p>Writing the export features feel like they might be pretty complicated because I'm not sure (yet) what I can use to get screenshots. So I just wrote down a brief outline of the steps I would need:</p>
+                    <p class="point">1. Have a checkbox for each canvas</p>
+                    <p class="point">2. When click select all, all the checkboxes would be activated</p>
+                    <p class="point">3. When individual checkboxes are ticked, "grab" corresponding divs (somehow)</p>
+                    <p class="point">4. When download button is pressed, run a function that will download the selected divs</p>
+                    <p><img src="resources/dl1.jpg"></p>
+                    <p>After creating the <code>input type="checkbox"</code>in the HTML, I moved on to step 2. The function for step 2 is <code>selectAll()</code>. The goal of selectAll() was to tick all the checkboxes when the box for select all was checked.</p>
+                    <p>To do this, I needed a way to test if the checkbox was checked, and I <a href="https://www.w3schools.com/howto/howto_js_display_checkbox_text.asp">learned about the checked property through W3Schools</a>. Then, I placed all the checkbox variables into an array <code>checkOptions</code> so that I could loop through them to check their statuses.</p>
+                    <p>Initially, I thought the status of the options should be opposite from the status of <code>allDl.checked</code> because that’s the logic used when we’re alternating clicks. The image below shows my initial attempt.</p>
+                    <p><img src="resources/dl2.jpg"></p>
+                    <p>But after trying it out, I realised that the statuses have to match. I think it’s because the check for allDl is happening first, and then the checking of the other checkboxes occur after that. So I tweaked selectAll() to reflect that.</p>
+                    <p><img src="resources/dl3.jpg"></p>
+                    <h6>&#9830; NEXT WEEK </h6>
+                    <p>COMPULSORY</p>
+                    <p>• find a way to dynamically calculate and set the widths of the option buttons in the swatches</p>
+                    <p>• actually get the download function to work</p>
+                    <p>• maybe add more data to the bubble chart/take it out. it doesn't really feel like a bubble chart</p>
+                    <p>• find a way to move "about" section either to the footer when the columns stack on smaller screens OR move it to a different page altogether</p>
+                    <p>FUN STUFF</p>
+                    <p>• option to edit the colours</p>
+                    <p>• option to display the text as hsl or rgb maybe?</p>
+                    <p>• a simple help popup that people can click on to explain all the different options</p>
+                    <p>• add a textarea with all the codes/copyAll button (i've been talking about this forever but never get around to it)</p>
+                    <p>• fancy loading screen?? idk??</p>
+                    <p>so much we can try wheeeeeeeee</p>
+                </div>
+            </div>
+        </section>
+    </body>
+</html>
