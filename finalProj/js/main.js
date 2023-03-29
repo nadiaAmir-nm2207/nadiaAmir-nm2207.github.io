@@ -108,13 +108,16 @@ const Swatches = Array.from(document.getElementsByClassName("swatch")); // these
 const colourLabels = Array.from(document.getElementsByClassName("colourLabel")); // these are for the text in the colour palette rectangles
 const hue1 = Array.from(document.getElementsByClassName("hue1"));
 const hue2 = Array.from(document.getElementsByClassName("hue2"));
+const hue3 = Array.from(document.getElementsByClassName("hue3"))
 const baseHueDivs = Array.from(document.getElementsByClassName("baseHue")); // these are for base hues
 const baseHueArray = []; // to store only UNIQUE base hue values
 const HSLstringsArray = []; // to store HSL strings
 const lvals1 = []; // to store lightness values (separate hue1 & hue2)
 const lvals2 = []; // to store lightness values (separate hue1 & hue2)
+const lvals3 = []; // to store lightness values (separate hue1 & hue2)
 const sat1 = []; // to store saturation values of each generated colour
 const sat2 = []; // to store saturation values of each generated colour
+const sat3 = []; // to store saturation values of each generated colour
 const rgbVal = []; // use to push rgb strings
 
 // BASIC FUNCTIONS
@@ -123,8 +126,10 @@ function clearArr(){
     HSLstringsArray.length = 0; // clear the HSLstringsArray each time the fn called (i.e. when button clicked)
     lvals1.length = 0; // clear lvals each time fn called, otherwise will just stack
     lvals2.length = 0;
+    lvals3.length = 0;
     sat1.length = 0; // clear array when fn called
     sat2.length = 0; // clear array when fn called
+    sat3.length = 0;
     rgbVal.length = 0;
 }
 
@@ -265,8 +270,14 @@ function testHue(hue){
 };
 
 // 3. compare the 2 base hues to test if it is a red-green combination
-function compareHue(hue1, hue2){
-    if (testHue(hue1) == true && testHue(hue2) == true){ // if hue1 is red or green and hue2 is red or green, return true
+function compareHue(hue1, hue2, hue3){
+    if (testHue(hue1) == true && testHue(hue2) == true){ // if hue1 is red and hue2 is green or vice versa, return true
+        return true;
+    }
+    else if (testHue(hue2) == true && testHue(hue3) == true) { // if hue2 is red and hue3 is green or vice versa, return true
+        return true;
+    }
+    else if (testHue(hue1) == true && testHue(hue3) == true){ // if hue1 is red and hue3 is green or vice versa, return true
         return true;
     }
     else {
@@ -280,11 +291,14 @@ function baseHueGen(){
     // part a) generate 2 base hues
     let newHue1 = hueGen(); // generates a new random hue value for each element in baseHueDivs
     baseHueArray.push(newHue1); // pushes this new random hue value into another array called baseHueArray
-    let newHue2 = circleBack(newHue1, 360, random(50, 180)); // generates contrasting hue for second base hue via golden angle 137˚
+    let newHue2 = circleBack(newHue1, 360, 137); // generates contrasting hue for second base hue via golden angle 137˚
     baseHueArray.push(newHue2); // pushes second hue into array as well
-    // console.log(baseHueArray); // works – expect 2 numbers
+    // console.log(newHue2);
+    let newHue3 = circleBack(newHue2, 360, 137); // generates another hue value for third hue
+    // console.log(newHue3);
+    baseHueArray.push(newHue3); // pushes third hue into array as well
     // part b) test if the hues in the array are in the ranges of forbidden combinations
-    if (compareHue(baseHueArray[0], baseHueArray[1]) == true){ // this is why I pushed the new hues into another array – so that I can access them here
+    if (compareHue(baseHueArray[0], baseHueArray[1], baseHueArray[2]) == true){ // this is why I pushed the new hues into another array – so that I can access them here
         // console.log("combination not allowed"); // works – expected print different statements depending on whether colours are in red & green ranges
         baseHueGen(); // repeat the generation process if the combination is forbidden
     }
@@ -292,7 +306,7 @@ function baseHueGen(){
 
 // 5. function to generate a base saturation value
 function satValGen(){
-    return random(0, 100); // random S & B values (0 - 100)
+    return 10 + random(0, 50); // random saturation values, max addition = 40 .: max here should be 100 - 40 = 60, 60 - 10 = 50
     };
 
 // 6. function to make sure subsequent saturation values are spaced from each other
@@ -300,7 +314,8 @@ function satGen(hueArray, satArray){ // array to be replace by hue1 or hue2 to d
     let newSat = satValGen(); // random saturation for base
     satArray.push(newSat);
     for (let i = 0; i < hueArray.length - 1; i++){ // for loop runs as many times as the number of items in the array - 1 (bc the first one is set in newSat)
-        newSat = circleBack(newSat, 100, random(10, 40)); // make sure each saturation generated is spaced out from each other
+        newSat = circleBack(newSat, 100, random(20, 40)); // make sure each saturation generated is spaced out from each other
+        console.log(newSat);
         satArray.push(newSat);
     }
 };
@@ -308,7 +323,7 @@ function satGen(hueArray, satArray){ // array to be replace by hue1 or hue2 to d
 // 7. function to generate base lightness value – random lightness value depending on whether light or dark mode is selected
 function ltValGen(){
     if (mode == true){ // if light mode
-        let ltVal = random(10, 70); // return a lightness value between 0 - 70 i.e. darker colours. max after the stacking later will be 90. Decided to start from 10 instead of 0 because (x, x, 0) will generate black
+        let ltVal = 10 + random(10, 70); // return a lightness value that is at least 10, 10 + random(0, 70) so max = 80. start from 10 because starting from 0 gives black.
         return ltVal; 
     }
     else if (mode == false){ // if dark mode
@@ -323,7 +338,7 @@ function lightGen(hueArray, lvalsArray){ // lvalsArray refers to which either lv
     let newLi = ltValGen(); // random base lightness value (based on whether bg is light or dark)
     lvalsArray.push(newLi);
     for (let i = 0; i < hueArray.length - 1; i++){ // for loop runs as many times as the number of items in the array - 1 (bc the first one is set in newLi)
-        newLi = circleBack(newLi, 100, random(5, 15)); // make sure each lightness generated is spaced out from each other
+        newLi = circleBack(newLi, 100, 10 + random(0, 10)); // make sure each lightness generated is spaced out from each other by at least 10 (max 10 + 10 = 20)
         lvalsArray.push(newLi);
     }
 };
@@ -336,24 +351,29 @@ function satLightGen(hueArray, satArray, lvalsArray){ // generating 2 arrays of 
 };
 
 // 10. string the HSL values together and push it into an array
-function hslString(y, hueArray, satArray, lvalsArray){ // y is a number 0 or 1 for the HSL values for hue1 or hue2 respectively | hueArray is for hue1 and hue2 respectively
+function hslString(y, hueArray, satArray, lvalsArray){ // y is a number 0, 1 or 2 for the HSL values for hue1, hue2 or hue 3 respectively | hueArray is for hue1 and hue2 respectively
     satLightGen(hueArray, satArray, lvalsArray); // generate 2 arrays of 5 values each for saturation & lightness values respectively
     for (x in hueArray){
         //console.log("lvals[x] in hslString are" + lvals);
         // for xth colour, give it H: value of yth base hue, S: xth saturation, L: xth lightness
         // (baseHueArray[y] + (x * constant)) so that the hue value increases by constant each swatch for a little more variation
-        let newHSLstring = "hsl(" + (baseHueArray[y] + (x*20)) + ", " + satArray[x] + "%, " + lvalsArray[x] + "%)";
+        let newHSLstring = "hsl(" + (baseHueArray[y] + (x*10)) + ", " + satArray[x] + "%, " + lvalsArray[x] + "%)";
         HSLstringsArray.push(newHSLstring); // expected 5 HSL strings in HSLstringsArray
     }
 };
 
 // 11. Create the rgbString from the hsl values. This rgb string will be used to do scaling (to get darker version of the colour for borders, for example) and for conversion to hex code
 function rgbString(){ // function that creates rgbString
-    const hues = [baseHueArray[0], baseHueArray[0], baseHueArray[1], baseHueArray[1], baseHueArray[1]]; // to get an array of the 5 base hues
-    const sat = sat1.concat(sat2); // to get an array of all 5 saturation values
-    const lvals = lvals1.concat(lvals2); // to get an array of all 5 lightness values
+    const hues = [baseHueArray[0], baseHueArray[0], baseHueArray[1], baseHueArray[1], baseHueArray[2]]; // to get an array of the 5 base hues
+    // console.log(hues);
+    const sat = sat1.concat(sat2).concat(sat3); // to get an array of all 5 saturation values
+    // console.log(sat);
+    const lvals = lvals1.concat(lvals2).concat(lvals3); // to get an array of all 5 lightness values
+    // console.log(lvals);
     let rgb = hslrgb(hues[x], sat[x], lvals[x]); // convert the hsl to rgb for the [r, g, b]
     rgbVal[x] = rgb;
+    // console.log(rgb);
+    // my colours & arrays are correct
 };
 
 // 12. Based on the generated colour, change the colours on the chart
@@ -379,7 +399,7 @@ function bdrCol(){ // to change the border of swatches & relevant charts
 
 // 14. Based on the swatch background (i.e. the generated colour), test for what font color to use for colourLabels
 function labelCol(x){
-    const lvals = lvals1.concat(lvals2); // store lightness values (altogether, needed for the labelCol fn to be able to loop through the arrays easier) | source of concat() https://www.w3schools.com/jsref/jsref_concat_array.asp
+    const lvals = lvals1.concat(lvals2).concat(lvals3); // store lightness values (altogether, needed for the labelCol fn to be able to loop through the arrays easier) | source of concat() https://www.w3schools.com/jsref/jsref_concat_array.asp
     // console.log(lvals + "in labelcol");
     if (between(lvals[x], 0, 50)){ // if lightness of the background is between 0 - 50 i.e. a dark colour
         colourLabels[x].style.color = "#ffffff"; // make the label colour white
@@ -398,6 +418,7 @@ function changeColour(){
     // 3. generate HSLstrings for the base hues (hue1 & hue2)
     hslString(0, hue1, sat1, lvals1);
     hslString(1, hue2, sat2, lvals2);
+    hslString(2, hue3, sat3, lvals3);
     // console.log(HSLstringsArray); // works – expected: 5 HSL strings    
     // 4. start a loop through all the div elements with the class="swatch" and are .: in the Swatches array
     for (x in Swatches){
@@ -801,14 +822,15 @@ downloadBtn.addEventListener("click", function(){download()});
 
 
 // CODE TO HELP RESPONSIVE STYLING
-// I want to set #swatchBox height to #ctrlPanel height for screens with width < 720px
+
+// I want to set #swatchBox height to #ctrlPanel height for screens with width < 768px
 // 1. get #swatchBox element (column with the colours)
 let swatchBox = document.getElementById("swatchBox");
 // 2. get #ctrlPanel element (column with the options)
 let ctrlPanel = document.getElementById("ctrlPanel");
 // 3. write the function test viewport width <720px
 function windowRespond(){
-    if (window.innerWidth < 720){ // test the viewport width (source: https://developer.mozilla.org/en-US/docs/Web/API/Window/innerWidth)
+    if (window.innerWidth < 768){ // test the viewport width (source: https://developer.mozilla.org/en-US/docs/Web/API/Window/innerWidth)
         // 4. get height of ctrlPanel
         let ctrlPanelHt = ctrlPanel.offsetHeight; // offsetWidth = margin + border + padding + content (source: https://www.javascripttutorial.net/javascript-dom/javascript-width-height/)
         // 5. set swatchBox height = ctrlPanel height
@@ -816,7 +838,7 @@ function windowRespond(){
         console.log(ctrlPanelHt);
         console.log(swatchBox.style.height);
     }
-    else if(window.innerWidth >= 720){ // for screens at or bigger than minimum
+    else if(window.innerWidth >= 768){ // for screens at or bigger than minimum
         swatchBox.style.height = "90vh"; // set the swatchBox to 90vh so that don't have to scroll (total viewport height is 100vh, header already takes 10vh)
     }
 }
@@ -825,3 +847,24 @@ function windowRespond(){
 windowRespond();
 // 4b. for screens resized
 window.addEventListener("resize", function(){windowRespond()});
+
+// I want to set the height of optBtn to = width while width = 20%
+// 1. get optBtn html element array
+let optBtn = Array.from(document.getElementsByClassName("optBtn"));
+// 2. write function that will set the height of optBtn to = width
+function optBtnHt(){
+    // 3. get width of optBtn
+    // have to specify one particular button out of the array
+    // all of them have the same width so I just pick the first one in the array
+    let optBtnWidth = optBtn[0].offsetWidth;
+    console.log(optBtnWidth);
+    // 4. loop through all the optBtns (i.e. through the array)
+    for (x in optBtn){
+        // 5. set the height for each optBtn to = optBtnWidth
+        optBtn[x].style.height = optBtnWidth + "px"; // add "px" otherwise won't work
+    }
+}
+// 6. call optBtnHt() it onload
+optBtnHt();
+// 7. listen for window resize to recalculate the numbers
+window.addEventListener("resize", function(){optBtnHt()});
