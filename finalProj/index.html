@@ -25,7 +25,12 @@
     <!-- I added the class container-fluid because I read that without it, rows will cause horizontal scrolling on some screens (source: https://stackoverflow.com/questions/61003484/i-need-to-fix-bootstrap-h-100-class-it-is-not-working)-->
     <body class="container-fluid g-0">
         <header class="row g-0">
-            <p><span id="logo">charter#use</span>&nbsp;<span id="tagline">by Nadia Amir</span></p> <!-- had to make new h1 & h2 classes because using the tags and then display:inline still wasn't putting them side by side for me-->
+            <div class="col-10 col-md-10">
+                <p><span id="logo">charter#use</span>&nbsp;<span id="tagline">by Nadia Amir</span></p> <!-- had to make new h1 & h2 classes because using the tags and then display:inline still wasn't putting them side by side for me-->
+            </div>
+            <nav class="col-2 col-md-2"> <!-- nav for navigation -->
+                <a href="https://nadiaamir-nm2207.github.io/projDiary/index.html"><button class="btn gradBtn">diary</button></a>
+            </nav>
         </header>
         <div class="row g-0"> <!-- always include g-0 class for rows so that won't get horizontal scroll (I came up with the solution, but realised it after reading that rows automatically have 15px margins in bootstrap. source: https://stackoverflow.com/questions/27758457/how-to-remove-this-horizontal-scrollbar-in-bootstrap-3)-->
             <!-- col col-md means small column, helps the column be responsive. one row has 12 units -->
@@ -60,9 +65,9 @@
             <!-- sidebar -->
             <div class="col-12 col-md-4 g-0">
                 <div id="options" class="g-0 row">
+                    <!-- SWATCHES half -->
                     <div class="col col-md-7 g-0">
                         <div id="swatchBox">
-                            <!-- SWATCHES -->
                             <!-- each div should have a unique data-clipboard-target ID & a <p> with an ID to be linked to the JS for style & innerHTML changes -->
                             <!-- add the lock ids for the locking & unlocking. has to be ids because each one will have unique counter & action when clicked -->
                             <!-- add the copy ids for Raphael -->
@@ -70,10 +75,13 @@
                                 <div class="colOpt row">
                                     <div class="colourLabel col-12 col-md-6" id="label1">#colour</div>
                                     <div class="col-12 col-md-6">
+                                        <div class="row g-0"> <!-- another row so each button can go into a column -->
                                         <!-- data-clipboard-target should go to the trigger element i.e. the thing that is being clicked to activate the copying-->
-                                        <button class="copy optBtn" id="copy1" data-clipboard-target="#label1">&#10063;</button> <!-- copy button -->
-                                        <button class="optBtn" id="lock1">&#x1f513;</button><!-- lock button -->
-                                        <button class="optBtn" id="edit1">&#9998;</button> <!-- edit button (tentative wip) -->
+                                             <!-- only need col-4 because it will take up 1/3 of the space on any viewport size -->
+                                             <div class="col-4 g-0"><button class="copy optBtn" id="copy1" data-clipboard-target="#label1">&#10063;</button> <!-- copy button --></div>
+                                             <div class="col-4 g-0"><button class="optBtn" id="lock1">&#x1f513;</button><!-- lock button --></div>
+                                             <div class="col-4 g-0"><button class="optBtn" id="edit1">&#9998;</button> <!-- edit button (tentative wip) --></div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -107,7 +115,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="swatch hue2 lastBox" data-clipboard-target="#label5">
+                            <div class="swatch hue3 lastBox" data-clipboard-target="#label5">
                                 <div class="colOpt row">
                                     <div class="colourLabel" id="label5">#colour</div>
                                     <div class="col-12 col-md-6">
@@ -119,11 +127,12 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col col-md-5 g-0" id="ctrlPanel"> <!-- where all the buttons go-->
+                    <!-- OPTIONS half (where all the buttons go) -->
+                    <div class="col col-md-5 g-0" id="ctrlPanel">
                         <!-- HTML entities & special characters source (https://www.w3schools.com/charsets/ref_utf_symbols.asp)-->
                         <!-- colour buttons -->
                         <div class="ctrlBox">
-                            <p><button id="changeBtn" class="btn">&#9732; Generate</button></p>
+                            <p><button id="changeBtn" class="btn gradBtn">&#9732; Generate</button></p>
                             <p><button id="unlock" class="btn outlineBtn">&#x1f513; Unlock All </button></p>
                             <p><button id="lockAll" class="btn outlineBtn">&#128274; Lock All </button></p><!-- text always opposite of the default mode. default mode is light, .: text should read dark mode -->
                         </div>
@@ -150,7 +159,7 @@
                                     <p><input type="checkbox" id="polarDl"><label for="polarDl">&nbsp;polar area chart</label></p>
                                     <p><input type="checkbox" id="bubbleDl"><label for="bubbleDl">&nbsp;bubble chart</label></p>
                                 </div>
-                                <p><button id="download" class="btn">Download </button></p>
+                                <p><button id="download" class="btn gradBtn">Download </button></p>
                             </div>
                         </div>
                     </div>
