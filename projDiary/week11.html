@@ -36,25 +36,6 @@
                 <h2>&#10002; Week 11</h2>
                 </div>
                 <div class="col-9">
-                    <p>I have quite a bit to cover this entry. As with last week, I will try to focus on segments of the project that I learned the most from. </p>
-                    <p>Time is kinda blending for me so I can't remember if these were things I worked on already by the time I updated the GitHub files, I just know these weren't covered in the previous diary entry and were worked on at some point.</p>
-                    <p>Here is a brief outline of the content:</p>
-                    <p>1. STYLING</p>
-                    <p class="point">a. Bootstrap grid system classes</p>
-                    <p class="point">b. using js to help with responsiveness</p>
-                    <p>2. ALGORITHM FLEXIBILITY</p>
-                    <p class="point">a. adding a third hue</p>
-                    <p class="point">b. tweaking ranges for various functions</p>
-                    <p>3. CHART PREVIEWS</p>
-                    <p class="point">a. adding more charts</p>
-                    <p class="point">b. styling them to be squares</p>
-                    <p>4. SIDEBAR OPTIONS</p>
-                    <p class="point">a. copy-paste button</p>
-                    <p class="point">b. locking colours</p>
-                    <p class="point">c. updateCharts()</p>
-                    <p class="point">d. randomising data in the previews</p>
-                    <p class="point">e. light & dark mode</p>
-                    <p class="point">f. export options</p>
                     <h6>&#9830; 1. STYLING</h6>
                     <p>Last week, I was feedbacked that the layout is okay. This week, I decided to work more on getting it to be more responsive so that it was still accessible, particularly for smaller screens. I thought this was important so that I have some level of certainty that whatever appears on someone else's screen is still a usable version of the app.</p>
                     <h6>&#9830; 1a. Bootstrap grid system classes</h6>
@@ -91,12 +72,7 @@
                     <p>After obsessively clicking my Generate button many times, I began to feel like the generated palettes didn't have a good contrast most of the time. So I decided to add more flexibility to the algorithm.</p>
                     <h6>&#9830; 2a. adding a third hue</h6>
                     <p>I decided to add a third hue (hue3) because only having 2 made it hard to have good contrast. I did this by changing the class of the last swatch from hue2 and hue3, then adding the relevant extra arrays and edits to the existing functions.</p>
-                    <p>I didn't face too many errors doing this because thankfully, my functions were not too tangled with each other. Previously I had separated them out purely for aesthetic purposes, but now I realise how much it helps for things to be separated. It makes it a lot easier to tweak and debug.</p>
-                    <p>One error I did face was that after editing the functions,  hue2 and hue3 seemed weirdly similar in hue when they should be spaced out.</p>
-                    <p>I went through the different parts of the function where the colour is involved, dreading that maybe it was a calculation error. But each step appeared to be using the correct string and hex code. Even the colourLabel was the right hex code, though the background was something different. So it had to do with what was being fed to the swatch background colour change. The line of code in charge of this is:</p>
-                    <p><code>Swatches[x].style.backgroundColor = HSLstringsArray[x];</code></p>
-                    <p>So I went to check the functions that involved HSLstringsArray. The function was hslString(). There did not appear to be anything wrong with hslString(), but when I checked how it was called in changeColour(), I realised that the error was a simple typo.</p>
-                    <p>I was using <code>hslString(1, hue3, sat3, lvals3)</code> instead of <code>hslString(2, hue3, sat3, lvals3);</code>. So, hslString() was looking at HSLstringsArray[1] instead of HSLstringsArray[2]. This meant it was looking at hue2 instead of hue3, which explains why hue2 and hue3 looked so similar for some combinations.</p>
+                    <p>The only errors I faced in this process were "minor" typos. It's in quotes because even though I didn't have to do much rearranging, it's still a very frustrating error.</p>
                     <h6>&#9830; 2b. changing ranges</h6>
                     <p>I noticed that I kept generating the same types of combinations with barely any yellow or orange. I suspected that my condition in <code>redGreen()</code> was probably too strict. So I hunted for another hsl wheel to check the ranges and found <a href="https://i7x7p5b7.stackpathcdn.com/codrops/wp-content/uploads/2015/01/hsl-color-wheel.png">this more specific one.</a></p>
                     <p>I won't go into too much detail here, but I basically made the range defining red & green smaller based on the referenced wheel. This gave the algorithm more freedom.</p>
@@ -131,7 +107,7 @@
                     <p><img src="resources/lock3.jpg"></p>
                     <p>This feature broke later on when I stored the rgb values in an array <code>rgbVal</code>, because everytime I clicked the button, the array was cleared. Then, the locked colour didn’t have any value in it. So, instead of pushing the rgb strings one by one into rgbVal, I would do this:</p>
                     <p class="point">1. For x in Swatches</p>
-                    <p class="point">2. if colour x is not locked (i.e. <code>lockState[x] == false</code></p>
+                    <p class="point">2. if colour x is not locked (i.e. <code>lockState[x] == false</code>)</p>
                     <p class="point">3. replace rgbVal[x] with a new rgbString</p>
                     <p>What this meant was just changing <code>rgbVal.push</code> to <code>rgbVal[x] = rgb</code>. It became an array of arrays containing r, g, b values. This way, I could skip regenerating colours for <code>rgbVal[x]</code> if <code>lock[x]</code> was locked.</p>
                     <h6>&#9830; 4c. updateCharts()</h6>
@@ -139,31 +115,25 @@
                     <p>So, there had to be a way to "regenerate" the charts to incorporate the newly generated colours when changeColour() is called.</p>
                     <p>As we also learned this week, the code to do this with Chartjs is to use <code>chart.update()</code>. I have the different <code>chart.update()</code> lines for my various charts tucked into a function in the code called <code>updateCharts()</code>, which I call at the end of <code>changeColour()</code>.</p>
                     <h6>&#9830; 4d. randomise() & reset() </h6>
-                    <p><code>randomise()</code> and <code>reset()</code></p>
-                    <p>I noticed that Viz Palette had a randomise data button that randomised some of the charts so that people could get a better idea of what different types of data would look like. Since I was not able to let people edit the data for themselves, I thought this would be a good idea to implement for charter#use as well.</p>
+                    <p>I noticed that Viz Palette had a randomise data button that randomised some of the charts so that people could get a better idea of what different types of data would look like. Since I was not able to let people edit the data for themselves, I thought this would be a good idea to implement as well.</p>
                     <p>I kept the initial datasets with standard numbers, but created <code>randomise()</code> which would generate random values between 1 to 10 for each array. </p>
                     <p><img src="resources/randomise.jpg"></p>
-                    <p>Then I added an event listener to randBtn which would call randomise() when randBtn was clicked. Unfortunately, while this did generate new arrays for the datasets, the charts did not change.</p>
+                    <p>Then I added an event listener to randBtn which would call randomise() when randBtn was clicked. Unfortunately, while this did generate new arrays for the datasets, the charts did not change even if I used <code>chart.update()</code>.</p>
                     <p>I did more reading and while I could not find a thread with my specific problem, I did notice that in threads where the OP wanted to change the data shown in the chart, they would have to go inside the chart to get the data to change. I inferred that this meant I have to replace the data in the chart when randomise() is called in order for the data to change, and cannot just change it externally through the array. So, here is the new version of randomise():</p>
                     <p><img src="resources/randomise02.jpg"></p>
                     <p>I wrote the for loop for the linechart and bubble chart without packing them into other functions because they were pretty unique in how I would have to access the data property. As for the bar, pie, polar area and doughnut charts, they were similar in that all the data was in <code>chartName.data.datasets[0].data</code>, so I could write a function <code>oneDataset(chartName)</code> for them with chartName as a parameter.</p>
-                    <p>However, I realised that sometimes random() generated values of 0 because it used <code>Math.floor</code>. I needed Math.floor in random() because those 0 values were wanted in other functions I had used it in e.g. in hueGen() which generates hue values. So, I made another function <code>randomup()</code> which used <code>Math.ceil</code> instead of Math.floor to round up to the nearest integer rather than round down. This stopped the 0 values.</p>
+                    <p>However, I realised that sometimes random() generated values of 0 because it used <code>Math.floor</code>. I needed Math.floor in random() because those 0 values were wanted in other functions I had used it in. So, I made <code>randomup()</code> which used <code>Math.ceil</code> instead of Math.floor to round up to the nearest integer rather than round down. This stopped the 0 values.</p>
                     <p>Also, the randomisation wasn’t working for the bubble chart. I noticed two errors with my initial code:</p>
                     <p class="point">1. I did not specify which dataset the code should look at. I fixed this by using dataset[0] instead of just dataset</p>
                     <p class="point">2. I did not specifically target the x, y and r properties. I fixed this by adding individual lines of code doing so</p>
                     <p>And randomise() worked! Now to reset the values XD</p>
                     <p>I wanted to use a resetBtn to call reset() that would change the charts back to the initial, fixed datasets. I started to face a problem with the linechart code:</p>
                     <p><img src="resources/resetlnchrt.jpg"></p>
-                    <p>What I wanted this for loop to do was to replace each <code>data</code> with <code>data1, data2, data3, data4, data5</code> – which are variables with arrays of data in them. However, what it was doing was replacing each <code>data</code> with <code>data[0], data[1], data[2]</code> etc. i.e. single numbers inside the data array. So, I created a new array called <code>allData = [data1, data2, data3, data4, data5];</code> (I really love arrays at this point, they are so useful)</p>
+                    <p>What I wanted this for loop to do was to replace each <code>data</code> with <code>data1, data2, data3, data4, data5</code> – which are variables with arrays of data in them. However, what it was doing was replacing each <code>data</code> with <code>data[0], data[1], data[2]</code> etc. i.e. single numbers inside the data array. So, I created a new array called <code>allData = [data1, data2, data3, data4, data5];</code></p>
                     <p>allData stored the 5 arrays while still preserving them as individual arrays (as opposed to if I had used .concat()). Then, I rewrote the for loop like this instead: </p>
                     <p><code>lnPrvw.data.datasets[x].data = allData[x];</code></p>
                     <p>And it worked!</p>
-                    <h6>&#9830; 4e. light mode & dark mode </h6>
-                    <p>The goal of this was to have a button that could change the background of the previews to a light or dark background, then generate colours of lightness values suitable for that background. So, darker colours for light mode and lighter colours for dark mode.</p>
-                    <p>Similar to what I used with the lock-unlock buttons, I used a global variable called <code>mode</code> to track the state. Depending on the mode, I also set limits on the lightness values that could be generated. Initially, this was 0 - 50 for light mode, and 50 - 100 for dark mode. I have since modified the ranges to get less dark colours and to suit the stacking maths etc.</p>
-                    <p>Though the numbers are a little different (and may change in future as I continue to work on it), the logic of using an if condition to test whether <code>mode == true/false</code> (light/dark) and then choosing to generate within a certain range remains the same.</p>
-                    <p>I didn't really face many errors implementing it since most of it is stuff that I learned from creating the other functions.</p>
-                    <h6>&#9830; 4f. export options </h6>
+                    <h6>&#9830; 4e. export options </h6>
                     <p>Writing the export features feel like they might be pretty complicated because I'm not sure (yet) what I can use to get screenshots. So I just wrote down a brief outline of the steps I would need:</p>
                     <p class="point">1. Have a checkbox for each canvas</p>
                     <p class="point">2. When click select all, all the checkboxes would be activated</p>
