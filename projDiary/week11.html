@@ -146,8 +146,11 @@
                     <p><img src="resources/dl2.jpg"></p>
                     <p>But after trying it out, I realised that the statuses have to match. I think it’s because the check for allDl is happening first, and then the checking of the other checkboxes occur after that. So I tweaked selectAll() to reflect that.</p>
                     <p><img src="resources/dl3.jpg"></p>
+                    <h6>&#9830; Changing For Loop </h6>
+                    <p>I also found out that for...in is not recommended to iterate over arrays (<a href="https://betterprogramming.pub/3-reasons-why-you-shouldnt-use-for-in-array-iterations-in-javascript-8db3f42d8c73">source</a>) so I decided to replace them with the normal for loops e.g. <code>for (let x = 0; x < Array.length ; x++)</code>Since I was already using x for a lot of parameters, I just stuck with x instead of the usual i. After replacement, all of the loops except <code>for (x in Swatches)</code> inside <code>changeColour()</code> worked. I'm not really sure why, but I just stuck with it since it worked.</p>
                     <h6>&#9830; NEXT WEEK </h6>
                     <p>COMPULSORY</p>
+                    <p>• SVG icons & raphael</p>
                     <p>• find a way to dynamically calculate and set the widths of the option buttons in the swatches</p>
                     <p>• actually get the download function to work</p>
                     <p>• maybe add more data to the bubble chart/take it out. it doesn't really feel like a bubble chart</p>
