@@ -1,81 +1,82 @@
-// CODE FOR SVGs
-// steps for drawing Raphael icons (source: https://code.tutsplus.com/tutorials/an-introduction-to-the-raphael-js-library--net-7186) they're different versions, but picked up some scraps of info here and there and then just trial and error
-// illustrator to rapahel guide (source: https://snugug.com/musings/illustrator-to-raphael-js-guide/)
-// 1. create the area to put the SVG (directions source: https://alistapart.com/article/svg-with-a-little-help-from-raphael/)
-// let copyIconPaper = Raphael("copy1", 40, 40);
-// let copyIconPath = copyIconPaper.path("m26.97,41.5h-15.47c-5.52,0-10-4.48-10-10v-15.15c0-5.52,4.48-10,10-10h15.47c5.52,0,10,4.48,10,10v15.15c0,5.52-4.48,10-10,10Zm9.97-5.54c2.69-1.21,4.55-3.9,4.55-7.01V9.2c0-4.25-3.48-7.7-7.77-7.7H13.8c-3.49,0-6.44,2.27-7.42,5.41m3.06,10.03h19.58m-19.58,6.99h19.58m-19.58,6.99h11.56"); // paper.path(string).attr({})
-// copyIconPath.attr({
-//     stroke: "#000000",
-//     "stroke-width": 3, // any property in documentation with a dash must be put in ""
-//     })
-// copyIconPaper.setViewBox(0.5, 0.5, 50, 50, true); // source: https://stackoverflow.com/questions/11176396/how-can-i-scale-raphael-js-elements-on-window-resize-using-jquery
-
 // CODE FOR THE LOCKS
-
 // 1. get the lock buttons from the html
-let lock1 = document.getElementById("lock1");
-let lock2 = document.getElementById("lock2");
-let lock3 = document.getElementById("lock3");
-let lock4 = document.getElementById("lock4");
-let lock5 = document.getElementById("lock5");
+let lockArr = Array.from(document.getElementsByClassName("lock"))
 
 // 2. store the locked state data to be accessed by the colourChange loop later therfore create an object property for the lockState of each lock
 let lockState = [false, false, false, false, false];
 
-// 3. create a function to be called when the lock icon is pressed
-function lock(lock, x){ // lock: variable storing the html element | x: index of the corresponding object in lockState
-    // test whether the lock is locked or unlocked by referring to lockState
-    if(lockState[x] == true){ // i.e. if lock is locked
-        lockState[x] = false; // then unlock it
-        lock.innerHTML = "&#x1f513;"; // and display unlocked emoji
-        // console.log(lockState[x].locked); // works – expected false
+// 3. use loop to apply eventListener to all class=".lock" elements (source: https://flaviocopes.com/how-to-add-event-listener-multiple-elements-javascript/)
+// .querySelectorAll will return all elements that matches the class lock (source: https://www.w3schools.com/jsref/met_document_queryselectorall.asp)
+document.querySelectorAll(".lock"). forEach((lock, x) => { // lock is item, x is index (source: https://www.w3schools.com/jsref/jsref_foreach.asp)
+    lock.addEventListener("click", event => {
+        // 1. get the lightness levals of the colours
+        const lvals = lvals1.concat(lvals2, lvals3);
+        // if the background is dark
+        if (between(lvals[x], 0, 50)){
+            if(lockState[x] == true){ // i.e. if lock is locked
+                lockState[x] = false; // then unlock it
+                lock.innerHTML = "<img src = 'resources/lightUnlock.svg' class='lockIcon'>" // and display light unlocked emoji
+                // console.log(lockState[x].locked); // works – expected false
+            }
+            else if (lockState[x] == false){ // i.e. if lock is unlocked
+                lockState[x] = true; // then lock it
+                lock.innerHTML = "<img src = 'resources/lightLock.svg' class='lockIcon'>" // and display light locked emoji
+                // console.log(lockState[x].locked); // works – expected true
+            }
+        }
+        // if the background is light
+        else if (between(lvals[x], 50, 100)){
+            if(lockState[x] == true){ // i.e. if lock is locked
+                lockState[x] = false; // then unlock it
+                lock.innerHTML = "<img src = 'resources/darkUnlock.svg' class='lockIcon'>" // and display light unlocked emoji
+                // console.log(lockState[x].locked); // works – expected false
+            }
+            else if (lockState[x] == false){ // i.e. if lock is unlocked
+                lockState[x] = true; // then lock it
+                lock.innerHTML = "<img src = 'resources/darkLock.svg' class='lockIcon'>" // and display light locked emoji
+                // console.log(lockState[x].locked); // works – expected true
+            }
+        }
+        lock.style.transitionDuration = "0.5s"; // gradual colour change
+    })
+})
+
+
+// UNLOCK ALL COLOURS WITH ONE BUTTON
+// 1. write the function
+function unlockAll(){
+    lockState = [false, false, false, false, false]; // 2. reassign values in lockState to false (i.e. unlocked)
+    for (let x = 0; x < lockArr.length; x++){ // 3. loop through all lock buttons to...
+        lockArr[x].innerHTML = "&#x1f513;" // 4. ...change the innerHTMl to the unlock icon (might replace with svg later)
     }
-    else if (lockState[x] == false){ // i.e. if lock is unlocked
-        lockState[x] = true; // then lock it
-        lock.innerHTML = "&#128274;"; // and display locked emoji
-        // console.log(lockState[x].locked); // works – expected true
-    }
 }
 
-function unlockAll(){ // used to unlock all the colours with a click of one button
-    lockState = [false, false, false, false, false];
-    // have to also change the innerHTMl to the unlock icon, otherwise the icon remains the locked one while the colour is actually unlocked
-    lock1.innerHTML = "&#x1f513;";
-    lock2.innerHTML = "&#x1f513;";
-    lock3.innerHTML = "&#x1f513;";
-    lock4.innerHTML = "&#x1f513;";
-    lock5.innerHTML = "&#x1f513;";
-}
-
-function lockAll(){ // used to unlock all the colours with a click of one button
-    lockState = [true, true, true, true, true];
-    // have to also change the innerHTMl to the unlock icon, otherwise the icon remains the locked one while the colour is actually unlocked
-    lock1.innerHTML = "&#128274;";
-    lock2.innerHTML = "&#128274;";
-    lock3.innerHTML = "&#128274;";
-    lock4.innerHTML = "&#128274;";
-    lock5.innerHTML = "&#128274;";
-}
-
-function lockAllError(){
-    alert("please unlock a colour");
-}
-
-// adding the eventListeners
-lock1.addEventListener("click", function(){lock(lock1, 0)}); // index starts from 0
-lock2.addEventListener("click", function(){lock(lock2, 1)});
-lock3.addEventListener("click", function(){lock(lock3, 2)});
-lock4.addEventListener("click", function(){lock(lock4, 3)});
-lock5.addEventListener("click", function(){lock(lock5, 4)});
+// 5. addEventListener to unlock all button
 document.getElementById("unlock").addEventListener("click", function(){unlockAll()});
+
+// LOCK ALL COLOURS WITH ONE BUTTON
+function lockAll(){ // used to lock all the colours with a click of one button
+    lockState = [true, true, true, true, true]; // 2. reassign values in lockState to true (i.e. locked)
+    for (let x = 0; x < lockArr.length; x++){ // 3. loop through all lock buttons to...
+        lockArr[x].innerHTML = "&#128274;" // 4. ...change the innerHTMl to the locked icon (might replace with svg later)
+    }
+}
+
+// LET THE USER KNOW IF THEY ARE CLICKING GENERATE WHEN ALL COLOURS ARE LOCKED
+function lockAllError(){
+    // 1. test if all the colours are locked
+    if (lockState[0] == true && lockState[1] == true && lockState[2] == true && lockState[3] == true && lockState[4] == true){
+        alert("All the colours are currently locked. Please unlock at least one colour for it to change."); // 2. have an alert (source: https://www.w3schools.com/jsref/met_win_alert.asp)
+        // replace with popup in future https://www.w3schools.com/howto/howto_js_popup.asp
+    }
+};
+
+// 5. addEventListener to lock all button
 document.getElementById("lockAll").addEventListener("click", function(){lockAll()});
 
 // CODE FOR DARK MODE LIGHT MODE – put before the changeColour functions because i might need to access mode value to determine range for lightness value generation
 let modeBtn = document.getElementById("modeBtn"); // get the div element of the modeBtn
 let mode = false; // true if light mode, false if dark mode
-
-// get HTML elements of charts
-let lnChartBg = document.getElementById("lnPrvw");
 
 // function for changes when modeBtn clicked
 function changeMode(){
@@ -106,6 +107,7 @@ modeBtn.addEventListener("click", function(){changeMode()});
 // we use const so that we cannot reassign the value – helps to prevent accidental changes later on
 const Swatches = Array.from(document.getElementsByClassName("swatch")); // these are the colour palette rectangles
 const colourLabels = Array.from(document.getElementsByClassName("colourLabel")); // these are for the text in the colour palette rectangles
+const colOpt = Array.from(document.getElementsByClassName("colOpt")); // these are for the text in the colour palette rectangles (colourLabels) + the optBtns
 const hue1 = Array.from(document.getElementsByClassName("hue1"));
 const hue2 = Array.from(document.getElementsByClassName("hue2"));
 const hue3 = Array.from(document.getElementsByClassName("hue3"))
@@ -119,6 +121,7 @@ const sat1 = []; // to store saturation values of each generated colour
 const sat2 = []; // to store saturation values of each generated colour
 const sat3 = []; // to store saturation values of each generated colour
 const rgbVal = []; // use to push rgb strings
+const copyIconArr = []; // push copyIcon svgs here to change fill colour in optCol()
 
 // BASIC FUNCTIONS
 // clear arrays
@@ -315,7 +318,7 @@ function satGen(hueArray, satArray){ // array to be replace by hue1 or hue2 to d
     satArray.push(newSat);
     for (let i = 0; i < hueArray.length - 1; i++){ // for loop runs as many times as the number of items in the array - 1 (bc the first one is set in newSat)
         newSat = circleBack(newSat, 100, random(20, 40)); // make sure each saturation generated is spaced out from each other
-        console.log(newSat);
+        // console.log(newSat);
         satArray.push(newSat);
     }
 };
@@ -353,7 +356,7 @@ function satLightGen(hueArray, satArray, lvalsArray){ // generating 2 arrays of 
 // 10. string the HSL values together and push it into an array
 function hslString(y, hueArray, satArray, lvalsArray){ // y is a number 0, 1 or 2 for the HSL values for hue1, hue2 or hue 3 respectively | hueArray is for hue1 and hue2 respectively
     satLightGen(hueArray, satArray, lvalsArray); // generate 2 arrays of 5 values each for saturation & lightness values respectively
-    for (x in hueArray){
+    for (let x = 0; x < hueArray.length; x++){
         //console.log("lvals[x] in hslString are" + lvals);
         // for xth colour, give it H: value of yth base hue, S: xth saturation, L: xth lightness
         // (baseHueArray[y] + (x * constant)) so that the hue value increases by constant each swatch for a little more variation
@@ -366,9 +369,9 @@ function hslString(y, hueArray, satArray, lvalsArray){ // y is a number 0, 1 or 
 function rgbString(){ // function that creates rgbString
     const hues = [baseHueArray[0], baseHueArray[0], baseHueArray[1], baseHueArray[1], baseHueArray[2]]; // to get an array of the 5 base hues
     // console.log(hues);
-    const sat = sat1.concat(sat2).concat(sat3); // to get an array of all 5 saturation values
+    const sat = sat1.concat(sat2, sat3); // to get an array of all 5 saturation values
     // console.log(sat);
-    const lvals = lvals1.concat(lvals2).concat(lvals3); // to get an array of all 5 lightness values
+    const lvals = lvals1.concat(lvals2, lvals3); // to get an array of all 5 lightness values
     // console.log(lvals);
     let rgb = hslrgb(hues[x], sat[x], lvals[x]); // convert the hsl to rgb for the [r, g, b]
     rgbVal[x] = rgb;
@@ -397,15 +400,25 @@ function bdrCol(){ // to change the border of swatches & relevant charts
     bubblePrvw.data.datasets[0].borderColor[x]= "rgb(" + 0.5 * rgbVal[x][0] + ", " + 0.5 * rgbVal[x][1] + ", " +  0.5 * rgbVal[x][2] + ")"; // border for bubble chart
 };
 
-// 14. Based on the swatch background (i.e. the generated colour), test for what font color to use for colourLabels
-function labelCol(x){
-    const lvals = lvals1.concat(lvals2).concat(lvals3); // store lightness values (altogether, needed for the labelCol fn to be able to loop through the arrays easier) | source of concat() https://www.w3schools.com/jsref/jsref_concat_array.asp
+// 14. Based on the swatch background (i.e. the generated colour), test for what font color to use for colourLabels & optBtns
+function optCol(x){
+    const lvals = lvals1.concat(lvals2,lvals3); // store lightness values (altogether, needed for the labelCol fn to be able to loop through the arrays easier) | source of concat() https://www.w3schools.com/jsref/jsref_concat_array.asp
     // console.log(lvals + "in labelcol");
     if (between(lvals[x], 0, 50)){ // if lightness of the background is between 0 - 50 i.e. a dark colour
-        colourLabels[x].style.color = "#ffffff"; // make the label colour white
+        colOpt[x].style.color = "#fff9f5"; // make all the text in colOpt (i.e. in the swatch) white
+        // goes into: element[x] in copyIconArr >> 0: path >> style >> fill
+        copyIconArr[x][0].style.fill = "#fff9f5"; // make svg fill white
+        copyIconArr[x][0].style.transitionDuration = "0.5s"; // set transition duration to 0.5s, gradual colour change
+        // console.log("the fill for swatch["+ x + "] is "+ copyIconArr[x].attrs[1]);
+        // console.log(copyIconArr);
     }
     else if (between(lvals[x], 50, 100)){ // if lightness of the background is between 50 - 100 i.e. a bright colour
-        colourLabels[x].style.color = "#000000"; // make the label colour black
+        colOpt[x].style.color = "#011627"; // make all the text in colOpt (i.e. in the swatch) black
+        // goes into: element[x] in copyIconArr >> 0: path >> style >> fill
+        copyIconArr[x][0].style.fill = "#011627"; // make svg fill black
+        copyIconArr[x][0].style.transitionDuration = "0.5s"; // set transition duration to 0.5s, gradual colour change
+        // console.log("the fill for swatch["+ x + "] is "+ copyIconArr[x].attrs[1])
+        // console.log(copyIconArr);
     }
 };
 
@@ -427,7 +440,7 @@ function changeColour(){
             Swatches[x].style.backgroundColor = HSLstringsArray[x]; // change the background color of the xth Swatches element to the xth HSL value stored in HSLstringsArray
             rgbString(); // 7. generate rgbStrings from the HSL values
             chartCol(); // 8. change chart colours
-            labelCol(x); // 9. change label text colour based on the background of the swatch
+            optCol(x); // 9. change label text colour based on the background of the swatch
             // 10. change the rgbString (from step 7) to a hex code + change the colourLabel text to read the hex code
             colourLabels[x].innerHTML = rgbToHex(rgbVal[x][0], rgbVal[x][1], rgbVal[x][2]); // change the text of the xth colourLabels element to the xth rgbToHex value – this is why i had hslrgb() return an object – so that I can separate the r, g, b values to convert to hex
             // 11. change border colours
@@ -696,7 +709,7 @@ let bubblePrvw = new Chart("bubblePrvw", { // I decided to put the chart into a 
         });
 
 
-        // to generate randomised data values
+// to generate randomised data values
 function oneDataset(chartName){ // general function for bar, pie, polar area & doughnut charts as they all use 1 dataset
     let newData = [randomUp(1,11), randomUp(1,11), randomUp(1,11), randomUp(1,11), randomUp(1,11)]; // use 2,10 instead of 1,10 because with 1,10 some combinations lead to Math.floor rounding down to 0. Don't want to change to Math.ceil in random() because I need the 0 values for other areas where I use random() e.g. when generating hues
     chartName.data.datasets[0].data = newData;
@@ -704,7 +717,7 @@ function oneDataset(chartName){ // general function for bar, pie, polar area & d
 
 function randomise(){ // to generate random datasets, between 1 - 10
 // for linechart
-    for (x in lnPrvw.data.datasets){
+    for (let x = 0; x < lnPrvw.data.datasets.length; x++){
         lnPrvw.data.datasets[x].data = [randomUp(1,11), randomUp(1,11), randomUp(1,11), randomUp(1,11), randomUp(1,11)]
     }
     // for bar, pie, doughnut, polar area charts
@@ -714,7 +727,7 @@ function randomise(){ // to generate random datasets, between 1 - 10
     oneDataset(polarPrvw);
     // for bubble chart
     let bubbleRad = [10, 12, 14, 16, 18, 20, 22, 24, 26, 28]; // for bigger radius
-    for (x in bubblePrvw.data.datasets[0].data){
+    for (let x = 0; x < bubblePrvw.data.datasets[0].data.length; x++){
         bubblePrvw.data.datasets[0].data[x].x = randomUp(1,11);; // have to target the x, y, r properties specifically
         bubblePrvw.data.datasets[0].data[x].y = randomUp(1,11);;
         bubblePrvw.data.datasets[0].data[x].r = bubbleRad[randomUp(1, 11)];
@@ -726,14 +739,14 @@ function randomise(){ // to generate random datasets, between 1 - 10
 let randBtn = document.getElementById("randBtn"); // get randBtn
 randBtn.addEventListener("click", function(){randomise()});
 
-// to generate randomised data values
+// to reset data values
 function resetOne(chartName, dataX){ // general function for bar, pie, polar area & doughnut charts as they all use 1 dataset
     chartName.data.datasets[0].data = dataX;
 }
 
 function reset(){ // to reset back to starting data
     // for linechart
-    for (x in lnPrvw.data.datasets){
+    for (let x = 0; x < lnPrvw.data.datasets.length; x++){
         lnPrvw.data.datasets[x].data = allData[x];
     }
     // for bar, pie, doughnut, polar area charts
@@ -744,7 +757,7 @@ function reset(){ // to reset back to starting data
 
     let bubbleRad = [10, 14, 20, 12, 16]; // original values for bubble chart radii
     // bubble chart
-    for (x in bubblePrvw.data.datasets[0].data){
+    for (let x = 0; x < bubblePrvw.data.datasets[0].data.length; x++){
         bubblePrvw.data.datasets[0].data[x].x = data1[x]; // have to target the x, y, r properties specifically
         bubblePrvw.data.datasets[0].data[x].y = data3[x];
         bubblePrvw.data.datasets[0].data[x].r = bubbleRad[x];
@@ -758,10 +771,7 @@ resetBtn.addEventListener("click", function(){reset()});
  
 // event listener so that changeColour() is called when the button (changeBtn) is clicked
 let changeBtn = document.getElementById("changeBtn");
-changeBtn.addEventListener("click", function(){changeColour()});
-
-// call changeColour once when page is loaded
-changeColour();
+changeBtn.addEventListener("click", function(){changeColour(), lockAllError()});
 
 // COPY PASTE FEATURES
 // how to use clipboardjs (source: https://clipboardjs.com)
@@ -775,7 +785,7 @@ function copyCol(){
 
 // copyBtns.addEventListener("click", function(){copyCol()});
 
-// EXPORT OPTIONS
+// CODE FOR EXPORT OPTIONS
 // 1. get the elements for the checkbox
 let allDl = document.getElementById("allDl");
 let lnDl = document.getElementById("lnDl");
@@ -789,12 +799,12 @@ let checkOptions = [lnDl, barDl, pieDl, donutDl, polDl, bubbleDl]; // store all 
 // 2. function that will tick/untick all checkboxes when the select all checkbox is clicked
 function selectAll(){
     if (allDl.checked == true){ // i.e. checked. clicking it unchecks it.
-        for(x in checkOptions){
+        for(let x = 0; x < checkOptions.length; x++){
             checkOptions[x].checked = true; // check them too – same as allDl.checked because they are happening together, not alternating
         }
     }
     else if (allDl.checked == false){ // i.e. allDl unchecked
-        for(x in checkOptions){
+        for(let x = 0; x < checkOptions.length; x++){
             checkOptions[x].checked = false; // uncheck them too
         }
     }
@@ -835,8 +845,8 @@ function windowRespond(){
         let ctrlPanelHt = ctrlPanel.offsetHeight; // offsetWidth = margin + border + padding + content (source: https://www.javascripttutorial.net/javascript-dom/javascript-width-height/)
         // 5. set swatchBox height = ctrlPanel height
         swatchBox.style.height = ctrlPanelHt + "px"; // must add + "px" otherwise it will only be replaced as the number
-        console.log(ctrlPanelHt);
-        console.log(swatchBox.style.height);
+        // console.log(ctrlPanelHt);
+        // console.log(swatchBox.style.height);
     }
     else if(window.innerWidth >= 768){ // for screens at or bigger than minimum
         swatchBox.style.height = "90vh"; // set the swatchBox to 90vh so that don't have to scroll (total viewport height is 100vh, header already takes 10vh)
@@ -848,23 +858,114 @@ windowRespond();
 // 4b. for screens resized
 window.addEventListener("resize", function(){windowRespond()});
 
-// I want to set the height of optBtn to = width while width = 20%
-// 1. get optBtn html element array
-let optBtn = Array.from(document.getElementsByClassName("optBtn"));
-// 2. write function that will set the height of optBtn to = width
-function optBtnHt(){
-    // 3. get width of optBtn
+// I want to set the height of optBtnArr to = width while width = 20%
+// 1. get html element arrays for optBtnArr
+const optBtnArr = Array.from(document.getElementsByClassName("optBtn"));
+// 2. get the width of the optBtn (doing this outside function so that I can access this number for other things like svg viewbox)
+function optBtnWidth(){ // put into a function because if I only declare it sometimes is not called for some reason
     // have to specify one particular button out of the array
     // all of them have the same width so I just pick the first one in the array
-    let optBtnWidth = optBtn[0].offsetWidth;
-    console.log(optBtnWidth);
-    // 4. loop through all the optBtns (i.e. through the array)
-    for (x in optBtn){
+    let optBtnWidth = optBtnArr[0].offsetWidth;
+    return optBtnWidth;
+}
+// 3. write function that will set the height of optBtn to = width
+function optBtnHt(){
+    // 4. loop through all the optBtns & optBtnBox (i.e. through the array)
+    for (let x = 0; x < optBtnArr.length; x++){
         // 5. set the height for each optBtn to = optBtnWidth
-        optBtn[x].style.height = optBtnWidth + "px"; // add "px" otherwise won't work
+        optBtnArr[x].style.height = optBtnWidth() + "px"; // add "px" otherwise won't work
     }
 }
 // 6. call optBtnHt() it onload
 optBtnHt();
 // 7. listen for window resize to recalculate the numbers
 window.addEventListener("resize", function(){optBtnHt()});
+
+// CODE FOR SVGs
+// steps for drawing Raphael icons (source: https://code.tutsplus.com/tutorials/an-introduction-to-the-raphael-js-library--net-7186) they're different versions, but picked up some scraps of info here and there and then just trial and error
+// illustrator to Raphael guide (source: https://snugug.com/musings/illustrator-to-raphael-js-guide/)
+
+// 1. get the divs that the svgs are going to be in
+const copySvgs = Array.from(document.getElementsByClassName("copy"));
+
+// 2. store svg paths in variables
+// a. copy button icon
+let copySvgPath = "M12.3,3.1H4.8C2.1,3.1,0,5.3,0,7.9v7.3C0,17.9,2.2,20,4.8,20h7.5c2.7,0,4.8-2.2,4.8-4.8V7.9C17.1,5.2,15,3.1,12.3,3.1z M15.5,0H5.9C4.7,0,3.6,0.5,2.7,1.3c-0.3,0.3-0.3,0.7,0,1c0.3,0.3,0.7,0.3,1,0c0.6-0.5,1.3-0.9,2.2-0.9h9.6c1.7,0,3.1,1.3,3.1,3V14 c0,0.7-0.3,1.5-0.8,2c-0.3,0.3-0.3,0.8,0.1,1c0.1,0.1,0.3,0.2,0.5,0.2c0.2,0,0.4-0.1,0.5-0.3c0.7-0.8,1.1-1.8,1.1-2.9V4.5 C20.1,2,18,0,15.5,0z";
+// c. pencil icon
+
+// declare function to centralise position before using it
+function centerSvg(boxWidth, iconWidth){
+    // 1. get 1/2 box width
+    let halfBox = boxWidth / 2;
+    // 2. get 1/2 icon width
+    let halfWidth = iconWidth / 2;
+    // 3. center coord = 1/2 box width = 1/2 icon width
+    return halfWidth - halfBox; // to get negative number so that it moves to the right instead of the left
+};
+
+// 3. create a function that can loop through array of html divs and set svg in them
+// array: the array of html divs being targeted
+// xPaper: the Paper, x is the name
+// xPath: the path, x is the name
+// path: the string of numbers etc. for the svg path
+// width: icon's width
+
+function createSvgs(array, xPaper, xPath, path, width){
+    for(let x = 0; x < array.length; x++){ // for all the buttons of a particular type, create...
+        // 4. create the paper to put the SVG (directions source: https://alistapart.com/article/svg-with-a-little-help-from-raphael/)
+        // this creates a "canvas" in the first copy button with height and width = optBtnWidth()
+        let xPaper = Raphael(array[x], "100%", "100%");
+        // 5. place the path of the svg into the paper
+        // declare a variable to edit the attributes later (so that neater)
+        let xPath = xPaper.path(path)
+        // 6. edit attributes as desired. this gives a black fill & no stroke
+        xPath.attr({
+            fill: "auto",
+            "stroke-width": 0, // any property in documentation with a dash must be put in ""
+        });
+        copyIconArr.push(xPath);
+        console.log(copyIconArr[0].attrs.fill);
+        // 7. set the viewbox. coords are 0, 0 and the viewbox height and width = optBtnWidth()
+        xPaper.setViewBox(centerSvg(optBtnWidth(), width), centerSvg(optBtnWidth(), width), optBtnWidth(), optBtnWidth(), true); // source: https://stackoverflow.com/questions/11176396/how-can-i-scale-raphael-js-elements-on-window-resize-using-jquery
+    }
+}
+
+// apply createSvgs to different icons to "draw" them
+// a. copyBtn icon
+createSvgs(copySvgs, "copyIconPaper", "copyIconPath", copySvgPath, 20); // "copyIconPaper", "copyIconPath" are in "" because they are names of variables within the function, not predefined ones
+
+// add eventListener to change hover colour
+// 1. use loop to apply eventListener to all class="optBtn" elements (source: https://flaviocopes.com/how-to-add-event-listener-multiple-elements-javascript/)
+// .querySelectorAll will return all elements that matches the class optBtn (source: https://www.w3schools.com/jsref/met_document_queryselectorall.asp)
+// forEach will iterate over each item with the class optBtn and apply the EventListener to it
+// must put ".optBtn" not "optBtn" (source: https://forum.freecodecamp.org/t/mouseover-mouseout-not-working/202846/4)
+document.querySelectorAll(".optBtn"). forEach((item, index) => { // add index as a parameter to get the index of that item (source: https://www.w3schools.com/jsref/jsref_foreach.asp)
+    item.addEventListener("mouseover", event => { // mouseover = hover (source: https://www.w3schools.com/jsref/event_onmouseover.asp)
+        // get the index of the current iteration
+        // declare lvals for lightness values
+        const lvals = [lvals1[0], lvals1[0], lvals1[0], lvals1[1], lvals1[1], lvals1[1], lvals2[0], lvals2[0], lvals2[0], lvals2[1], lvals2[1], lvals2[1], lvals3[0], lvals3[0], lvals3[0]] // to get an array of the lightness value for each generated colour repeated 3 times
+        if (between(lvals[index], 0, 50)){ // if lightness of the background is between 0 - 50 i.e. a dark colour
+            item.style.backgroundColor = "rgba(255, 249, 245, 0.2)"; // change the item (optBtn) bg color to a light colour
+        }
+        else { // if lightness of the background is between 50 - 100 i.e. a bright colour
+            item.style.backgroundColor = "rgba(1, 22, 39, 0.2)"; // change the item (optBtn) bg color to a dark colour
+        }
+        item.style.transitionDuration = "0.5s"; // gradual colour change
+    })
+    item.addEventListener("mouseout", event => { // mouseout = no longer hovering
+        item.style.backgroundColor = "transparent"; // no colour bg
+        item.style.transitionDuration = "0.5s"; // gradual colour change
+    })
+})
+
+// for (let x = 0; x < optBtnArr.length; x++){
+//     addEventListener("mouseover", function(){
+//         optBtnArr[x].style.backgroundColor = "pink";
+//     });
+//     addEventListener("mouseout", function(){
+//         optBtnArr[x].style.backgroundColor = "transparent";
+//     });
+// }
+
+// ALWAYS LAST: call changeColour once when page is loaded. put at the end so it can access everything it needs.
+changeColour();
