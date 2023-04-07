@@ -45,9 +45,13 @@ nav{
     border-radius: 20px;
 }
 
+/* styling row for chart options buttons */
+#chartOpt{
+    padding-bottom: 3%;
+    margin-bottom: 3%;
+}
+
 /* styling "sidebar" where all the options and buttons will go */
-
-
 /* source: https://www.w3schools.com/css/css3_mediaqueries.asp */
 @media screen and (min-width: 768px){ /* overflow-y only scrolls if the screen is 768px or bigger. this corresponds to the col-12 col-md-x classes where the columns stack at 720px or lower. Essentially, I want the scroll to only apply if the columns are not stacking. */
     #prvwBox, #options, #swatchBox, #ctrlPanel{ /* #prvwBox: where the charts are, #options: contains the two columns #swatchBox (where the colours are) & #ctrlPanel (where the buttons are) */
@@ -82,6 +86,13 @@ nav{
     border-bottom: 1px solid #ACCF42;
 }
 
+/* styling the text area for all the colour codes */
+#allCodes{
+    padding: 5%;
+    margin-bottom: 8%; /* more space between textarea & button below */
+    border-radius: 10px;
+}
+
 .lastBox{
     border-bottom: 0px; /* to get rid of the bottom border */ /* this doesn't apply bc the js more recent smh */
 }
@@ -99,18 +110,6 @@ nav{
     padding-top: 2%;
 }
 
-/* style for the text appearing on the swatch */
-.colourLabel{
-    /* layout */
-    display: inline-block; /* so the colour text doesn't line break with the lock button even as a div */
-    width:  50%; /* this make sit much tidier, labels & locks */
-    /* text styles */
-    font-size: 1.5rem;
-    font-family: "Quicksand", sans-serif;
-    text-align: center; /* align colourLabel in the middle */
-    margin-top: 15%;
-}
-
 @media screen and (min-width: 768px){ /* only set the top margin space for screens larger than 768px */
     .optBtnBox{
         /* spacing from top */
@@ -125,9 +124,13 @@ nav{
     }
 }
 
-/* center class */
+/* STYLING ALIGNMENT */
 .center{
     text-align: center;
+}
+
+.right{
+    text-align: right;
 }
 
 /* STYLING TEXT */
@@ -155,6 +158,18 @@ h2{
     padding: 3%; /* to match .btn padding so it looks more aligned */
     text-align: center;
     margin-bottom: 8%; /* add some space between heading & options */
+}
+
+/* style for the text appearing on the swatch */
+.colourLabel{
+    /* layout */
+    display: inline-block; /* so the colour text doesn't line break with the lock button even as a div */
+    width:  50%; /* this make sit much tidier, labels & locks */
+    /* text styles */
+    font-size: 1.5rem;
+    font-family: "Quicksand", sans-serif;
+    text-align: center; /* align colourLabel in the middle */
+    margin-top: 15%;
 }
 
 /* styling quote & quote source */
@@ -230,6 +245,15 @@ h2{
     color: #fff9f5;
 }
 
+/* styling slightly different layout options for randomise & reset data & mode buttons */
+/* # styling takes priority over . styling (source: https://www.bestcolleges.com/bootcamps/guides/css-class-vs-id/)*/
+#randBtn, #resetBtn, #modeBtn{
+    width: auto;
+    padding: 1% 2%; /* 1% top bottom, 2% right left */
+    display: inline-block; /* so that the buttons will be next to each other, i don't know why they weren't ;; */
+    margin-top: 0; /* overwrite the margin-top that .outlineBtn has */
+}
+
 /* styling buttons on the swatch (copy, lock, edit) */
 .optBtn{
     /* styling button bg */
@@ -244,10 +268,6 @@ h2{
     font-family: 'Quicksand', sans-serif;
     color: inherit;
 }
-
-/* .optBtn:hover{
-    background-color: rgba(255, 249, 245, 0.2);
-} */
 
 /* styling svgs */
 
