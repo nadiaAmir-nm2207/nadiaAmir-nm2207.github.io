@@ -7,7 +7,8 @@ let lockState = [false, false, false, false, false];
 
 // 3. use loop to apply eventListener to all class=".lock" elements (source: https://flaviocopes.com/how-to-add-event-listener-multiple-elements-javascript/)
 // .querySelectorAll will return all elements that matches the class lock (source: https://www.w3schools.com/jsref/met_document_queryselectorall.asp)
-document.querySelectorAll(".lock"). forEach((lock, x) => { // lock is item, x is index (source: https://www.w3schools.com/jsref/jsref_foreach.asp)
+
+lockArr.forEach((lock, x) => { // lock is item, x is index (source: https://www.w3schools.com/jsref/jsref_foreach.asp)
     lock.addEventListener("click", event => {
         // 1. get the lightness levals of the colours
         const lvals = lvals1.concat(lvals2, lvals3);
@@ -41,6 +42,36 @@ document.querySelectorAll(".lock"). forEach((lock, x) => { // lock is item, x is
     })
 })
 
+function lockChange(){ // similar code as in the lock EventListener, but this one is for changeColour (change lock colour as the colours change)
+    // if the background is dark
+    if (between(lvals[x], 0, 50)){
+        if(lockState[x] == true){ // i.e. if lock is locked
+            lockState[x] = false; // then unlock it
+            lockArr[x].innerHTML = "<img src = 'resources/lightUnlock.svg' class='lockIcon'>" // and display light unlocked emoji
+            // console.log(lockState[x].locked); // works – expected false
+        }
+        else if (lockState[x] == false){ // i.e. if lock is unlocked
+            lockState[x] = true; // then lock it
+            lockArr[x].innerHTML = "<img src = 'resources/lightLock.svg' class='lockIcon'>" // and display light locked emoji
+            // console.log(lockState[x].locked); // works – expected true
+        }
+    }
+    // if the background is light
+    else if (between(lvals[x], 50, 100)){
+        if(lockState[x] == true){ // i.e. if lock is locked
+            lockState[x] = false; // then unlock it
+            lockArr[x].innerHTML = "<img src = 'resources/darkUnlock.svg' class='lockIcon'>" // and display light unlocked emoji
+            // console.log(lockState[x].locked); // works – expected false
+        }
+        else if (lockState[x] == false){ // i.e. if lock is unlocked
+            lockState[x] = true; // then lock it
+            lockArr[x].innerHTML = "<img src = 'resources/darkLock.svg' class='lockIcon'>" // and display light locked emoji
+            // console.log(lockState[x].locked); // works – expected true
+        }
+    }
+    lock.style.transitionDuration = "0.5s"; // gradual colour change
+    
+}
 
 // UNLOCK ALL COLOURS WITH ONE BUTTON
 // 1. write the function
@@ -112,6 +143,9 @@ const hue1 = Array.from(document.getElementsByClassName("hue1"));
 const hue2 = Array.from(document.getElementsByClassName("hue2"));
 const hue3 = Array.from(document.getElementsByClassName("hue3"))
 const baseHueDivs = Array.from(document.getElementsByClassName("baseHue")); // these are for base hues
+const allCodes = document.getElementById("allCodes"); // getting the textarea where all the colour codes appear
+
+// setting up arrays to store values
 const baseHueArray = []; // to store only UNIQUE base hue values
 const HSLstringsArray = []; // to store HSL strings
 const lvals1 = []; // to store lightness values (separate hue1 & hue2)
@@ -122,6 +156,8 @@ const sat2 = []; // to store saturation values of each generated colour
 const sat3 = []; // to store saturation values of each generated colour
 const rgbVal = []; // use to push rgb strings
 const copyIconArr = []; // push copyIcon svgs here to change fill colour in optCol()
+const editIconArr = []; // push editIcon svgs here to change fill colour in optCol()
+const codesArr = []; // use to place hex codes for colours (used for copyAll textarea)
 
 // BASIC FUNCTIONS
 // clear arrays
@@ -134,6 +170,7 @@ function clearArr(){
     sat2.length = 0; // clear array when fn called
     sat3.length = 0;
     rgbVal.length = 0;
+    chartImgData.length = 0;
 }
 
 // update charts AHAHAHAHAHA I DID IT!! EXCUSE THE UNPROFESSIONAL EXCITEMENT BUT THIS IS THE KEY the chart has to be "regenerated" for the colour changes in the function to show since this function has to come after the chart is declared (otherwise cannot access the properties)
@@ -405,23 +442,35 @@ function optCol(x){
     const lvals = lvals1.concat(lvals2,lvals3); // store lightness values (altogether, needed for the labelCol fn to be able to loop through the arrays easier) | source of concat() https://www.w3schools.com/jsref/jsref_concat_array.asp
     // console.log(lvals + "in labelcol");
     if (between(lvals[x], 0, 50)){ // if lightness of the background is between 0 - 50 i.e. a dark colour
-        colOpt[x].style.color = "#fff9f5"; // make all the text in colOpt (i.e. in the swatch) white
+        colourLabels[x].style.color = "#fff9f5"; // make colour code light
         // goes into: element[x] in copyIconArr >> 0: path >> style >> fill
-        copyIconArr[x][0].style.fill = "#fff9f5"; // make svg fill white
+        copyIconArr[x][0].style.fill = "#fff9f5"; // make copy svg fill light
         copyIconArr[x][0].style.transitionDuration = "0.5s"; // set transition duration to 0.5s, gradual colour change
-        // console.log("the fill for swatch["+ x + "] is "+ copyIconArr[x].attrs[1]);
-        // console.log(copyIconArr);
+        editIconArr[x][0].style.fill = "#fff9f5"; // make pencil svg fill light
+        editIconArr[x][0].style.transitionDuration = "0.5s"; // set transition duration to 0.5s, gradual colour change
+        // for the lock icons
+        if(lockState[x] == true){ // i.e. if lock is locked
+            lockArr[x].innerHTML = "<img src = 'resources/lightLock.svg' class='lockIcon'>" // then display light locked icon
+        }
+        else if (lockState[x] == false){ // i.e. if lock is unlocked
+            lockArr[x].innerHTML = "<img src = 'resources/lightUnlock.svg' class='lockIcon'>" // then display light unlocked icon
+        }
     }
     else if (between(lvals[x], 50, 100)){ // if lightness of the background is between 50 - 100 i.e. a bright colour
-        colOpt[x].style.color = "#011627"; // make all the text in colOpt (i.e. in the swatch) black
+        colourLabels[x].style.color = "#011627"; // make colour code dark
         // goes into: element[x] in copyIconArr >> 0: path >> style >> fill
-        copyIconArr[x][0].style.fill = "#011627"; // make svg fill black
+        copyIconArr[x][0].style.fill = "#011627"; // make svg fill dark
         copyIconArr[x][0].style.transitionDuration = "0.5s"; // set transition duration to 0.5s, gradual colour change
-        // console.log("the fill for swatch["+ x + "] is "+ copyIconArr[x].attrs[1])
-        // console.log(copyIconArr);
+        editIconArr[x][0].style.fill = "#011627"; // make pencil svg fill dark
+        editIconArr[x][0].style.transitionDuration = "0.5s"; // set transition duration to 0.5s, gradual colour change
+        if(lockState[x] == true){ // i.e. if lock is locked
+            lockArr[x].innerHTML = "<img src = 'resources/darkLock.svg' class='lockIcon'>" // then display dark locked icon
+        }
+        else if (lockState[x] == false){ // i.e. if lock is unlocked
+            lockArr[x].innerHTML = "<img src = 'resources/darkUnlock.svg' class='lockIcon'>" // then display dark unlocked icon
+        }
     }
 };
-
 // FINAL BOSS: actually changing everything
 function changeColour(){
     // 1. clear relevant arrays
@@ -442,11 +491,13 @@ function changeColour(){
             chartCol(); // 8. change chart colours
             optCol(x); // 9. change label text colour based on the background of the swatch
             // 10. change the rgbString (from step 7) to a hex code + change the colourLabel text to read the hex code
-            colourLabels[x].innerHTML = rgbToHex(rgbVal[x][0], rgbVal[x][1], rgbVal[x][2]); // change the text of the xth colourLabels element to the xth rgbToHex value – this is why i had hslrgb() return an object – so that I can separate the r, g, b values to convert to hex
-            // 11. change border colours
-            bdrCol();
+            let hexCode = rgbToHex(rgbVal[x][0], rgbVal[x][1], rgbVal[x][2]); // store converted rgb to hex in a variable
+            colourLabels[x].innerHTML = hexCode; // change the text of the xth colourLabels element to the xth rgbToHex value – this is why i had hslrgb() return an object – so that I can separate the r, g, b values to convert to hex
+            codesArr[x]=(" " + hexCode); // add a space in front of the hexCode & put this in codes Array
+            bdrCol(); // 11. change border colours
         }
     };
+    allCodes.innerHTML = codesArr; // change innerHTML of textarea to show hex colour codes
     updateChart(); // 12. updating the charts so that the changes show
 }
 
@@ -459,12 +510,15 @@ function componentToHex(c) {
     let hex = c.toString(16);
     // 3. remainder * 16, if 10 = A, 11 = B and so on until 15 = F (read from https://appkong.com/tools/hex-to-rgb/)
     return hex.length == 1 ? "0" + hex : hex;
-}
+};
 
 // concatenate R, G, B values together to form #xxxxxx
 function rgbToHex(r, g, b) {
     return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
-}
+};
+
+// CODE FOR CHART IMAGE EXPORTING
+const chartImgData = []; // 1. make an empty array to push base64 strings
 
 // CODE FOR THE CHARTS
 
@@ -478,6 +532,8 @@ let data3 = [6, 10, 5, 8, 2];
 let data4 = [7, 6, 2, 5, 3];
 let data5 = [3, 0, 9, 8, 4];
 let allData = [data1, data2, data3, data4, data5]; // combining the 5 arrays into 1 variable while preserving the original array format (unlike if we used .concat())
+
+// DECLARING THE CHARTS
 
 let lnPrvw = new Chart("lnPrvw", { // I decided to put the chart into a variable because without that, I'm very confused as to how to refer to the borderColor
 type: "line",
@@ -531,9 +587,18 @@ data: {
             legend:{
                 display: false
             },
-        }
-    }
+        },
+        animation: {
+            // code to help with exporting image of chart
+            // source: https://github.com/chartjs/Chart.js/issues/2743
+            onComplete: function(){ // when animation is completed
+                let imgData = this.toBase64Image(); // this keyword means the object (i.e. the chart) that is executing toBase64Image() (source: https://www.simplilearn.com/tutorials/javascript-tutorial/javascript-this-keyword)
+                chartImgData.push(imgData);
+            },
+        },
+    },
 });
+
 
 let barPrvw = new Chart("barPrvw", {
     type: "bar",
@@ -565,7 +630,15 @@ let barPrvw = new Chart("barPrvw", {
                 legend:{
                     display: false
                 }
-            }
+            },
+            animation: {
+                // code to help with exporting image of chart
+                // source: https://github.com/chartjs/Chart.js/issues/2743
+                onComplete: function(){ // when animation is completed
+                    let imgData = this.toBase64Image(); // this keyword means the object (i.e. the chart) that is executing toBase64Image() (source: https://www.simplilearn.com/tutorials/javascript-tutorial/javascript-this-keyword)
+                    chartImgData.push(imgData);
+                },
+            },
         }
     });
 
@@ -589,8 +662,16 @@ let piePrvw = new Chart("piePrvw", { // I decided to put the chart into a consta
                 legend:{
                     display: false
                 }
-            }
-        }
+            },
+            animation: {
+                // code to help with exporting image of chart
+                // source: https://github.com/chartjs/Chart.js/issues/2743
+                onComplete: function(){ // when animation is completed
+                    let imgData = this.toBase64Image(); // this keyword means the object (i.e. the chart) that is executing toBase64Image() (source: https://www.simplilearn.com/tutorials/javascript-tutorial/javascript-this-keyword)
+                    chartImgData.push(imgData);
+                },
+            },
+        },
     });
 
 let donutPrvw = new Chart("donutPrvw", { // I decided to put the chart into a constant because without that, I'm very confused as to how to refer to the borderColor
@@ -613,8 +694,16 @@ let donutPrvw = new Chart("donutPrvw", { // I decided to put the chart into a co
                     legend:{
                         display: false
                     }
-                }
-            }
+                },
+                animation: {
+                    // code to help with exporting image of chart
+                    // source: https://github.com/chartjs/Chart.js/issues/2743
+                    onComplete: function(){ // when animation is completed
+                        let imgData = this.toBase64Image(); // this keyword means the object (i.e. the chart) that is executing toBase64Image() (source: https://www.simplilearn.com/tutorials/javascript-tutorial/javascript-this-keyword)
+                        chartImgData.push(imgData);
+                    },
+                },
+            },
         });
 
 let polarPrvw = new Chart("polarPrvw", { // I decided to put the chart into a constant because without that, I'm very confused as to how to refer to the borderColor
@@ -647,8 +736,16 @@ let polarPrvw = new Chart("polarPrvw", { // I decided to put the chart into a co
                     legend:{
                         display: false
                     }
-                }
-            }
+                },
+                animation: {
+                    // code to help with exporting image of chart
+                    // source: https://github.com/chartjs/Chart.js/issues/2743
+                    onComplete: function(){ // when animation is completed
+                        let imgData = this.toBase64Image(); // this keyword means the object (i.e. the chart) that is executing toBase64Image() (source: https://www.simplilearn.com/tutorials/javascript-tutorial/javascript-this-keyword)
+                        chartImgData.push(imgData);
+                    },
+                },
+            },
         });
 
 let bubblePrvw = new Chart("bubblePrvw", { // I decided to put the chart into a constant because without that, I'm very confused as to how to refer to the borderColor
@@ -704,10 +801,17 @@ let bubblePrvw = new Chart("bubblePrvw", { // I decided to put the chart into a 
                     legend:{
                         display: false
                     },
-                }
-            }
+                },
+                animation: {
+                    // code to help with exporting image of chart
+                    // source: https://github.com/chartjs/Chart.js/issues/2743
+                    onComplete: function(){ // when animation is completed
+                        let imgData = this.toBase64Image(); // this keyword means the object (i.e. the chart) that is executing toBase64Image() (source: https://www.simplilearn.com/tutorials/javascript-tutorial/javascript-this-keyword)
+                        chartImgData.push(imgData);
+                    },
+                },
+            },
         });
-
 
 // to generate randomised data values
 function oneDataset(chartName){ // general function for bar, pie, polar area & doughnut charts as they all use 1 dataset
@@ -773,62 +877,123 @@ resetBtn.addEventListener("click", function(){reset()});
 let changeBtn = document.getElementById("changeBtn");
 changeBtn.addEventListener("click", function(){changeColour(), lockAllError()});
 
-// COPY PASTE FEATURES
-// how to use clipboardjs (source: https://clipboardjs.com)
-// 1. get all the html elements you want to attach the clipboard eventListener to
-let copyBtns = document.getElementsByClassName("copy");
-let clipboard = new ClipboardJS(copyBtns); // 2. pass the collection through
-// 3. function to change copy to copied! when text is copied as user feedback
-function copyCol(){
-    copyBtns.innerHTML = "copied!";
-};
+// CODE FOR CHART IMAGE EXPORTING (cont.)
+// 2. checkbox code
+// 3. get the html elements needed for checkboxes
+const allDl = document.getElementById("allDl"); // selectAll button
+const lnDl = document.getElementById("lnDl");
+const barDl = document.getElementById("barDl");
+const pieDl = document.getElementById("pieDl");
+const donutDl = document.getElementById("donutDl");
+const polDl = document.getElementById("polarDl");
+const bubbleDl = document.getElementById("bubbleDl");
+// store all the Dl checkboxes in an array so that can use in for loop (easier to code repetitive actions)
+const checkboxArr = [lnDl, barDl, pieDl, donutDl, polDl, bubbleDl];
 
-// copyBtns.addEventListener("click", function(){copyCol()});
-
-// CODE FOR EXPORT OPTIONS
-// 1. get the elements for the checkbox
-let allDl = document.getElementById("allDl");
-let lnDl = document.getElementById("lnDl");
-let barDl = document.getElementById("barDl");
-let pieDl = document.getElementById("pieDl");
-let donutDl = document.getElementById("donutDl");
-let polDl = document.getElementById("polarDl");
-let bubbleDl = document.getElementById("bubbleDl");
-let checkOptions = [lnDl, barDl, pieDl, donutDl, polDl, bubbleDl]; // store all the Dl checkboxes in an array so that can use in for loop (easier to code repetitive actions)
-
-// 2. function that will tick/untick all checkboxes when the select all checkbox is clicked
+// 4. function that will tick/untick all checkboxes when the select all checkbox is clicked
 function selectAll(){
     if (allDl.checked == true){ // i.e. checked. clicking it unchecks it.
-        for(let x = 0; x < checkOptions.length; x++){
-            checkOptions[x].checked = true; // check them too – same as allDl.checked because they are happening together, not alternating
+        for(let x = 0; x < checkboxArr.length; x++){
+            checkboxArr[x].checked = true; // check them too – same as allDl.checked because they are happening together, not alternating
         }
     }
     else if (allDl.checked == false){ // i.e. allDl unchecked
-        for(let x = 0; x < checkOptions.length; x++){
-            checkOptions[x].checked = false; // uncheck them too
+        for(let x = 0; x < checkboxArr.length; x++){
+            checkboxArr[x].checked = false; // uncheck them too
+            console.log("uncheck");
         }
-    }
+    };
 };
-
+// 5. add EventListener to select all checkbox
 allDl.addEventListener("click", function(){selectAll()});
 
-// 2. write download function
-// 2a. write function for if condition with xDl variable as parameter (xDl refers to the constant storing the various Dl checkboxes)
-function ifCheck(xDl){
-    if (xDl.check == true){
-        // then do what to export & download
-    }
-};
+// DOWNLOAD FUNCTIONS (image data for each chart is stored in imgData)
+// 6. create a new canvas that will hold all the images
+let exportCanvas = document.createElement("canvas"); // source: https://stackoverflow.com/questions/4405336/how-to-copy-contents-of-one-canvas-to-another-canvas-locally
+// set width & height of canvas (source of setAttribute understanding: https://www.educative.io/answers/how-to-add-an-id-to-element-in-javascript)
+// have to use setAttribute(), style won't work (source: https://stackoverflow.com/questions/15793702/drawing-image-on-canvas-larger-than-real)
+exportCanvas.setAttribute("width", 1080); // set width to 1080
+exportCanvas.setAttribute("height", 720); // set height to 720
+exportCanvas.setAttribute("id", "export")
+
+exportCanvas.style.backgroundColor = "pink"; // to check
+exportCanvas.style.borderRadius = "50px";
+//document.body.appendChild(exportCanvas); // to check
+// 7. get the context of this new canvas
+let ctx = exportCanvas.getContext("2d"); 
+
+// function to use promise to delay the execution of dlUrl()
+function wait(ms){ // ms is the number of milliseconds the delay should be
+    return new Promise(resolve => setTimeout(resolve, ms))
+}
+
+// function to get url to exportCanvas with all images
+function dlUrl(){
+    wait(2).then(() => { // after a 2 second delay, execute the following code
+        // a. get the HTML canvas (i have already, exportCanvas）
+        // b. declare a variable with toDataURL &
+        // c. replace the pattern image/png with image/octet-stream
+        // according to chatGPT, doing this changes the MIME type from image/png in dataURLs to image/octet-stream
+        // octet-stream means "a stream of bytes", which allows the browser to download the image
+        let img = exportCanvas.toDataURL("image/png", 0.1); // png image, max quality
+        // d. get the HTML <a> wrapped around download button
+        let downloadLink = document.getElementById("downloadLink");
+        // f. set the href of this anchor tag to the dataURL
+        downloadLink.setAttribute("href", img); // set the reference to the url for exportCanvas
+        downloadLink.setAttribute("download", "myCharts"); // set target as _blank to open in new tab
+    })
+}
 
 function download(){
-    // combine all the ifCheck(xDl) for each Dl option
-};
+    console.log("IT HAS BEEN 19 HOURS and this STILL won't work properly OH MY GOD");
+    // make a counter to track how many charts (used to determine y coords to move down to new row)
+    let counter = -1;
+    ctx.clearRect(0, 0, exportCanvas.width, exportCanvas.height); // clears the canvas of images every time download() pressed (source: https://stackoverflow.com/questions/2142535/how-to-clear-the-canvas-for-redrawing)
+    // 8. loop through checkboxes (save for later, check if code works first)
+    for (let x = 0; x < checkboxArr.length; x++){
+        // console.log("agent DBUG reporting, we're in the for loop.")
+        // 9. for checkboxes that are ticked (if statement)... (save for later, check if code works first)
+        if (checkboxArr[x].checked == true){ // ... execute code that will draw the chart's image data onto another canvas
+            // console.log(counter);
+            // 10. declare a new Image
+            let chartImg = new Image;
+            // 11. draw the new Image into the canvas context (source: https://stackoverflow.com/questions/4405336/how-to-copy-contents-of-one-canvas-to-another-canvas-locally)
+            chartImg.onload = function(){
+                // drawImage() understanding source: https://www.w3schools.com/tags/canvas_drawimage.asp
+                // (draw chartImg, start at coords 0,0 or the canvas, size of image 360 x 360)
+                // coords are 0 + 360 * x so that the images can be side by side
+                counter += 1; // add 1 to the counter for every chart ticked
+                if (counter <= 2){
+                    ctx.drawImage(chartImg, 360 * counter, 0, 360, 360); // set the chart y-coord to upper row
+                }
+                else if (counter >= 3){
+                    ctx.drawImage(chartImg, 360 * (counter-3), 360, 360, 360); // set chart y-coord to lower row
+                };
+                // 12. declare the new Image.src to be chartImgData[x]
+                // console.log("agent DBUG here, we're in the if statement for" + x);
+                };
+            chartImg.src = chartImgData[x];
+            // console.log("agent DBUG reporting, we've ended the if statement for" + checkboxArr[x]);
+        };
+    };
+    dlUrl();
+}
 
 // 3. get the download button html element
 let downloadBtn = document.getElementById("download");
 
 // 4. add eventListener to downloadBtn to call download() when clicked
 downloadBtn.addEventListener("click", function(){download()});
+
+// COPY PASTE FEATURES
+// how to use clipboardjs (source: https://clipboardjs.com)
+// 1. get all the html elements you want to attach the clipboard eventListener to
+let copyBtns = document.getElementsByClassName("copy"); // copy buttons for individual colour codes
+let clipboard = new ClipboardJS(copyBtns); // 2. pass the collection through
+// 3. function to change copy to copied! when text is copied as user feedback
+function copyCol(){
+    copyBtns.innerHTML = "copied!";
+};
 
 
 // CODE TO HELP RESPONSIVE STYLING
@@ -886,12 +1051,14 @@ window.addEventListener("resize", function(){optBtnHt()});
 // illustrator to Raphael guide (source: https://snugug.com/musings/illustrator-to-raphael-js-guide/)
 
 // 1. get the divs that the svgs are going to be in
-const copySvgs = Array.from(document.getElementsByClassName("copy"));
+const copySvgs = Array.from(document.getElementsByClassName("copyOpt")); // this is the copy button
+const editSvgs = Array.from(document.getElementsByClassName("edit")); // this is the pencil icon
 
 // 2. store svg paths in variables
 // a. copy button icon
 let copySvgPath = "M12.3,3.1H4.8C2.1,3.1,0,5.3,0,7.9v7.3C0,17.9,2.2,20,4.8,20h7.5c2.7,0,4.8-2.2,4.8-4.8V7.9C17.1,5.2,15,3.1,12.3,3.1z M15.5,0H5.9C4.7,0,3.6,0.5,2.7,1.3c-0.3,0.3-0.3,0.7,0,1c0.3,0.3,0.7,0.3,1,0c0.6-0.5,1.3-0.9,2.2-0.9h9.6c1.7,0,3.1,1.3,3.1,3V14 c0,0.7-0.3,1.5-0.8,2c-0.3,0.3-0.3,0.8,0.1,1c0.1,0.1,0.3,0.2,0.5,0.2c0.2,0,0.4-0.1,0.5-0.3c0.7-0.8,1.1-1.8,1.1-2.9V4.5 C20.1,2,18,0,15.5,0z";
-// c. pencil icon
+// b. pencil icon
+let editSvgPath = "M7.3,15.9c-0.3,0.3-0.7,0.3-0.9,0s-0.3-0.7,0-0.9L14,7.3c0.4-0.4,0.4-1,0-1.5c-0.4-0.4-1-0.4-1.5,0l-7.7,7.7 c-0.3,0.3-0.7,0.3-0.9,0c-0.3-0.3-0.3-0.7,0-0.9l8.4-8.4L11,2.9l-9,9c-0.1,0.1-0.2,0.2-0.2,0.4l-0.8,3c0.9,0.2,1.7,0.6,2.4,1.3 s1.1,1.5,1.3,2.4l3-0.8c0.2,0,0.3-0.1,0.4-0.2l9-9l-1.4-1.4L7.3,15.9z M2.6,17.3c-0.5-0.5-1.2-0.9-1.9-1.1L0,18.8 c-0.2,0.6,0.4,1.2,1.1,1.1l2.6-0.7C3.5,18.5,3.2,17.8,2.6,17.3L2.6,17.3z M19.6,5.1l-4.8-4.8c-0.3-0.3-0.9-0.3-1.2,0L12,1.9l6,6l0,0 l1.6-1.6C20,6,20,5.4,19.6,5.1z";
 
 // declare function to centralise position before using it
 function centerSvg(boxWidth, iconWidth){
@@ -909,8 +1076,9 @@ function centerSvg(boxWidth, iconWidth){
 // xPath: the path, x is the name
 // path: the string of numbers etc. for the svg path
 // width: icon's width
+// endArr: name of array the path will be pushed to
 
-function createSvgs(array, xPaper, xPath, path, width){
+function createSvgs(array, xPaper, xPath, path, width, endArr){
     for(let x = 0; x < array.length; x++){ // for all the buttons of a particular type, create...
         // 4. create the paper to put the SVG (directions source: https://alistapart.com/article/svg-with-a-little-help-from-raphael/)
         // this creates a "canvas" in the first copy button with height and width = optBtnWidth()
@@ -923,8 +1091,7 @@ function createSvgs(array, xPaper, xPath, path, width){
             fill: "auto",
             "stroke-width": 0, // any property in documentation with a dash must be put in ""
         });
-        copyIconArr.push(xPath);
-        console.log(copyIconArr[0].attrs.fill);
+        endArr.push(xPath);
         // 7. set the viewbox. coords are 0, 0 and the viewbox height and width = optBtnWidth()
         xPaper.setViewBox(centerSvg(optBtnWidth(), width), centerSvg(optBtnWidth(), width), optBtnWidth(), optBtnWidth(), true); // source: https://stackoverflow.com/questions/11176396/how-can-i-scale-raphael-js-elements-on-window-resize-using-jquery
     }
@@ -932,7 +1099,9 @@ function createSvgs(array, xPaper, xPath, path, width){
 
 // apply createSvgs to different icons to "draw" them
 // a. copyBtn icon
-createSvgs(copySvgs, "copyIconPaper", "copyIconPath", copySvgPath, 20); // "copyIconPaper", "copyIconPath" are in "" because they are names of variables within the function, not predefined ones
+createSvgs(copySvgs, "copyIconPaper", "copyIconPath", copySvgPath, 20, copyIconArr); // "copyIconPaper", "copyIconPath" are in "" because they are names of variables within the function, not predefined ones
+// b. pencil icon
+createSvgs(editSvgs, "editIconPaper", "editIconPath", editSvgPath, 20, editIconArr)
 
 // add eventListener to change hover colour
 // 1. use loop to apply eventListener to all class="optBtn" elements (source: https://flaviocopes.com/how-to-add-event-listener-multiple-elements-javascript/)
