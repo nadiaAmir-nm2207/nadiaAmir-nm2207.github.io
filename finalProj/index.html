@@ -17,6 +17,8 @@
         <script src="resources/raphaeljs/raphael.js"></script>
         <!-- my stylesheet -->
         <link rel="stylesheet" type="text/css" href="css/css.css">
+        <!-- fontawesome kit -->
+        <script src="https://kit.fontawesome.com/845e277b28.js" crossorigin="anonymous"></script>
         <!-- my JS -->
         <script defer type="text/javascript" src="js/main.js"></script>
         <title>Charter#use – chart colour generator</title>
@@ -24,13 +26,15 @@
     <!-- g-0 is the Bootstrap class for no-gutters, which clears the margins & padding for the columns. I did this so that my columns will not have a gap between them -->
     <!-- I added the class container-fluid because I read that without it, rows will cause horizontal scrolling on some screens (source: https://stackoverflow.com/questions/61003484/i-need-to-fix-bootstrap-h-100-class-it-is-not-working)-->
     <body class="container-fluid g-0">
-        <header class="row g-0">
-            <div class="col-10 col-md-10">
-                <p><span id="logo">charter#use</span>&nbsp;<span id="tagline">by Nadia Amir</span></p> <!-- had to make new h1 & h2 classes because using the tags and then display:inline still wasn't putting them side by side for me-->
+        <header id="header">
+            <div class="row g-0">
+                <div class="col-10 col-md-10" id="title">
+                    <p><span id="logo">charter#use</span>&nbsp;<span id="tagline">by Nadia Amir</span></p> <!-- had to make new h1 & h2 classes because using the tags and then display:inline still wasn't putting them side by side for me-->
+                </div>
+                <nav class="col-2 col-md-2" id="nav"> <!-- nav for navigation -->
+                    <a href="https://nadiaamir-nm2207.github.io/projDiary/index.html"><button class="btn gradBtn"><i class="fa-solid fa-book"></i> diary</button></a>
+                </nav>
             </div>
-            <nav class="col-2 col-md-2"> <!-- nav for navigation -->
-                <a href="https://nadiaamir-nm2207.github.io/projDiary/index.html"><button class="btn gradBtn">diary</button></a>
-            </nav>
         </header>
         <div class="row g-0"> <!-- always include g-0 class for rows so that won't get horizontal scroll (I came up with the solution, but realised it after reading that rows automatically have 15px margins in bootstrap. source: https://stackoverflow.com/questions/27758457/how-to-remove-this-horizontal-scrollbar-in-bootstrap-3)-->
             <!-- col col-md means small column, helps the column be responsive. one row has 12 units -->
@@ -42,11 +46,11 @@
                     <div id="chartOpt">
                         <div class="row g-0"> <!-- to style the row for the data options -->
                             <div class = "col-7">
-                                <button id="randBtn" class="outlineBtn btn">&#9858; randomise data</button>
-                                <button id="resetBtn" class="outlineBtn btn">&#8635; reset data</button>
+                                <button id="randBtn" class="outlineBtn btn"><i class="fa-solid fa-dice-three"></i> randomise data</button>
+                                <button id="resetBtn" class="outlineBtn btn"><i class="fa-solid fa-arrow-rotate-right"></i> reset data</button>
                             </div>
                             <div class="col-5 right">
-                                <button id="modeBtn" class="btn outlineBtn">&#9728; light bg</button><!-- text always opposite of the default mode. default mode is light, .: text should read dark mode -->
+                                <button id="modeBtn" class="btn outlineBtn"><i class="fa-solid fa-sun"></i> light bg</button><!-- text always opposite of the default mode. default mode is light, .: text should read dark mode -->
                             </div>
                         </div>
                     </div>
@@ -64,14 +68,6 @@
                         <div class="col col-md-4"><canvas id="bubblePrvw" class="canvasBox"></canvas></div>
                     </div>
                 </div>
-                <div id="aboutBox">
-                    <h1>about charter#use</h1>
-                    <p class="quote">&#10077; Color, you see, was the universal sign of magic. &#10078;</p>
-                    <p class="quoteSource">- Tahereh Mafi, Furthermore</p>
-                    <p>Getting the right colours for your charts can take a lot of time! This project was created to help :) </p>
-                    <p>Charter#use is a colour generator that focuses on generating qualitative palettes. Generally, this means palettes for data that are made of names rather than numbers. It is best used for chart types that demand use of more than 2 colours to distinguish data. Some examples of such charts include pie charts, doughnut charts and polar area charts!</p>
-                    <p>The algorithm was written to avoid palettes that combined red and green, since that's the most common type of colour-blindness. But of course, it is not the only type of colour-blindness! We highly suggest also running your generated palette through colour-blind tests and tweaking it so that it's as accessible as possible.</p>
-                </div>
             </div>
             <!-- sidebar -->
             <div class="col-12 col-md-4 g-0">
@@ -83,64 +79,84 @@
                             <!-- add the lock ids for the locking & unlocking. has to be ids because each one will have unique counter & action when clicked -->
                             <!-- add the copy ids for Raphael -->
                             <div class="swatch baseHue hue1" id="topSwatch">
-                                <div class="colOpt row">
-                                    <div class="colourLabel col-12 col-md-6" id="label1">#colour</div>
-                                    <div class="col-12 col-md-6">
-                                        <div class="row g-0"> <!-- another row so each button can go into a column -->
-                                        <!-- data-clipboard-target should go to the trigger element i.e. the thing that is being clicked to activate the copying-->
-                                             <!-- only need col-4 because it will take up 1/3 of the space on any viewport size -->
-                                             <!-- .copy for clipboardJS, .copyOpt for svg drawing. Have to be different because copyAll is in the other column and also needs clipboardJS-->
-                                             <div class="col-4 g-0 optBtnBox"><button class="copyOpt copy optBtn" id="copy1" data-clipboard-target="#label1"><!--copy icon svg from js--></button> <!-- copy button --></div>
-                                             <div class="col-4 g-0 optBtnBox"><button class="lock optBtn" id="lock1"><img src="resources/lightUnlock.svg" class="lockIcon"></button><!-- lock button --></div>
-                                             <div class="col-4 g-0 optBtnBox"><button class="edit optBtn" id="edit1"></button> <!-- edit button (tentative wip) --></div>
+                                <div class="colOpt">
+                                    <div class="row g-0">
+                                        <div class="col-6">
+                                            <div class="colourLabel" id="label1">#colour</div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="row g-0"> <!-- another row so each button can go into a column -->
+                                            <!-- data-clipboard-target should go to the trigger element i.e. the thing that is being clicked to activate the copying-->
+                                                <!-- only need col-4 because it will take up 1/3 of the space on any viewport size -->
+                                                <!-- .copy for clipboardJS, .copyOpt for svg drawing. Have to be different because copyAll is in the other column and also needs clipboardJS-->
+                                                <div class="col-4 g-0"><!--spacer--></div>
+                                                <div class="col-4 g-0 optBtnBox"><button class="copyOpt copy optBtn" id="copy1" data-clipboard-target="#label1"><i class="fa-solid fa-copy"></i></button> <!-- copy button --></div>
+                                                <div class="col-4 g-0 optBtnBox"><button class="lock optBtn" id="lock1"><i class="fa-solid fa-lock-open"></i></button><!-- lock button --></div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="swatch hue1">
-                                <div class="colOpt row">
-                                    <div class="colourLabel" id="label2">#colour</div>
-                                    <div class="col-12 col-md-6">
-                                        <div class="row g-0">
-                                            <div class="col-4 g-0 optBtnBox"><button class="copyOpt copy optBtn" id="copy2" data-clipboard-target="#label2"></button></div>
-                                            <div class="col-4 g-0 optBtnBox"><button class="lock optBtn" id="lock2"><img src="resources/lightUnlock.svg" class="lockIcon"></button></div>
-                                            <div class="col-4 g-0 optBtnBox"><button class="edit optBtn" id="edit2"></button></div>
+                                <div class="colOpt">
+                                    <div class ="row g-0">
+                                        <div class="col-6">
+                                            <div class="colourLabel" id="label2">#colour</div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="row g-0">
+                                                <div class="col-4 g-0"><!--spacer--></div>
+                                                <div class="col-4 g-0 optBtnBox"><button class="copyOpt copy optBtn" id="copy2" data-clipboard-target="#label2"><i class="fa-solid fa-copy"></i></button></div>
+                                                <div class="col-4 g-0 optBtnBox"><button class="lock optBtn" id="lock2"><i class="fa-solid fa-lock-open"></i></button></div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="swatch baseHue hue2">
-                                <div class="colOpt row">
-                                    <div class="colourLabel" id="label3">#colour</div>
-                                    <div class="col-12 col-md-6">
-                                        <div class="row g-0">
-                                            <div class="col-4 g-0 optBtnBox"><button class="copyOpt copy optBtn" id="copy3" data-clipboard-target="#label3"></button></div>
-                                            <div class="col-4 g-0 optBtnBox"><button class="lock optBtn" id="lock3"><img src="resources/lightUnlock.svg" class="lockIcon"></button></div>
-                                            <div class="col-4 g-0 optBtnBox"><button class="edit optBtn" id="edit3"></button></div>
+                                <div class="colOpt">
+                                    <div class ="row g-0">
+                                        <div class="col-6">
+                                            <div class="colourLabel" id="label3">#colour</div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="row g-0">
+                                                <div class="col-4 g-0"><!--spacer--></div>
+                                                <div class="col-4 g-0 optBtnBox"><button class="copyOpt copy optBtn" id="copy3" data-clipboard-target="#label3"><i class="fa-solid fa-copy"></i></button></div>
+                                                <div class="col-4 g-0 optBtnBox"><button class="lock optBtn" id="lock3"><i class="fa-solid fa-lock-open"></i></button></div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="swatch hue2">
-                                <div class="colOpt row">
-                                    <div class="colourLabel" id="label4">#colour</div>
-                                    <div class="col-12 col-md-6">
-                                        <div class="row g-0">
-                                            <div class="col-4 g-0 optBtnBox"><button class="copyOpt copy optBtn" id="copy4" data-clipboard-target="#label4"></button></div>
-                                            <div class="col-4 g-0 optBtnBox"><button class="lock optBtn" id="lock4"><img src="resources/lightUnlock.svg" class="lockIcon"></button></div>
-                                            <div class="col-4 g-0 optBtnBox"><button class="edit optBtn" id="edit4"></button></div>
+                                <div class="colOpt">
+                                    <div class ="row g-0">
+                                        <div class="col-6">
+                                            <div class="colourLabel" id="label4">#colour</div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="row g-0">
+                                                <div class="col-4 g-0"><!--spacer--></div>
+                                                <div class="col-4 g-0 optBtnBox"><button class="copyOpt copy optBtn" id="copy4" data-clipboard-target="#label4"><i class="fa-solid fa-copy"></i></button></div>
+                                                <div class="col-4 g-0 optBtnBox"><button class="lock optBtn" id="lock4"><i class="fa-solid fa-lock-open"></i></button></div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="swatch hue3 lastBox" data-clipboard-target="#label5">
-                                <div class="colOpt row">
-                                    <div class="colourLabel" id="label5">#colour</div>
-                                    <div class="col-12 col-md-6">
-                                        <div class="row g-0">
-                                            <div class="col-4 g-0 optBtnBox"><button class="copyOpt copy optBtn" id="copy5" data-clipboard-target="#label5"></button></div>
-                                            <div class="col-4 g-0 optBtnBox"><button class="lock optBtn" id="lock5"><img src="resources/lightUnlock.svg" class="lockIcon"></button></div>
-                                            <div class="col-4 g-0 optBtnBox"><button class="edit optBtn" id="edit5"></button></div>
+                                <div class="colOpt">
+                                    <div class ="row g-0">
+                                        <div class="col-6">
+                                            <div class="colourLabel" id="label5">#colour</div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="row g-0">
+                                                <div class="col-4 g-0"><!--spacer--></div>
+                                                <div class="col-4 g-0 optBtnBox"><button class="copyOpt copy optBtn" id="copy5" data-clipboard-target="#label5"><i class="fa-solid fa-copy"></i></button></div>
+                                                <div class="col-4 g-0 optBtnBox"><button class="lock optBtn" id="lock5"><i class="fa-solid fa-lock-open"></i></button></div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -152,9 +168,9 @@
                         <!-- HTML entities & special characters source (https://www.w3schools.com/charsets/ref_utf_symbols.asp)-->
                         <!-- colour buttons -->
                         <div class="ctrlBox">
-                            <p><button id="changeBtn" class="btn gradBtn">&#8767; Generate</button></p>
-                            <p><button id="unlockAll" class="btn outlineBtn">&#x1f513; Unlock All </button></p>
-                            <p><button id="lockAll" class="btn outlineBtn">&#128274; Lock All </button></p><!-- text always opposite of the default mode. default mode is light, .: text should read dark mode -->
+                            <p><button id="changeBtn" class="btn gradBtn"><i class="fa-solid fa-wand-magic-sparkles"></i> Generate</button></p>
+                            <p><button id="unlockAll" class="btn outlineBtn"><i class="fa-solid fa-lock-open"></i> Unlock All </button></p>
+                            <p><button id="lockAll" class="btn outlineBtn"><i class="fa-solid fa-lock"></i> Lock All </button></p><!-- text always opposite of the default mode. default mode is light, .: text should read dark mode -->
                         </div>
                         <!-- copy all option -->
                         <div class="ctrlBox">
@@ -162,19 +178,19 @@
                                 <p><label for="allCodes" hidden="hidden">Colour Codes</label></p> <!-- hidden because I don't want it to show, but kept for accessibility -->
                                 <textarea id="allCodes" name="allCodes" rows="4" cols="50"></textarea> <!-- [ to start the array -->
                                 <br>
-                                <button id="#copyAll" class="outlineBtn btn copy" data-clipboard-target="#allCodes">Copy All</button> <!-- add .copy so that it will take on the clipboardJS function -->
+                                <button id="#copyAll" class="outlineBtn btn copy" data-clipboard-target="#allCodes"><i class="fa-solid fa-copy"></i> Copy All</button> <!-- add .copy so that it will take on the clipboardJS function -->
                             </div>
                         </div>
                         <!-- export options-->
                         <div class="ctrlBox lastBox"> <!-- download/export options -->
-                            <h2>Export options</h2>
+                            <h2>Export Charts</h2>
                             <!-- select all btn -->
                             <div class="row g-0">
-                                <div class="col col-md-6 btnBox"><p><input type="checkbox" id="allDl"><label for="allDl">&nbsp;select all</label></p></div> <!-- if don't use &nbsp; the space is ignored-->
+                                <div class="col"><p><input type="checkbox" id="allDl"><label for="allDl">&nbsp;select all charts</label></p></div> <!-- if don't use &nbsp; the space is ignored-->
                             </div>
                             <!-- indiv options btns -->
                             <div class="row g-0">
-                                <div class="btnBox">
+                                <div>
                                     <p><input type="checkbox" id="lnDl"><label for="lnDl">&nbsp;linechart</label></p>
                                     <p><input type="checkbox" id="barDl"><label for="barDl">&nbsp;barchart</label></p>
                                     <p><input type="checkbox" id="pieDl"><label for="pieDl">&nbsp;piechart</label></p>
@@ -182,7 +198,7 @@
                                     <p><input type="checkbox" id="polarDl"><label for="polarDl">&nbsp;polar area chart</label></p>
                                     <p><input type="checkbox" id="bubbleDl"><label for="bubbleDl">&nbsp;bubble chart</label></p>
                                 </div>
-                                <p><a id="downloadLink"><button id="download" class="btn gradBtn">Download </button></a></p>
+                                <p><a id="downloadLink"><button id="download" class="btn gradBtn"><i class="fa-solid fa-download"></i> Download </button></a></p>
                             </div>
                         </div>
                     </div>
