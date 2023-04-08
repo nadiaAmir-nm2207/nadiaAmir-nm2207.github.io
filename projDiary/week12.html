@@ -97,6 +97,32 @@
                     <p>I was able to download an image with the charts I ticked, but the buttons needed to be clicked twice. Apparently, it’s because the first click sets off the timer, and the second click actually downloads the image.</p>
                     <p>This irked me, so I did more searching. I found <a href="https://stackoverflow.com/questions/8404937/drawing-multiple-images-on-one-canvas">this thread</a>, among others, that talked about how promises were a good way to get a bunch of future data together and then passed on to the next bit of code. I'm finding them pretty complex to understand and don’t think I can finish it in time for week 12 submission, so I’ll just leave it as the double click thingy first ;w;</p>
                     <p>Also, I just realised that if I randomise the data, the download function doesn't work either ;; I will have to figure out how to get that solved too. If I can't do that in time, I might just remove my randomise button because I think the download function is more important.</p>
+                    <h6>&#9830; Promises </h6>
+                    <p>The purpose of using promises was to: make sure all images are loaded before generating the dataURL so that download works properly. For this part of the code, I referenced <a href="https://stackoverflow.com/questions/8404937/drawing-multiple-images-on-one-canvas">this stackoverflow thread on loading multiple images</a> and by giving ChatGPT my code and asking it why certain things were breaking. I would then read through the suggestions to see what I thought was likely, and try to resolve them using my own code.</p>
+                    <p>ChatGPT suggested using <code>Promise.all</code> in order to make sure all the iamges were loaded. The steps I thought I would take were:</p>
+                    <p class="point">1. Create an array of promises (called promises). Each image that has to be loaded will add a new promise object to this array.</p>
+                    <p>Now, we only want to create a promise for the chartImg if the chart is ticked. So we have to keep our for loop and if statement. It would read something like this:</p>
+                    <p class="point">2. Go through the checkboxes (for loop)</p>
+                    <p class="point">3. And if a checkbox is ticked (if statement)</p>
+                    <p class="point">4. Create a promise</p>
+                    <p class="point">5. Within this promise, include my asynchronous operation, which is probably the code inside chartImg.onload ( adding to the counter & the ctx.drawImage lines)</p>
+                    <p class="point">6. Use .then to push the promise to promises</p>
+                    <p class="point">7. Remember to add the standard .catch to detect specific errors</p>
+                    <p class="point">8. Promise.all(promises).then execute dlUrl()</p>
+                    <p>A promise takes 2 arguments, resolve & reject. At first, I thought all my asynchronous operations should be placed inside the promise (without using a chain). It kinda broke when I tried it, so I decided to break it down into a chain.</p>
+                    <p>So the promise would only include this:</p>
+                    <p><img src="resources/promises3.jpg"></p>
+                    <p>According to the <a href="https://stackoverflow.com/questions/8404937/drawing-multiple-images-on-one-canvas">StackOverflow thread I was referring to</a>, this looks like the standard format for promises used to ensure images are all loaded before the next piece of code is executed.</p>
+                    <p>After creating the promise, I chained different .then to it corresponding to each step in the process.</p>
+                    <p class="point">1. Add 1 to the counter</p>
+                    <p class="point">2. Draw chartImg to ctx</p>
+                    <p class="point">3. Push promise into promises</p>
+                    <p>Outside the for loop, <code>Promise.all(promises)</code> is used to check if all the chartImgs have been loaded, before executing the dlUrl() function.</p>
+                    <p>After doing this, I am able to get the image to download! However, I still have to click the download button twice to start the loading of chartImgs. If I cannot remove the need for the first click to kick off the loading, then I have to do something that can make the image download by itself while maintaining the illusion that it was the button click that caused the download.</p>
+                    <p>I decided to break down the rest of <code>download()</code> into .thens as well.</p>
+                    <p><img src="resources/promises2.jpg"></p>
+                    <p>Initially, I didn’t have the last .then with downloadLink.click. I added it because after asking chatGPT for suggestions on how to prevent the need to double-click, it mentioned that you can try clicking the downloadLink programmatically. I double-checked this <a href="https://stackoverflow.com/questions/2705583/how-to-simulate-a-click-with-javascript">by looking up what .click() did</a>, and it looked like it would make the program simulate a click. So I gave it a shot.</p>
+                    <p>And it worked! Now, you can just click once on the download button to get the download. However, I still have issues such as not being able to regenerate the colours and downloading that new file without refreshing the page, as well as the randomise data issue. It's as though the downloading is limited to one load only. I will have to find a way to get the chartImgs to load each time something changes I think?</p>
                 </div>
             </div>
         </section>
