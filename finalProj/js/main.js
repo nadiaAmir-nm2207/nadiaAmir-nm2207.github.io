@@ -499,6 +499,7 @@ function changeColour(){
     };
     allCodes.innerHTML = codesArr; // change innerHTML of textarea to show hex colour codes
     updateChart(); // 12. updating the charts so that the changes show
+
 }
 
 // RGB TO HEX FUNCTIONS: to convert RGB values to HEX for nicer presentation of colour codes
@@ -878,8 +879,8 @@ let changeBtn = document.getElementById("changeBtn");
 changeBtn.addEventListener("click", function(){changeColour(), lockAllError()});
 
 // CODE FOR CHART IMAGE EXPORTING (cont.)
-// 2. checkbox code
-// 3. get the html elements needed for checkboxes
+// CHECKBOX CODE
+// get the html elements needed for checkboxes
 const allDl = document.getElementById("allDl"); // selectAll button
 const lnDl = document.getElementById("lnDl");
 const barDl = document.getElementById("barDl");
@@ -890,7 +891,7 @@ const bubbleDl = document.getElementById("bubbleDl");
 // store all the Dl checkboxes in an array so that can use in for loop (easier to code repetitive actions)
 const checkboxArr = [lnDl, barDl, pieDl, donutDl, polDl, bubbleDl];
 
-// 4. function that will tick/untick all checkboxes when the select all checkbox is clicked
+// tick/untick all checkboxes when the select all checkbox is clicked
 function selectAll(){
     if (allDl.checked == true){ // i.e. checked. clicking it unchecks it.
         for(let x = 0; x < checkboxArr.length; x++){
@@ -900,90 +901,105 @@ function selectAll(){
     else if (allDl.checked == false){ // i.e. allDl unchecked
         for(let x = 0; x < checkboxArr.length; x++){
             checkboxArr[x].checked = false; // uncheck them too
-            console.log("uncheck");
         }
     };
 };
-// 5. add EventListener to select all checkbox
+// add EventListener to select all checkbox
 allDl.addEventListener("click", function(){selectAll()});
 
 // DOWNLOAD FUNCTIONS (image data for each chart is stored in imgData)
-// 6. create a new canvas that will hold all the images
+// create a new canvas that will hold all the images
 let exportCanvas = document.createElement("canvas"); // source: https://stackoverflow.com/questions/4405336/how-to-copy-contents-of-one-canvas-to-another-canvas-locally
 // set width & height of canvas (source of setAttribute understanding: https://www.educative.io/answers/how-to-add-an-id-to-element-in-javascript)
 // have to use setAttribute(), style won't work (source: https://stackoverflow.com/questions/15793702/drawing-image-on-canvas-larger-than-real)
 exportCanvas.setAttribute("width", 1080); // set width to 1080
 exportCanvas.setAttribute("height", 720); // set height to 720
-exportCanvas.setAttribute("id", "export")
-
-exportCanvas.style.backgroundColor = "pink"; // to check
-exportCanvas.style.borderRadius = "50px";
-//document.body.appendChild(exportCanvas); // to check
-// 7. get the context of this new canvas
+// get the context of this new canvas
 let ctx = exportCanvas.getContext("2d"); 
 
-// function to use promise to delay the execution of dlUrl()
-function wait(ms){ // ms is the number of milliseconds the delay should be
-    return new Promise(resolve => setTimeout(resolve, ms))
-}
+// empty array to push chartImgs when created
+const chartImgArr = [];
+// create an array of promises
+// each image that has to be loaded will add a new promise object to promises
+const promises = [];
+// make counter to track how many charts (used to determine y coords to move down to new row)
+let counter = -1;
+// loop through checkboxes
+function loadChartImgs(){
+    // clear arrays
+    chartImgArr.length = 0;
+    promises.length = 0;
+    for (let x = 0; x < checkboxArr.length; x++){
+        // 10. for checkboxes that are ticked (if statement)... (save for later, check if code works first)
+        if (checkboxArr[x].checked == true){ // ... execute code that will draw the chart's image data onto another canvas
+            // declare a promise
+            const promise = new Promise ((resolve, reject) => {
+                // asynchronous action: declare new Image
+                let chartImg = new Image;
+                // make sure image loads (source: https://stackoverflow.com/questions/8404937/drawing-multiple-images-on-one-canvas)
+                chartImg.onload = () => resolve(chartImg);
+                chartImg.onerror = () => reject("chartImg did not load");
+                // tell code where to get image data for chartImg
+                chartImg.src = chartImgData[x];
+                // push chartImg into chartImgArr so it can be accessed later on in promise chain
+                chartImgArr.push(chartImg);
+            })
+            // use promise
+            promise.then((result) => {
+                // adding to counter
+                counter += 1; // add 1 to the counter for every chart ticked
+            })
+            .then((result) => {
+                // draw chartImg in ctx
+                if (counter <= 2){ // if one of the first 3 charts
+                ctx.drawImage(chartImgArr[counter], 360 * counter, 0, 360, 360); // set the chart y-coord to upper row
+                }
+                else if (counter >= 3){ // if one of the last 3 charts
+                ctx.drawImage(chartImgArr[counter], 360 * (counter-3), 360, 360, 360); // set chart y-coord to lower row
+                };
+            })
+            .catch(error => { // to tell me where in the promise chain did the error occur
+                console.error(error);
+            })
+            // push each promise into promises
+            promises.push(promise);
+        };
+    }
+};
 
-// function to get url to exportCanvas with all images
-function dlUrl(){
-    wait(2).then(() => { // after a 2 second delay, execute the following code
-        // a. get the HTML canvas (i have already, exportCanvas）
-        // b. declare a variable with toDataURL &
-        // c. replace the pattern image/png with image/octet-stream
-        // according to chatGPT, doing this changes the MIME type from image/png in dataURLs to image/octet-stream
-        // octet-stream means "a stream of bytes", which allows the browser to download the image
+// write the download function
+function download(){
+    loadChartImgs();
+    // get the HTML <a> wrapped around download button
+    const downloadLink = document.getElementById("downloadLink");
+    // check that all promises have been fulfilled (i.e. all images have been loaded)
+    const allImgsLoaded = Promise.all(promises);
+    allImgsLoaded.then((result)=> { 
+        // then generate dataURL from exportCanvas for download
+        // source: https://www.sanwebe.com/snippet/downloading-canvas-as-image-dataurl-on-button-click
+        // a. declare a variable storing toDataURL
         let img = exportCanvas.toDataURL("image/png", 0.1); // png image, max quality
-        // d. get the HTML <a> wrapped around download button
-        let downloadLink = document.getElementById("downloadLink");
+        return img;
+    })
+    .then((img)=> { // pass on the value of img
         // f. set the href of this anchor tag to the dataURL
         downloadLink.setAttribute("href", img); // set the reference to the url for exportCanvas
-        downloadLink.setAttribute("download", "myCharts"); // set target as _blank to open in new tab
+        // g. download a file named myCharts (source: https://www.w3schools.com/tags/att_a_download.asp)
+        downloadLink.setAttribute("download", "myCharts");
+        // h. click the downloadLink programmatically to download
+        downloadLink.click(); // source: https://stackoverflow.com/questions/2705583/how-to-simulate-a-click-with-javascript
     })
-}
-
-function download(){
-    console.log("IT HAS BEEN 19 HOURS and this STILL won't work properly OH MY GOD");
-    // make a counter to track how many charts (used to determine y coords to move down to new row)
-    let counter = -1;
-    ctx.clearRect(0, 0, exportCanvas.width, exportCanvas.height); // clears the canvas of images every time download() pressed (source: https://stackoverflow.com/questions/2142535/how-to-clear-the-canvas-for-redrawing)
-    // 8. loop through checkboxes (save for later, check if code works first)
-    for (let x = 0; x < checkboxArr.length; x++){
-        // console.log("agent DBUG reporting, we're in the for loop.")
-        // 9. for checkboxes that are ticked (if statement)... (save for later, check if code works first)
-        if (checkboxArr[x].checked == true){ // ... execute code that will draw the chart's image data onto another canvas
-            // console.log(counter);
-            // 10. declare a new Image
-            let chartImg = new Image;
-            // 11. draw the new Image into the canvas context (source: https://stackoverflow.com/questions/4405336/how-to-copy-contents-of-one-canvas-to-another-canvas-locally)
-            chartImg.onload = function(){
-                // drawImage() understanding source: https://www.w3schools.com/tags/canvas_drawimage.asp
-                // (draw chartImg, start at coords 0,0 or the canvas, size of image 360 x 360)
-                // coords are 0 + 360 * x so that the images can be side by side
-                counter += 1; // add 1 to the counter for every chart ticked
-                if (counter <= 2){
-                    ctx.drawImage(chartImg, 360 * counter, 0, 360, 360); // set the chart y-coord to upper row
-                }
-                else if (counter >= 3){
-                    ctx.drawImage(chartImg, 360 * (counter-3), 360, 360, 360); // set chart y-coord to lower row
-                };
-                // 12. declare the new Image.src to be chartImgData[x]
-                // console.log("agent DBUG here, we're in the if statement for" + x);
-                };
-            chartImg.src = chartImgData[x];
-            // console.log("agent DBUG reporting, we've ended the if statement for" + checkboxArr[x]);
-        };
-    };
-    dlUrl();
-}
+    .catch((err) => {console.log(err)}); // check for errors
+};
 
 // 3. get the download button html element
 let downloadBtn = document.getElementById("download");
 
 // 4. add eventListener to downloadBtn to call download() when clicked
 downloadBtn.addEventListener("click", function(){download()});
+
+// add eventListener to changeBtn to reload chartImgs when new colours generated (even if don't re-tick charts)
+changeBtn.addEventListener("click", function(){loadChartImgs()});
 
 // COPY PASTE FEATURES
 // how to use clipboardjs (source: https://clipboardjs.com)
