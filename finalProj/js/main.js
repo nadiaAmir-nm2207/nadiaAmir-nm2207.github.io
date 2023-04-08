@@ -1,6 +1,88 @@
 // how to comment code: https://javascript.info/comments
 // ELEPHANT: things I need to pay attention to & remove
 
+/** ---------- SVG DRAWING WITH RAPHAEL ----------
+ * sources:
+ * library: https://dmitrybaranovskiy.github.io/raphael/
+ * steps for drawing Raphael icons: https://code.tutsplus.com/tutorials/an-introduction-to-the-raphael-js-library--net-7186
+ * Adobe Illustrator to Raphael: https://snugug.com/musings/illustrator-to-raphael-js-guide/
+ */
+
+// --- Get HTML elements
+
+// Get optBtns
+const optBtnArr = Array.from(document.getElementsByClassName("optBtn"));
+
+// Get divs for copy button
+const copySvgs = Array.from(document.getElementsByClassName("copyOpt"));
+
+// Get divs for pencil icon
+const editSvgs = Array.from(document.getElementsByClassName("edit"));
+
+// --- Arrays to store values
+
+// Store copyIcon svgs (for optCol())
+const copyIconArr = [];
+
+// Empty array to push editIcon svgs (for optCol())
+const editIconArr = [];
+
+// --- Store svg paths in variables
+// Path for copy button icon
+let copySvgPath = "M12.3,3.1H4.8C2.1,3.1,0,5.3,0,7.9v7.3C0,17.9,2.2,20,4.8,20h7.5c2.7,0,4.8-2.2,4.8-4.8V7.9C17.1,5.2,15,3.1,12.3,3.1z M15.5,0H5.9C4.7,0,3.6,0.5,2.7,1.3c-0.3,0.3-0.3,0.7,0,1c0.3,0.3,0.7,0.3,1,0c0.6-0.5,1.3-0.9,2.2-0.9h9.6c1.7,0,3.1,1.3,3.1,3V14 c0,0.7-0.3,1.5-0.8,2c-0.3,0.3-0.3,0.8,0.1,1c0.1,0.1,0.3,0.2,0.5,0.2c0.2,0,0.4-0.1,0.5-0.3c0.7-0.8,1.1-1.8,1.1-2.9V4.5 C20.1,2,18,0,15.5,0z";
+// Path for pencil icon
+let editSvgPath = "M7.3,15.9c-0.3,0.3-0.7,0.3-0.9,0s-0.3-0.7,0-0.9L14,7.3c0.4-0.4,0.4-1,0-1.5c-0.4-0.4-1-0.4-1.5,0l-7.7,7.7 c-0.3,0.3-0.7,0.3-0.9,0c-0.3-0.3-0.3-0.7,0-0.9l8.4-8.4L11,2.9l-9,9c-0.1,0.1-0.2,0.2-0.2,0.4l-0.8,3c0.9,0.2,1.7,0.6,2.4,1.3 s1.1,1.5,1.3,2.4l3-0.8c0.2,0,0.3-0.1,0.4-0.2l9-9l-1.4-1.4L7.3,15.9z M2.6,17.3c-0.5-0.5-1.2-0.9-1.9-1.1L0,18.8 c-0.2,0.6,0.4,1.2,1.1,1.1l2.6-0.7C3.5,18.5,3.2,17.8,2.6,17.3L2.6,17.3z M19.6,5.1l-4.8-4.8c-0.3-0.3-0.9-0.3-1.2,0L12,1.9l6,6l0,0 l1.6-1.6C20,6,20,5.4,19.6,5.1z";
+
+// --- Calculate center coordinates for icon
+function centerSvg(boxWidth, iconWidth){
+    // Get 1/2 box width
+    let halfBox = boxWidth / 2;
+    // Get 1/2 icon width
+    let halfWidth = iconWidth / 2;
+    // Center coord = 1/2 box width = 1/2 icon width
+    return halfWidth - halfBox; // Get negative number so that svg moves right instead of left
+};
+
+/** Loop through array of html divs and set svg in them
+ *
+ *
+ * @param {string[]} array The array of html divs being targeted
+ * @param {string} xPaper The Paper, x is the name
+ * @param {string} xPath The path, x is the name
+ * @param {string[]} path The string for svg path
+ * @param {number} width Number for icon's width
+ * @param {string[]} endArr Name of array the path will be pushed to
+ * @return {string} setViewBox coordinates & values
+ */
+
+function createSvgs(array, xPaper, xPath, path, width, endArr){
+    // For all buttons in array...
+    for(let x = 0; x < array.length; x++){
+        // Create the paper to put the SVG (source: https://alistapart.com/article/svg-with-a-little-help-from-raphael/)
+        // This creates a "canvas" in the button with height and width = optBtnWidth()
+        let xPaper = Raphael(array[x], "100%", "100%");
+        // Place the path of the svg into the paper & declare a variable to edit the attributes later
+        let xPath = xPaper.path(path)
+        // Edit path's attributes: this gives a black fill & no stroke
+        xPath.attr({
+            fill: "auto",
+            "stroke-width": 0, // any property in documentation with a dash must be put in ""
+        });
+        // Push the xPath into endArr (for using it outside function later)
+        endArr.push(xPath);
+        // Set the viewbox. coords are 0, 0 and the viewbox height and width = optBtnWidth()
+        xPaper.setViewBox(centerSvg(optBtnWidth(), width), centerSvg(optBtnWidth(), width), optBtnWidth(), optBtnWidth(), true); // source: https://stackoverflow.com/questions/11176396/how-can-i-scale-raphael-js-elements-on-window-resize-using-jquery
+    }
+}
+
+// --- Call createSvgs to different icons to "draw" them
+// Draw copyBtn icon
+// "copyIconPaper", "copyIconPath" are in "" because they are names of variables within the function, not predefined ones
+createSvgs(copySvgs, "copyIconPaper", "copyIconPath", copySvgPath, 20, copyIconArr);
+
+// Draw pencil icon
+createSvgs(editSvgs, "editIconPaper", "editIconPath", editSvgPath, 20, editIconArr)
+
 // ---------- LOCKING FEATURES ----------
 // Get the lock buttons from the html
 let lockArr = Array.from(document.getElementsByClassName("lock"));
@@ -147,24 +229,26 @@ const baseHueDivs = Array.from(document.getElementsByClassName("baseHue"));
 const allCodes = document.getElementById("allCodes"); // getting the textarea where all the colour codes appear
 
 // --- Set up arrays to store values
-// Store only base hue values
+
+// Store base hue values
 const baseHueArray = [];
+
 // Store HSL strings
 const HSLstringsArray = []; // to store HSL strings
+
 // Store lightness values for hues 1, 2, 3 separately
 const lvals1 = [];
 const lvals2 = [];
 const lvals3 = [];
+
 // Store saturation values for hues 1, 2, 3 separately
 const sat1 = [];
 const sat2 = [];
 const sat3 = [];
-// Empty array to push RGB strings
+
+// Store RGB strings
 const rgbVal = [];
-// Empty array to push copyIcon svgs (for optCol()) ELEPHANT MAY MOVE
-const copyIconArr = [];
-// Empty array to push editIcon svgs (for optCol()) ELEPHANT MAY MOVE
-const editIconArr = [];
+
 // Push hex codes for colours (for #allCodes textarea)
 const codesArr = [];
 
@@ -620,8 +704,7 @@ function changeColour(){
     allCodes.innerHTML = codesArr;
     // Update charts for changes to show
     updateChart();
-
-}
+};
 
 // Get changeBtn
 let changeBtn = document.getElementById("changeBtn");
@@ -1103,11 +1186,10 @@ const chartImgArr = [];
 // Each image that has to be loaded will add a new promise object to promises
 const promises = [];
 
-// Make counter to track how many charts (used to determine whether to move to new row on exportCanvas)
-let counter = -1;
-
 // Promise chain to load the chart images into exportCanvas
 function loadChartImgs(){
+    // Make counter to track how many charts (used to determine whether to move to new row on exportCanvas)
+    let counter = -1;
     // Clear arrays
     chartImgArr.length = 0;
     promises.length = 0;
@@ -1154,15 +1236,17 @@ function loadChartImgs(){
             // Push each promise into promises
             promises.push(promise);
         };
-    }
+    };
 };
 
 // Command Center: for #download, downloading the file
 function download(){
+    // Clear exportCanvas (source: https://stackoverflow.com/questions/2142535/how-to-clear-the-canvas-for-redrawing)
+    ctx.clearRect(0, 0, exportCanvas.width, exportCanvas.height);
+    // Clear downloadLink link reference (to prevent downloading of previous chart)
+    downloadLink.setAttribute("href", "#");
     // Load the chart images
     loadChartImgs();
-    // Get the HTML <a> wrapped around #download
-    const downloadLink = document.getElementById("downloadLink");
     // Check that all promises have been fulfilled (i.e. all images have been loaded) (source: chatGPT)
     // Create a variable storing Promise.all(promises)
     // Promise.all(promises) checks that all the promises pushed into the array were fulfilled (i.e. all the chartImgs loaded)
@@ -1171,6 +1255,7 @@ function download(){
     allImgsLoaded.then((result)=> { 
         // Generate dataURL from exportCanvas for download (source: source: https://www.sanwebe.com/snippet/downloading-canvas-as-image-dataurl-on-button-click)
         let img = exportCanvas.toDataURL("image/png", 0.1); // png image, max quality
+        console.log("images have loaded");
         return img;
     })
     // Pass on the value of img
@@ -1179,20 +1264,43 @@ function download(){
         downloadLink.setAttribute("href", img);
         // Download a file named myCharts (source: https://www.w3schools.com/tags/att_a_download.asp)
         downloadLink.setAttribute("download", "myCharts");
-        // Click the downloadLink programmatically to download  (source: https://stackoverflow.com/questions/2705583/how-to-simulate-a-click-with-javascript)
+        console.log("link is set");
+    })
+    // --- Click the downloadLink programmatically when checkboxes are clicked  (source: https://stackoverflow.com/questions/2705583/how-to-simulate-a-click-with-javascript)
+    .then((result) =>{
         // Needed because the user click activates the image loading, not the actual download (source: chatGPT recommendation)
         downloadLink.click();
     })
     .catch((err) => {console.log(err)}); // check for errors
 };
 
+//--- Get HTML elements needed
+// Get <a> wrapped around #download
+const downloadLink = document.getElementById("downloadLink");
+
 // Get the download button html element
 let downloadBtn = document.getElementById("download");
 
-// Add eventListener to downloadBtn to call download() when clicked
+// Call download() when #download clicked
 downloadBtn.addEventListener("click", function(){download()});
 
-// ELEPHANT find a way to reload the chartImgs for each click of download
+// --- Keeping downloads updated
+// Reload chartImgs when colour of charts are changed
+changeBtn.addEventListener("click", loadChartImgs());
+
+// /** Loading the chartImgs immediately when checkbox is ticked
+//  *
+//  *
+//  * @param checkbox The checkbox HTML element from checkBoxArr.
+//  * @param x The index of checkboxArr (source: https://www.w3schools.com/jsref/jsref_foreach.asp)
+//  */
+// checkboxArr.forEach((checkbox, x)=>{
+//     // When checkbox tick changes...
+//     checkbox.addEventListener("change", event =>{
+//         // Load the images if checked
+//         loadChartImgs(x);
+//     });
+// });
 
 // ---------- COPY PASTING COLOUR CODES ----------
 // library used: https://clipboardjs.com
@@ -1240,8 +1348,6 @@ windowRespond();
 window.addEventListener("resize", function(){windowRespond()});
 
 // --- optBtn height = optBtn width, while optBtn width = 20%
-//  Get optBtns
-const optBtnArr = Array.from(document.getElementsByClassName("optBtn"));
 
 // Get optBtnWidth
 // Do this outside function so that it can be accessed for other things like svg viewbox later
@@ -1301,74 +1407,6 @@ document.querySelectorAll(".optBtn"). forEach((item, index) => {
         item.style.transitionDuration = "0.5s";
     });
 });
-
-/** ---------- SVG DRAWING WITH RAPHAEL ----------
- * sources:
- * library: https://dmitrybaranovskiy.github.io/raphael/
- * steps for drawing Raphael icons: https://code.tutsplus.com/tutorials/an-introduction-to-the-raphael-js-library--net-7186
- * Adobe Illustrator to Raphael: https://snugug.com/musings/illustrator-to-raphael-js-guide/
- */
-
-// Get the divs that the svgs are going to be in (lock icon svgs are inline, so not here)
-// get divs for copy button
-const copySvgs = Array.from(document.getElementsByClassName("copyOpt"));
-// get divs for pencil icon
-const editSvgs = Array.from(document.getElementsByClassName("edit"));
-
-// Store svg paths in variables
-// Path for copy button icon
-let copySvgPath = "M12.3,3.1H4.8C2.1,3.1,0,5.3,0,7.9v7.3C0,17.9,2.2,20,4.8,20h7.5c2.7,0,4.8-2.2,4.8-4.8V7.9C17.1,5.2,15,3.1,12.3,3.1z M15.5,0H5.9C4.7,0,3.6,0.5,2.7,1.3c-0.3,0.3-0.3,0.7,0,1c0.3,0.3,0.7,0.3,1,0c0.6-0.5,1.3-0.9,2.2-0.9h9.6c1.7,0,3.1,1.3,3.1,3V14 c0,0.7-0.3,1.5-0.8,2c-0.3,0.3-0.3,0.8,0.1,1c0.1,0.1,0.3,0.2,0.5,0.2c0.2,0,0.4-0.1,0.5-0.3c0.7-0.8,1.1-1.8,1.1-2.9V4.5 C20.1,2,18,0,15.5,0z";
-// Path for pencil icon
-let editSvgPath = "M7.3,15.9c-0.3,0.3-0.7,0.3-0.9,0s-0.3-0.7,0-0.9L14,7.3c0.4-0.4,0.4-1,0-1.5c-0.4-0.4-1-0.4-1.5,0l-7.7,7.7 c-0.3,0.3-0.7,0.3-0.9,0c-0.3-0.3-0.3-0.7,0-0.9l8.4-8.4L11,2.9l-9,9c-0.1,0.1-0.2,0.2-0.2,0.4l-0.8,3c0.9,0.2,1.7,0.6,2.4,1.3 s1.1,1.5,1.3,2.4l3-0.8c0.2,0,0.3-0.1,0.4-0.2l9-9l-1.4-1.4L7.3,15.9z M2.6,17.3c-0.5-0.5-1.2-0.9-1.9-1.1L0,18.8 c-0.2,0.6,0.4,1.2,1.1,1.1l2.6-0.7C3.5,18.5,3.2,17.8,2.6,17.3L2.6,17.3z M19.6,5.1l-4.8-4.8c-0.3-0.3-0.9-0.3-1.2,0L12,1.9l6,6l0,0 l1.6-1.6C20,6,20,5.4,19.6,5.1z";
-
-// Calculate center coordinates for icon
-function centerSvg(boxWidth, iconWidth){
-    // Get 1/2 box width
-    let halfBox = boxWidth / 2;
-    // Get 1/2 icon width
-    let halfWidth = iconWidth / 2;
-    // Center coord = 1/2 box width = 1/2 icon width
-    return halfWidth - halfBox; // Get negative number so that svg moves right instead of left
-};
-
-/** Loop through array of html divs and set svg in them
- *
- *
- * @param {string[]} array The array of html divs being targeted
- * @param {string} xPaper The Paper, x is the name
- * @param {string} xPath The path, x is the name
- * @param {string[]} path The string for svg path
- * @param {number} width Number for icon's width
- * @param {string[]} endArr Name of array the path will be pushed to
- * @return {string} setViewBox coordinates & values
- */
-
-function createSvgs(array, xPaper, xPath, path, width, endArr){
-    // For all buttons in array...
-    for(let x = 0; x < array.length; x++){
-        // Create the paper to put the SVG (source: https://alistapart.com/article/svg-with-a-little-help-from-raphael/)
-        // This creates a "canvas" in the button with height and width = optBtnWidth()
-        let xPaper = Raphael(array[x], "100%", "100%");
-        // Place the path of the svg into the paper & declare a variable to edit the attributes later
-        let xPath = xPaper.path(path)
-        // Edit path's attributes: this gives a black fill & no stroke
-        xPath.attr({
-            fill: "auto",
-            "stroke-width": 0, // any property in documentation with a dash must be put in ""
-        });
-        // Push the xPath into endArr (for using it outside function later)
-        endArr.push(xPath);
-        // Set the viewbox. coords are 0, 0 and the viewbox height and width = optBtnWidth()
-        xPaper.setViewBox(centerSvg(optBtnWidth(), width), centerSvg(optBtnWidth(), width), optBtnWidth(), optBtnWidth(), true); // source: https://stackoverflow.com/questions/11176396/how-can-i-scale-raphael-js-elements-on-window-resize-using-jquery
-    }
-}
-
-// Call createSvgs to different icons to "draw" them
-// Draw copyBtn icon
-// "copyIconPaper", "copyIconPath" are in "" because they are names of variables within the function, not predefined ones
-createSvgs(copySvgs, "copyIconPaper", "copyIconPath", copySvgPath, 20, copyIconArr);
-// Draw pencil icon
-createSvgs(editSvgs, "editIconPaper", "editIconPath", editSvgPath, 20, editIconArr)
 
 // ALWAYS LAST: call changeColour once when page is loaded. put at the end so it can access everything it needs.
 changeColour();
