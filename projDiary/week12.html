@@ -123,6 +123,42 @@
                     <p><img src="resources/promises2.jpg"></p>
                     <p>Initially, I didn’t have the last .then with downloadLink.click. I added it because after asking chatGPT for suggestions on how to prevent the need to double-click, it mentioned that you can try clicking the downloadLink programmatically. I double-checked this <a href="https://stackoverflow.com/questions/2705583/how-to-simulate-a-click-with-javascript">by looking up what .click() did</a>, and it looked like it would make the program simulate a click. So I gave it a shot.</p>
                     <p>And it worked! Now, you can just click once on the download button to get the download. However, I still have issues such as not being able to regenerate the colours and downloading that new file without refreshing the page, as well as the randomise data issue. It's as though the downloading is limited to one load only. I will have to find a way to get the chartImgs to load each time something changes I think?</p>
+                    <h6>&#9830; Debugging Download()</h6>
+                    <p>There are a few major issues with download.</p>
+                    <p class="point">1. TypeError when #download is clicked twice</p>
+                    <p class="point">2. Chart colours don't update if #download is pressed after new colours are generated</p>
+                    <p class="point">3. Double downloads after the first time #download is clicked due to the simulated click</p>
+                    <p class="point">4. Randomised data doesn't update in the exported image either</p>
+                    <h6>&#9830; 1. TypeError</h6>
+                    <p>When I clicked #download twice, I got this error:</p>
+                    <p><code>TypeError: Failed to execute 'drawImage' on 'CanvasRenderingContext2D': The provided value is not of type '(CSSImageValue or HTMLCanvasElement or HTMLImageElement or HTMLVideoElement or ImageBitmap or OffscreenCanvas or SVGImageElement or VideoFrame)'.</code></p>
+                    <p>According to chatGPT, this means that <code>drawImage()</code> is using invalid arguments. This was my line of code for drawImage()</p>
+                    <p><code>ctx.drawImage(chartImgArr[counter], 360 * counter, 0, 360, 360);</code></p>
+                    <p>The only non-constant values were <code>counter</code> and the data in that index of <code>chartImgArr</code>. I realised that I had initialised counter to -1 outside <code>loadChartImgs()</code>, which mean that counter was not being reset each time <code>download()</code> is called. I tried initialising counter within <code>loadChartImgs()</code> instead and this removed the error.</p>
+                    <h6>&#9830; 2. Colours not updating</h6>
+                    <p>If colours are not updating, then it could be because the new <code>chartImgData[]</code> is not being passed to loadChartImgs.</p>
+                    <p>Upon console.logging <code>chartImgData[]</code> to check if the new base 64 strings for the new charts are being pushed, I noticed that they are different. So it’s about the new <code>chartImgData[]</code> not being passed to <code>loadChartImgs()</code>. The solution would be to tell the code to pass the new <code>chartImgData</code> to <code>loadChartImgs()</code> when the chart colours are changed.</p>
+                    <p>I tried adding an eventListener to changeBtn:</p>
+                    <p><code>changeBtn.addEventListener("click", loadChartImgs());</code></p>
+                    <p>Now, when I press download, I get two files. The first is an image of the previous download, and the second is the file for the correct download. The correct download showed:</p>
+                    <p class="point">• the updated chart colours</p>
+                    <p class="point">• the correct charts if I changed which charts are ticked</p>
+                    <p>However, the exported image doesn't appear to include newly randomised data.</p>
+                    <h6>&#9830; 3. Double downloads</h6>
+                    <p>The double downloads occured because I needed the simulated click within <code>download()</code>, since the physical click starts the image loading process. I tried moving the simulated click code around to different stages of the promise chain e.g. outside it, or up with <code>loadChartImgs()</code> instead. None of it worked.</p>
+                    <p>The second way I approached it was by kicking off <code>loadChartImgs</code> the moment a checkbox is ticked, rather than doing it in download() which is triggered when the button is clicked.</p>
+                    <p>I decided to try adding an eventListener to the checkboxes to call <code>loadChartImgs()</code> when the checkbox changes.</p>
+                    <p>My third approach was to stop thinking about adding new code, and instead try to focus on what the double download meant from the program's point of view. I realised that:</p>
+                    <p class="point">SITUATION: there is a double download that includes the previous export</p>
+                    <p class="point">That means the promise for img is fulfilled.</p>
+                    <p class="point">So there is a link for the promise to click.</p>
+                    <p class="point">So <code>img</code> still holds the link for the previous export</p>
+                    <p class="point">Then if I want to get rid of the double download,</p>
+                    <p class="point">I have to clear <code>img</code></p>
+                    <p class="point">This will signal to the promise chain that that step was not fulfilled</p>
+                    <p class="point">And prevent the download on the physical click</p>
+                    <p>So I tried adding <code>downloadLink.setAttribute("href", "#");</code> at the start of <code>download()</code>.</p>
+                    <p>And it worked! The last error to resolve now is the issue with the randomised data not updating, which I will work on tomorrow.</p>
                 </div>
             </div>
         </section>
