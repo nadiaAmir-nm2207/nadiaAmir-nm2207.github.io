@@ -1,7 +1,6 @@
 // how to comment code: https://javascript.info/comments
 // ELEPHANT: things I need to pay attention to & remove
-
-/** ---------- SVG DRAWING WITH RAPHAEL ----------
+/**
  * sources:
  * library: https://dmitrybaranovskiy.github.io/raphael/
  * steps for drawing Raphael icons: https://code.tutsplus.com/tutorials/an-introduction-to-the-raphael-js-library--net-7186
@@ -12,76 +11,6 @@
 
 // Get optBtns
 const optBtnArr = Array.from(document.getElementsByClassName("optBtn"));
-
-// Get divs for copy button
-const copySvgs = Array.from(document.getElementsByClassName("copyOpt"));
-
-// Get divs for pencil icon
-const editSvgs = Array.from(document.getElementsByClassName("edit"));
-
-// --- Arrays to store values
-
-// Store copyIcon svgs (for optCol())
-const copyIconArr = [];
-
-// Empty array to push editIcon svgs (for optCol())
-const editIconArr = [];
-
-// --- Store svg paths in variables
-// Path for copy button icon
-let copySvgPath = "M12.3,3.1H4.8C2.1,3.1,0,5.3,0,7.9v7.3C0,17.9,2.2,20,4.8,20h7.5c2.7,0,4.8-2.2,4.8-4.8V7.9C17.1,5.2,15,3.1,12.3,3.1z M15.5,0H5.9C4.7,0,3.6,0.5,2.7,1.3c-0.3,0.3-0.3,0.7,0,1c0.3,0.3,0.7,0.3,1,0c0.6-0.5,1.3-0.9,2.2-0.9h9.6c1.7,0,3.1,1.3,3.1,3V14 c0,0.7-0.3,1.5-0.8,2c-0.3,0.3-0.3,0.8,0.1,1c0.1,0.1,0.3,0.2,0.5,0.2c0.2,0,0.4-0.1,0.5-0.3c0.7-0.8,1.1-1.8,1.1-2.9V4.5 C20.1,2,18,0,15.5,0z";
-// Path for pencil icon
-let editSvgPath = "M7.3,15.9c-0.3,0.3-0.7,0.3-0.9,0s-0.3-0.7,0-0.9L14,7.3c0.4-0.4,0.4-1,0-1.5c-0.4-0.4-1-0.4-1.5,0l-7.7,7.7 c-0.3,0.3-0.7,0.3-0.9,0c-0.3-0.3-0.3-0.7,0-0.9l8.4-8.4L11,2.9l-9,9c-0.1,0.1-0.2,0.2-0.2,0.4l-0.8,3c0.9,0.2,1.7,0.6,2.4,1.3 s1.1,1.5,1.3,2.4l3-0.8c0.2,0,0.3-0.1,0.4-0.2l9-9l-1.4-1.4L7.3,15.9z M2.6,17.3c-0.5-0.5-1.2-0.9-1.9-1.1L0,18.8 c-0.2,0.6,0.4,1.2,1.1,1.1l2.6-0.7C3.5,18.5,3.2,17.8,2.6,17.3L2.6,17.3z M19.6,5.1l-4.8-4.8c-0.3-0.3-0.9-0.3-1.2,0L12,1.9l6,6l0,0 l1.6-1.6C20,6,20,5.4,19.6,5.1z";
-
-// --- Calculate center coordinates for icon
-function centerSvg(boxWidth, iconWidth){
-    // Get 1/2 box width
-    let halfBox = boxWidth / 2;
-    // Get 1/2 icon width
-    let halfWidth = iconWidth / 2;
-    // Center coord = 1/2 box width = 1/2 icon width
-    return halfWidth - halfBox; // Get negative number so that svg moves right instead of left
-};
-
-/** Loop through array of html divs and set svg in them
- *
- *
- * @param {string[]} array The array of html divs being targeted
- * @param {string} xPaper The Paper, x is the name
- * @param {string} xPath The path, x is the name
- * @param {string[]} path The string for svg path
- * @param {number} width Number for icon's width
- * @param {string[]} endArr Name of array the path will be pushed to
- * @return {string} setViewBox coordinates & values
- */
-
-function createSvgs(array, xPaper, xPath, path, width, endArr){
-    // For all buttons in array...
-    for(let x = 0; x < array.length; x++){
-        // Create the paper to put the SVG (source: https://alistapart.com/article/svg-with-a-little-help-from-raphael/)
-        // This creates a "canvas" in the button with height and width = optBtnWidth()
-        let xPaper = Raphael(array[x], "100%", "100%");
-        // Place the path of the svg into the paper & declare a variable to edit the attributes later
-        let xPath = xPaper.path(path)
-        // Edit path's attributes: this gives a black fill & no stroke
-        xPath.attr({
-            fill: "auto",
-            "stroke-width": 0, // any property in documentation with a dash must be put in ""
-        });
-        // Push the xPath into endArr (for using it outside function later)
-        endArr.push(xPath);
-        // Set the viewbox. coords are 0, 0 and the viewbox height and width = optBtnWidth()
-        xPaper.setViewBox(centerSvg(optBtnWidth(), width), centerSvg(optBtnWidth(), width), optBtnWidth(), optBtnWidth(), true); // source: https://stackoverflow.com/questions/11176396/how-can-i-scale-raphael-js-elements-on-window-resize-using-jquery
-    }
-}
-
-// --- Call createSvgs to different icons to "draw" them
-// Draw copyBtn icon
-// "copyIconPaper", "copyIconPath" are in "" because they are names of variables within the function, not predefined ones
-createSvgs(copySvgs, "copyIconPaper", "copyIconPath", copySvgPath, 20, copyIconArr);
-
-// Draw pencil icon
-createSvgs(editSvgs, "editIconPaper", "editIconPath", editSvgPath, 20, editIconArr)
 
 // ---------- LOCKING FEATURES ----------
 // Get the lock buttons from the html
@@ -105,32 +34,16 @@ lockArr.forEach((lock, x) => {
         // Get the lightness levels of the colours
         const lvals = lvals1.concat(lvals2, lvals3);
         // If the background is dark
-        if (between(lvals[x], 0, 50)){
-            if(lockState[x] == true){ // if lock is locked
-                lockState[x] = false; // then unlock it
-                // and display light unlocked emoji
-                lock.innerHTML = "<img src = 'resources/lightUnlock.svg' class='lockIcon'>"
-            }
-            else if (lockState[x] == false){ // if lock is unlocked
-                lockState[x] = true; // then lock it
-                // and display light locked emoji
-                lock.innerHTML = "<img src = 'resources/lightLock.svg' class='lockIcon'>"
-            };
+        if(lockState[x] == true){ // if lock is locked
+            lockState[x] = false; // then unlock it
+            // and display unlocked icon
+            lock.innerHTML = '<i class="fa-solid fa-lock-open"></i>'
         }
-        // If the background is light
-        else if (between(lvals[x], 50, 100)){
-            if(lockState[x] == true){ // if lock is locked
-                lockState[x] = false; // then unlock it
-                // and display light unlocked emoji
-                lock.innerHTML = "<img src = 'resources/darkUnlock.svg' class='lockIcon'>"
-            }
-            else if (lockState[x] == false){ // if lock is unlocked
-                lockState[x] = true; // then lock it
-                // and display light locked emoji
-                lock.innerHTML = "<img src = 'resources/darkLock.svg' class='lockIcon'>"
-            };
+        else if (lockState[x] == false){ // if lock is unlocked
+            lockState[x] = true; // then lock it
+            // and display locked icon
+            lock.innerHTML = '<i class="fa-solid fa-lock"></i>'
         };
-        lock.style.transitionDuration = "0.5s"; // gradual colour change
     });
 });
 
@@ -143,7 +56,7 @@ function unlockAll(){
     // Loop through all lock buttons to...
     for (let x = 0; x < lockArr.length; x++){
         // ...change to the unlock icon
-        lockArr[x].innerHTML = "&#x1f513;"
+        lockArr[x].innerHTML = '<i class="fa-solid fa-lock-open">'
     };
 };
 
@@ -154,7 +67,7 @@ function lockAll(){
     // Loop through all lock buttons to...
     for (let x = 0; x < lockArr.length; x++){
         // ...change to the lock icon
-        lockArr[x].innerHTML = "&#128274;"
+        lockArr[x].innerHTML = '<i class="fa-solid fa-lock">'
     };
 };
 
@@ -186,7 +99,7 @@ function changeMode(){
         // reassign value to indicate dark mode
         mode = false;
         // change text to "light bg" instead of "dark bg"
-        modeBtn.innerHTML = "&#9728; light bg";
+        modeBtn.innerHTML = '<i class="fa-solid fa-sun"></i> light bg';
         // set background colour of #chartPrvws to dark
         document.getElementById("chartPrvws").style.backgroundColor = "#011627";
         return mode;
@@ -195,7 +108,7 @@ function changeMode(){
         // reassign value to indicate light mode
         mode = true;
         // change text to "dark bg" instead of "light bg"
-        modeBtn.innerHTML = "&#9790; dark bg";
+        modeBtn.innerHTML = '<i class="fa-solid fa-moon"></i> dark bg';
         // set background colour of #chartPrvws to light
         document.getElementById("chartPrvws").style.backgroundColor = "#fff9f5";
         return mode;
@@ -626,47 +539,13 @@ function optCol(x){
     const lvals = lvals1.concat(lvals2,lvals3);
     // If background is dark...
     if (between(lvals[x], 0, 50)){
-        // Make colour code light
-        colourLabels[x].style.color = "#fff9f5";
-        // Make svg fills light
-        copyIconArr[x][0].style.fill = "#fff9f5";
-        editIconArr[x][0].style.fill = "#fff9f5";
-        // Set gradual colour change
-        copyIconArr[x][0].style.transitionDuration = "0.5s";
-        editIconArr[x][0].style.transitionDuration = "0.5s";
-        // For the lock icons...
-        // If locked...
-        if(lockState[x] == true){
-            // Display light locked icon
-            lockArr[x].innerHTML = "<img src = 'resources/lightLock.svg' class='lockIcon'>"
-        }
-        // If unlocked...
-        else if (lockState[x] == false){
-            // Display light unlocked icon
-            lockArr[x].innerHTML = "<img src = 'resources/lightUnlock.svg' class='lockIcon'>"
-        };
+        // Make text in swatch light
+        Swatches[x].style.color = "#fff9f5";
     }
     // If background is light...
     else if (between(lvals[x], 50, 100)){
         // Make colour code dark
-        colourLabels[x].style.color = "#011627";
-        // Make svg fills dark
-        copyIconArr[x][0].style.fill = "#011627";
-        editIconArr[x][0].style.fill = "#011627"; // make pencil svg fill dark
-        // Set gradual colour change
-        copyIconArr[x][0].style.transitionDuration = "0.5s";
-        editIconArr[x][0].style.transitionDuration = "0.5s";
-        // For the lock icons...
-        // If locked...
-        if(lockState[x] == true){
-            // Display dark locked icon
-            lockArr[x].innerHTML = "<img src = 'resources/darkLock.svg' class='lockIcon'>";
-        }
-        // If unlocked...
-        else if (lockState[x] == false){
-            // Display dark unlocked icon
-            lockArr[x].innerHTML = "<img src = 'resources/darkUnlock.svg' class='lockIcon'>";
-        };
+        Swatches[x].style.color = "#011627";
     };
 };
 // Command Center: changing the colours
@@ -1062,6 +941,8 @@ function oneDataset(chartName){
 
 // Command center for #randBtn: generate random datasets for all charts
 function randomise(){
+    // Clear chartImgData so that export image updates with new charts
+    chartImgData.length = 0;
     // Generate random data for linechart
     // Loop through each dataset in linechart to set new array in .data
     for (let x = 0; x < lnPrvw.data.datasets.length; x++){
@@ -1098,6 +979,8 @@ function resetOne(chartName, dataX){
 
 // Command center for #resetBtn: reset to starting data
 function reset(){
+    // Clear chartImgData so that export image updates with new charts
+    chartImgData.length = 0;
     // For linechart
     for (let x = 0; x < lnPrvw.data.datasets.length; x++){
         lnPrvw.data.datasets[x].data = allData[x];
@@ -1255,7 +1138,6 @@ function download(){
     allImgsLoaded.then((result)=> { 
         // Generate dataURL from exportCanvas for download (source: source: https://www.sanwebe.com/snippet/downloading-canvas-as-image-dataurl-on-button-click)
         let img = exportCanvas.toDataURL("image/png", 0.1); // png image, max quality
-        console.log("images have loaded");
         return img;
     })
     // Pass on the value of img
@@ -1264,7 +1146,6 @@ function download(){
         downloadLink.setAttribute("href", img);
         // Download a file named myCharts (source: https://www.w3schools.com/tags/att_a_download.asp)
         downloadLink.setAttribute("download", "myCharts");
-        console.log("link is set");
     })
     // --- Click the downloadLink programmatically when checkboxes are clicked  (source: https://stackoverflow.com/questions/2705583/how-to-simulate-a-click-with-javascript)
     .then((result) =>{
@@ -1281,12 +1162,15 @@ const downloadLink = document.getElementById("downloadLink");
 // Get the download button html element
 let downloadBtn = document.getElementById("download");
 
-// Call download() when #download clicked
-downloadBtn.addEventListener("click", function(){download()});
-
 // --- Keeping downloads updated
 // Reload chartImgs when colour of charts are changed
 changeBtn.addEventListener("click", loadChartImgs());
+// Reload chartImgs when data is randomised/reset
+randBtn.addEventListener("click", loadChartImgs());
+resetBtn.addEventListener("click", loadChartImgs());
+
+// Call download() when #download clicked
+downloadBtn.addEventListener("click", function(){download()});
 
 // /** Loading the chartImgs immediately when checkbox is ticked
 //  *
@@ -1407,6 +1291,56 @@ document.querySelectorAll(".optBtn"). forEach((item, index) => {
         item.style.transitionDuration = "0.5s";
     });
 });
+
+/** --- General function to calculate padding/margin needed for vertical centralising
+ *
+ *
+ * @param {string} container The HTML element that content is in
+ * @param {string} content The HTML element to be centralised
+ * 
+ * @return {number} 1/2 the difference between the heights of container & content
+ */
+function vertCentral(container, content){
+    // Get height of "containing" element
+    let bigHt = container.offsetHeight;
+    // Get height of content element
+    let smallHt = content.offsetHeight;
+    // Calculate difference between containing element & content element
+    let diff = bigHt - smallHt;
+    return diff/2;
+}
+
+// --- Vertically centralise content in swatches
+
+function swatchSpace(){
+    // Loop through all swatches...
+    Swatches.forEach((swatch) => {
+        // Set swatch padding to (diff, 5%) --> diff top & bottom, 5% left & right
+        swatch.style.padding = vertCentral(Swatches[0], colOpt[0]) + "px 5%";
+    });
+};
+
+// Set swatch padding onload
+swatchSpace();
+
+// Listen for window resize to recalculate swatch padding
+window.addEventListener("resize", function(){swatchSpace()});
+
+// --- Vertically centralise content in header
+function headerSpace(){
+    // Get header element
+    let header = document.getElementById("header"); // must use id, TagName won't work
+    // Get biggest content element (eyeballing, looks like the nav buttons)
+    let content = document.getElementById("nav");
+    // Get all children of header (source: https://developer.mozilla.org/en-US/docs/Web/API/Element/children)
+    for(const child of header.children){
+        /* for each child of header, set the padding */
+        child.style.padding = vertCentral(header, content) + "px 0";
+    };
+}
+// Set header padding on load
+headerSpace();
+
 
 // ALWAYS LAST: call changeColour once when page is loaded. put at the end so it can access everything it needs.
 changeColour();
