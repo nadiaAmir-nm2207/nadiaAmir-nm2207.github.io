@@ -36,12 +36,11 @@
                 </div>
                 <div class="col-9">
                     <h6>&#9830; Summary</h6>
-                    <p>This week, I worked on two things.</p>
-                    <p class="point">• using svgs for my icons instead of emojis & special entities</p>
+                    <p>This week, I worked on a number of things.</p>
+                    <p class="point">• updating all the icons with fontawesome icons</p>
+                    <p class="point">• working on more responsive styling using js, mostly to calculate padding for vertical alignment</p>
                     <p class="point">• working on the download function</p>
-                    <p>I thought the svg bit was frustrating at first. On hindsight, the download function has to be THE most frustrating thing I've encountered in this project.</p>
-                    <h6>&#9830; svgs & raphael</h6>
-                    <p>I read somewhere that we can't use any other svg libraries? Anyway, what I did was illustrate my own icons in Adobe Illustrator and save them as svgs. Then, I opened the svg files in VSCode and copied the path. I followed the documentation mostly, and a lot of trial and error. It's still not complete because if you press Lock All & Unlock All, it still uses the emoji. I forgot about those, will change them next week.</p>
+                    <p>I decided to scrap the idea to let people edit the colours because I don't think I have time to implement that.</p>
                     <h6>&#9830; download button</h6>
                     <p>I'm going to focus on writing about this function this week because the other stuff I did definitely did not trip me up as much as this one.</p>
                     <p>Generally, this is what I wanted download() to do:</p>
@@ -161,7 +160,14 @@
                     <p class="point">This will signal to the promise chain that that step was not fulfilled</p>
                     <p class="point">And prevent the download on the physical click</p>
                     <p>So I tried adding <code>downloadLink.setAttribute("href", "#");</code> at the start of <code>download()</code>.</p>
-                    <p>And it worked! No more double downloads or double-clicking ~ The last error to resolve now is the issue with the randomised data not updating, which I will work on tomorrow.</p>
+                    <p>And it worked! No more double downloads or double-clicking ~</p>
+                    <h6>&#9830; 4. Chart data not refreshing when downloaded</h6>
+                    <p>The last issue was that if I randomised the data for the chart previews, the download would not reflect that new data.</p>
+                    <p>I realised that it wasn't because data from <code>randomise()</code> couldn't be accessed entirely. If I load the page and randomise the data before clicking download, that new dataset is registered in the export.</p>
+                    <p>However, resetting the data afterwards still leads to the exported canvases following the previous datasets. This means that the chartImgData persists in following the very first dataset that the charts are downloaded for.</p>
+                    <p>I tried adding eventListeners to <code>randBtn</code> and <code>resetBtn</code>, but this still didnt solve the problem. Then I realised that the lack of change in data meant that <code>chartImgData</code> is not being cleared. So, I have to clear it when <code>randomise()</code> and <code>reset()</code> are called too, the same way I did with <code>changeColour()</code>. It works now!</p>
+                    <h6>&#9830; Next week</h6>
+                    <p>I will probably focus more on styling. I think all of the big coding bits are settled by now!</p>
                 </div>
             </div>
         </section>
