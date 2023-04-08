@@ -2,9 +2,11 @@
 
 /* styling the page background */
 body{
-    background-color: #007f5f; /* backup bg col */
-    background-image: url(../resources/gridBg.jpg);
-    background-size: cover;
+    background-color: #D5C5C8; /* backup bg col */
+    background-image: linear-gradient(to left, #ACCF42, #1C93AD);
+    /* vertical stripe bg (source: https://css-tricks.com/stripes-css/) */
+    /* direction | colorstop1 | colorstop 1 & half of total width | colorstop 2 & half of total width | colorstop 2 & total width of what should be repeated */
+    /* background: repeating-linear-gradient(90deg, #17424C, #17424C 15px, #2C380A 15px, #2C380A 30px); */
     height: 100%;
     color: rgb(255, 249, 245);
     font-family: 'Quicksand', sans-serif;
@@ -16,12 +18,7 @@ body{
 header{
     background-color: #011627;
     height: 10vh; /* 10 units to header, 90 units to content = 100vh = fixed to viewport size */
-    padding: 0 5%;
-    border-bottom: 1px solid #ACCF42;
-}
-
-nav{
-    padding: 1.5% 0;
+    border-bottom: 1px solid #1c93ad;
 }
 
 /* styling canvas */
@@ -39,7 +36,7 @@ nav{
     height: auto; /* if set to, for e.g., 100%, it may not enclose all the charts especially when they stack on smaller screens */
     margin: auto;
     margin-top: 1%;
-    padding: 5%;
+    padding: 3%;
     /* aesthetics */
     background: #011627;
     border-radius: 20px;
@@ -82,15 +79,25 @@ nav{
 
 /* styling content on top of the swatches */
 .ctrlBox{
-    padding: 8%;
-    border-bottom: 1px solid #ACCF42;
+    padding: 5% 10%;
+    border-bottom: 1px solid #1c93ad;
+}
+
+/* for p elements within .ctrlBox & header */
+.ctrlBox p, header p{
+    /* remove all spacing */
+    margin: 0;
+    padding: 0;
 }
 
 /* styling the text area for all the colour codes */
 #allCodes{
-    padding: 5%;
-    margin-bottom: 8%; /* more space between textarea & button below */
+    padding: 5%; /* space between content & edge of text box */
+    border: solid 1px #1c93ad;
     border-radius: 10px;
+    margin-top: 10%; /* to match margin-bottom of buttons */
+    height: auto;
+    
 }
 
 .lastBox{
@@ -101,27 +108,17 @@ nav{
 
 .swatch{
     width: 100%;
-    height: 20%; /* height of entire column = 100%, 100% / 5 swatches = 20% */
+    height: 20%;
     border-bottom: 2px solid #fff9f5; /* bottom only so they don't double */
+    border-left: 2px solid #fff9f5;
     transition-duration: 0.5s; /* colour change slows down, no idea why it took me so long to find this simple answer haha (source: https://stackoverflow.com/questions/70993915/how-to-change-the-speed-of-the-color-switch-when-button-is-clicked) */
 }
 
+/* styling content within swatches */
+
 #ctrlPanel{ /* column with buttons */
-    padding-top: 2%;
-}
-
-@media screen and (min-width: 768px){ /* only set the top margin space for screens larger than 768px */
-    .optBtnBox{
-        /* spacing from top */
-        margin-top: 35%;
-    }
-}
-
-@media screen and (max-width: 768px){ /* do not set top margin space for screens smaller than 768px */
-    .optBtnBox{
-        /* spacing from top (which is the colourLabel) */
-        margin-top: 0%;
-    }
+    padding-top: 0%;
+    border-left: 1px solid #1C93AD;
 }
 
 /* STYLING ALIGNMENT */
@@ -140,14 +137,16 @@ nav{
     font-family: 'Yeseva One', serif;
     color: #ACCF42;
     font-size: 2rem;
-    line-height: 6rem; /* 1 rem usually = 16px */
+}
+
+#logo{
+    margin-left: 5%; /* align title content with #chartPrvws */
 }
 
 #tagline{
     font-family: 'Quicksand', sans-serif;
     color: #fff9f5;
     font-size: 1.2rem;
-    line-height: 6rem; /* 1 rem usually = 16px */
     margin-left: 5%; /* to put some spacing between "by Nadia Amir" and "charter#use" */
 }
 
@@ -155,9 +154,11 @@ h2{
     font-family: 'Quicksand', sans-serif;
     color: #ACCF42;
     font-size: 1.3rem;
-    padding: 3%; /* to match .btn padding so it looks more aligned */
     text-align: center;
-    margin-bottom: 8%; /* add some space between heading & options */
+}
+
+a{
+    text-decoration: none; /* remove the underline from links */
 }
 
 /* style for the text appearing on the swatch */
@@ -169,7 +170,6 @@ h2{
     font-size: 1.5rem;
     font-family: "Quicksand", sans-serif;
     text-align: center; /* align colourLabel in the middle */
-    margin-top: 15%;
 }
 
 /* styling quote & quote source */
@@ -190,6 +190,15 @@ h2{
     margin-bottom: 5%; /* space between bottom border & text below */
 }
 
+/* styling checkboxes (source: https://www.w3schools.com/css/css_form.asp) */
+input[type=checkbox]{
+    margin: 5% 0; /* spacing on top & bottom, 0 for sides */
+}
+
+#allDl{
+    margin: 10% 0; /* add space between select all & Export options */
+}
+
 /* STYLING BUTTONS */
 
 .btn{
@@ -204,30 +213,37 @@ h2{
     /* to align them center */
     display: block;
     margin: auto;
+    /* gradual colour change for all buttons on hover */
 }
 
-.btnBox{ /* to centralise buttons within their columns */
-    text-align: left;
+/* for btns in .ctrlBox */
+.ctrlBox .btn{
+    /* set width to 100% */
+    width: 100%;
+    /* add space in between */
+    margin: 10% 0; /* space on top  & bottom, none on the sides */
 }
 
-.gradBtn{
+.gradBtn{ /* primary buttons */
     /* styling button bg */
-    background-color: rgba(0, 127, 95, 0.8); /* backup in case linear gradient does not work */
-    background: linear-gradient(to right, rgba(0, 127, 95, 0.8), rgba(172, 207, 66,0.8)); /* linear-gradient(to direction, color stop 1, color stop 2) source: https://developer.mozilla.org/en-US/docs/Web/CSS/gradient/linear-gradient */
+    background-color: rgba(28, 147, 173, 0.8); /* backup in case linear gradient does not work */
+    background: linear-gradient(to right, rgba(28, 147, 173, 0.8), rgba(172, 207, 66,0.8)); /* linear-gradient(to direction, color stop 1, color stop 2) source: https://developer.mozilla.org/en-US/docs/Web/CSS/gradient/linear-gradient */
+    /* style text */
     font-size: 1rem;
     font-family: "Yeseva One", sans-serif;
+    /* add glow around text */
+    /* offset-x | offset-y | how much blur | color */
+    text-shadow: 0px 0px 2px #011627;
+    /* gradual change – use transition all since gradient bg */
+    transition: all 0.5s ease-in-out;
 }
 
 /* to darken the button when hover over it */
 .gradBtn:hover{
     /* styling button bg */
-    background-color: rgba(0, 127, 95, 1); /* backup in case linear gradient does not work */
-    background: linear-gradient(to right, rgba(0, 127, 95, 1), rgba(172, 207, 66, 1));
+    background-color: #1C93AD; /* backup in case linear gradient does not work */
+    background: linear-gradient(to right, #1c93ad, rgba(172, 207, 66, 1));
     color: rgb(255, 249, 245);
-}
-
-#download{ /* add space between options & button */
-    margin-top: 8%; /* make it equal to h3{margin-bottom:;} */
 }
 
 /* all outline buttons */
@@ -236,12 +252,12 @@ h2{
     background-color: #011627;
     border: 1px solid rgba(172, 207, 66, 1);
     font-size: 1rem;
-    margin-top: 5%;
+    transition-duration: 0.2s;
 }
 
 .outlineBtn:hover{
     /* styling button bg */
-    background-color: rgba(0, 127, 95, 1);
+    background-color: #1C93AD;
     color: #fff9f5;
 }
 
@@ -261,21 +277,10 @@ h2{
     /* styling button appearance */
     border: 0px;
     border-radius: 10px;
-    width: 90%; /* takes up 90% of the width in col-4 */
+    width: 100%; /* takes up 90% of the width in col-4 */
     height: auto;
     padding: 0;
     /* styling button text */
     font-family: 'Quicksand', sans-serif;
     color: inherit;
-}
-
-/* styling svgs */
-
-/* for the lock icons */
-.lockIcon{
-    /* percentage values will be equal here as they are based on parent element (optBtn). */
-    /* optBtn has js function & eventlistener that will make sure it's always a square */
-    width: 65%;
-    height: 65%;
-    aspect-ratio: 1;
 }
