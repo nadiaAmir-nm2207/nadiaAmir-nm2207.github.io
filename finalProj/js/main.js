@@ -1361,17 +1361,17 @@ let ctrlPanel = document.getElementById("ctrlPanel");
 // Command Center to test viewport size, calculate & reset dimensions
 function windowRespond(){
     // Test viewport width (source: https://developer.mozilla.org/en-US/docs/Web/API/Window/innerWidth)
-    // If viewport is < 768...
-    if (window.innerWidth < 768){
+    // If viewport is < 992...
+    if (window.innerWidth < 992){
         // Get height of ctrlPanel
         // offsetWidth = margin + border + padding + content (source: https://www.javascripttutorial.net/javascript-dom/javascript-width-height/)
         let ctrlPanelHt = ctrlPanel.offsetHeight;
         // Set swatchBox height = ctrlPanel height
         swatchBox.style.height = ctrlPanelHt + "px"; // must add + "px"
     }
-    // If viewport is 768 or more...
-    // else if is important in event that user resizes browser window from <768 to >768
-    else if(window.innerWidth >= 768){
+    // If viewport is 992 or more...
+    // else if is important in event that user resizes browser window from <992 to >992
+    else if(window.innerWidth >= 992){
         // Set swatchBox height to 90vh (total viewport height is 100vh, header = 10vh)
         swatchBox.style.height = "90vh";
     };
