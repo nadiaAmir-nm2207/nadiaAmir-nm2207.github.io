@@ -1422,7 +1422,6 @@ function vertCentral(container, content){
     let smallHt = content.offsetHeight;
     // Calculate difference between containing element & content element
     let diff = bigHt - smallHt;
-    console.log(diff/2);
     return diff/2;
 };
 
@@ -1452,3 +1451,78 @@ chartSpace();
 
 // Vertically centralise on window resize
 window.addEventListener("resize", function(){swatchSpace(), chartSpace()});
+
+// ---------- ANIMATIONS ----------
+
+// GOAL: get lines to start at hover position on load, before transitioning to CSS position
+// Get the lines
+let lines = Array.from(document.getElementsByClassName("line"));
+
+// Set up array of values for the translate values on hover
+// translate values were initially figured out & tested using CSS, then removed to wrap it in JS
+// prefer JS because in CSS, when hover at specific points, the animation flickers
+let translates = [25, 100, -100, -25, -150, -40, 52, 500];
+
+// transform on hover
+function moveLines(){
+    // loop through lines
+    lines.forEach((line, i) => {
+        // if it is one of the first four lines (i.e. horizontal)
+        if (i >= 0 && i <= 3){
+            // translateX by corresponding value in translates
+            line.style.transform = "translateX(" + translates[i] + "%)";
+        }
+        // if it one of the last four lines (i.e. vertical)
+        else if (i >= 4 && i <= 7){
+            // translateY by corresponding value in translates
+            line.style.transform = "translateY(" + translates[i] + "%)";
+        };
+    });
+};
+
+// original positions
+function returnLines(){
+    // loop through lines
+    lines.forEach((line) => {
+        // reset the transformation (source: https://thesassway.com/css-transform-and-reset-properties/)
+        line.style.transform = "none";
+    });
+};
+
+// --- add eventlistener
+// Get titleCont element
+let titleBtn = document.getElementById("titleCont");
+// On hover, transform the lines
+titleBtn.addEventListener("mouseover", function(){moveLines()})
+// When not hovering, return the lines
+titleBtn.addEventListener("mouseout", function(){returnLines()})
+// Set lines to translated position and then back to normal position on load
+// source: https://www.w3schools.com/jsref/event_onload.asp
+
+// offscreen position
+function linesOffscreen(){
+    // loop through lines
+    lines.forEach((line, i) => {
+        // if it is one of the first four lines (i.e. horizontal)
+        if (i >= 0 && i <= 3){
+            // translateX by 100% of viewport width
+            line.style.transform = "translateX(" + 100 + "vw)";
+        }
+        // if it one of the last four lines (i.e. vertical)
+        else if (i >= 4 && i <= 7){
+            // translateY by 100% of viewport height
+            line.style.transform = "translateY(" + 100 + "vh)";
+        };
+    });
+};
+
+// move them back after set period of time (longer than total animation of fading, etc. takes)
+function startLines(){
+    // lines start at offscreen position
+    linesOffscreen();
+    // wait some time (source: https://www.w3schools.com/jsref/met_win_settimeout.asp)
+    // no () after returnLines source: https://stackoverflow.com/questions/20890943/why-is-javascripts-set-timeout-not-working
+    setTimeout(returnLines, 800); // 1s = 1000ms
+};
+
+startLines();
