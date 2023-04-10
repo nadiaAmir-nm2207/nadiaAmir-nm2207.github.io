@@ -144,7 +144,7 @@ header{
     font-family: 'Fredericka the Great', serif;
     color: #ACCF42;
     font-size: 1.9rem;
-    margin-left: 13%; /* align title content with #chartPrvws */
+    margin-left: 10%; /* align title content with #chartPrvws */
 }
 
 /** NAV STYLES (nav is also in header) **/
@@ -271,8 +271,8 @@ header{
     margin: 0 2%;
 }
 
-/* when viewport is smaller than 768px... */
-@media screen and (max-width: 768px){
+/* when viewport is smaller than 992px... */
+@media screen and (max-width: 992px){
     #chartPrvws{ /* this is the box where all the charts are */
         /* Max the width across the screen */
         width: 100%;
@@ -294,7 +294,7 @@ header{
 }
 
 /* source: https://www.w3schools.com/css/css3_mediaqueries.asp */
-@media screen and (min-width: 768px){ /* overflow-y only scrolls if the screen is 768px or bigger */
+@media screen and (min-width: 992px){ /* overflow-y only scrolls if the screen is 992px or bigger */
     /*
     #options: contains the two columns
     #swatchBox: where the colours are
@@ -307,8 +307,8 @@ header{
     }
 }
 
-/* when the viewport is smaller than 768px. */
-@media screen and (max-width: 768px){
+/* when the viewport is smaller than 992px. */
+@media screen and (max-width: 992px){
     #swatchBox{
         /* height will be set to = #ctrlPanel through js */
         overflow-x: hidden; /* to prevent horizontal scrolling */
