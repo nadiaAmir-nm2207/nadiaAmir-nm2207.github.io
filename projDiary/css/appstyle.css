@@ -113,7 +113,7 @@ section{
 /* styling the buttons */
 button{
     width: 150px;
-    height: 80px;
+    height: auto;
     border-radius: 50px;
     border: 0;
     /* rgba bg color allows me to set alpha value (transparency) – I do this because I'm lazy to think of a darker hex colour for hover state, I can just adjust alpha to 1 in hover state and it will look like a darker shade */
@@ -122,6 +122,7 @@ button{
     color: rgba(86, 102, 107, 1);
     font-family: 'Delius', sans-serif;
     margin: 1% 0;
+    padding: 1%;
   }
 
   a{
