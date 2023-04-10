@@ -152,6 +152,7 @@ function btnBg(){
             btn.onmouseout = function(){
                 // Set background back to lighter colour
                 btn.style.backgroundColor = "#fff9f5";
+                btn.style.color = "#1C93AD";
             };
         }
         // if in dark mode
