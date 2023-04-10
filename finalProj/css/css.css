@@ -2,6 +2,11 @@
 
 /*** GENERAL STYLES ***/
 
+html{
+    /* source: https://blog.hubspot.com/website/css-rem */
+    font-size: 18px; /* base font size */
+}
+
 .center{
     text-align: center;
 }
@@ -143,7 +148,7 @@ header{
 #logo{
     font-family: 'Fredericka the Great', serif;
     color: #ACCF42;
-    font-size: 1.9rem;
+    font-size: 2rem;
     margin-left: 10%; /* align title content with #chartPrvws */
 }
 
@@ -453,8 +458,8 @@ h1{
 }
 
 .p-1{
-    font-size: 0.8rem;
-    line-height: 0.8rem;
+    font-size: 0.9rem;
+    line-height: 0.9rem;
 }
 
 .right{
