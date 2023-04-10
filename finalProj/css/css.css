@@ -123,10 +123,12 @@ body{
     background-size: cover;
     color: rgb(255, 249, 245);
     font-family: 'Quicksand', sans-serif;
-    /* name of animation | type of change | duration of change */
-    animation: fadeIn ease 2s;
-    /* perform the animation once */
-    animation-iteration-count: 1;
+    /* start invisible */
+    opacity: 0%;
+    /* name of animation | duration | type of change | delay (no delay) | how many times */
+    animation: fadeIn 10ms ease-in-out 0ms 1;
+    /* keeps the styles after the animation so that it won't become invisible again */
+    animation-fill-mode: forwards;
 }
 
 /* container holding generator */
@@ -308,12 +310,11 @@ header{
 /* source: https://www.w3schools.com/css/css3_mediaqueries.asp */
 @media screen and (min-width: 768px){ /* overflow-y only scrolls if the screen is 768px or bigger */
     /*
-    body: body
     #options: contains the two columns
     #swatchBox: where the colours are
     #ctrlPanel: where the buttons are
     */
-    body, #prvwBox, #options, #swatchBox, #ctrlPanel{
+    #prvwBox, #options, #swatchBox, #ctrlPanel{
         overflow-y: scroll;
         overflow-x: hidden; /* to prevent horizontal scrolling */
         height: 90vh;
@@ -460,8 +461,16 @@ h1{
     text-align: right !important;
 }
 
-#title{
+#titleText{
     position: relative;
+    /* start invisible */
+    opacity: 0;
+    /* last to load */
+    /* name of animation | duration | type of change | delay | how many times */
+    animation: fadeIn 2s ease-in-out 1s 1;
+    /* keeps the styles after the animation so that it won't become invisible again */
+    /* source: https://stackoverflow.com/questions/9131026/how-to-keep-styles-after-animation */
+    animation-fill-mode: forwards;
 }
 
 #titleCont{
@@ -483,6 +492,13 @@ h1{
     width: 5px;
     border-radius: 2.5px; /* curve tip */
     transition: all 0.2s linear;
+    /* start invisible */
+    opacity: 0%;
+    /* second to load */
+    /* name of animation | duration | type of change | delay | how many times */
+    animation: fadeIn 2s ease-in-out 0.2s 1;
+    /* keeps the styles after the animation so that it won't become invisible again */
+    animation-fill-mode: forwards;
 }
 
 /* position lines 
@@ -611,5 +627,5 @@ line7 & line8: move down
 /* add "glow" to logo on hover */
 #titleCont:hover h1{
     /* offset-x | offset-y | how much blur | color */
-    text-shadow: 0px 0px 8px #3dacc5;
+    text-shadow: 0px 0px 5px #3dacc5;
 }
