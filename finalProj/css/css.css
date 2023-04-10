@@ -1,153 +1,26 @@
-/* STYLING BOXES */
-
-/* styling the page background */
-body{
-    background-color: #D5C5C8; /* backup bg col */
-    background-image: linear-gradient(to left, #ACCF42, #1C93AD);
-    /* vertical stripe bg (source: https://css-tricks.com/stripes-css/) */
-    /* direction | colorstop1 | colorstop 1 & half of total width | colorstop 2 & half of total width | colorstop 2 & total width of what should be repeated */
-    /* background: repeating-linear-gradient(90deg, #17424C, #17424C 15px, #2C380A 15px, #2C380A 30px); */
-    height: 100%;
-    color: rgb(255, 249, 245);
-    font-family: 'Quicksand', sans-serif;
-}
-
-/* STYLING CONTENT */
-
-/* style header (where the title etc. are */
-header{
-    background-color: #011627;
-    height: 10vh; /* 10 units to header, 90 units to content = 100vh = fixed to viewport size */
-    border-bottom: 1px solid #1c93ad;
-}
-
-/* styling canvas */
-.canvasBox{
-    padding: 5%;
-    /* border: 1px solid black; */
-}
-
-/* the box that the canvas(es) are in */
-#chartPrvws, #aboutBox{
-    /* behaviour */
-    transition-duration: 0.5s; /* for gradual colour change between dark mode & light mode */
-    /* layout */
-    width: 90%;
-    height: auto; /* if set to, for e.g., 100%, it may not enclose all the charts especially when they stack on smaller screens */
-    margin: auto;
-    margin-top: 1%;
-    padding: 3%;
-    /* aesthetics */
-    background: #011627;
-    border-radius: 20px;
-}
-
-/* styling row for chart options buttons */
-#chartOpt{
-    padding-bottom: 3%;
-    margin-bottom: 3%;
-}
-
-/* styling "sidebar" where all the options and buttons will go */
-/* source: https://www.w3schools.com/css/css3_mediaqueries.asp */
-@media screen and (min-width: 768px){ /* overflow-y only scrolls if the screen is 768px or bigger. this corresponds to the col-12 col-md-x classes where the columns stack at 720px or lower. Essentially, I want the scroll to only apply if the columns are not stacking. */
-    #prvwBox, #options, #swatchBox, #ctrlPanel{ /* #prvwBox: where the charts are, #options: contains the two columns #swatchBox (where the colours are) & #ctrlPanel (where the buttons are) */
-        overflow-y: scroll;
-        overflow-x: hidden; /* to prevent horizontal scrolling */
-        height: 90vh;
+/*** ANIMATIONS ***/
+/* animation to fade in (source: https://www.geeksforgeeks.org/how-to-create-fade-in-effect-on-page-load-using-css/) */
+@keyframes fadeIn {
+    /* set a "stop" at the start...*/
+    0% {
+        /* with 0 opacity */
+        opacity: 0;
     }
+    /* set a "stop" at the end...*/
+    100% {
+        /* with full opacity */
+        opacity: 1;
+     }
 }
 
-@media screen and (max-width: 768px){ /* this applies when the viewport is smaller than 768px. */
-    #swatchBox{
-        height: auto; /* to be replaced by js windowRespond() later to match height of #ctrlPanel */
-        overflow-x: hidden; /* to prevent horizontal scrolling */
-    }
-    #ctrlPanel{
-        height: auto; 
-    }
-}
+/*** GENERAL STYLES ***/
 
-
-#prvwBox{
-    padding: 1% 0;
-}
-
-#options{
-    background-color: #011627; /* bg colour of sidebar */
-}
-
-/* styling content on top of the swatches */
-.ctrlBox{
-    padding: 5% 10%;
-    border-bottom: 1px solid #1c93ad;
-}
-
-/* for p elements within .ctrlBox & header */
-.ctrlBox p, header p{
-    /* remove all spacing */
-    margin: 0;
-    padding: 0;
-}
-
-/* styling the text area for all the colour codes */
-#allCodes{
-    padding: 5%; /* space between content & edge of text box */
-    border: solid 1px #1c93ad;
-    border-radius: 10px;
-    margin-top: 10%; /* to match margin-bottom of buttons */
-    height: auto;
-    
-}
-
-.lastBox{
-    border-bottom: 0px; /* to get rid of the bottom border */ /* this doesn't apply bc the js more recent smh */
-}
-
-/* styling swatches */
-
-.swatch{
-    width: 100%;
-    height: 20%;
-    border-bottom: 2px solid #fff9f5; /* bottom only so they don't double */
-    border-left: 2px solid #fff9f5;
-    transition-duration: 0.5s; /* colour change slows down, no idea why it took me so long to find this simple answer haha (source: https://stackoverflow.com/questions/70993915/how-to-change-the-speed-of-the-color-switch-when-button-is-clicked) */
-}
-
-/* styling content within swatches */
-
-#ctrlPanel{ /* column with buttons */
-    padding-top: 0%;
-    border-left: 1px solid #1C93AD;
-}
-
-/* STYLING ALIGNMENT */
 .center{
     text-align: center;
 }
 
 .right{
     text-align: right;
-}
-
-/* STYLING TEXT */
-
-/* styling individual h1 & h2 */
-#logo, h1{
-    font-family: 'Yeseva One', serif;
-    color: #ACCF42;
-    font-size: 2rem;
-}
-
-#logo{
-    margin-left: 5%; /* align title content with #chartPrvws */
-}
-
-#tagline{
-    font-family: 'Quicksand', sans-serif;
-    color: #fff9f5;
-    font-size: 1.2rem;
-    margin-left: 5%; /* to put some spacing between "by Nadia Amir" and "charter#use" */
 }
 
 h2{
@@ -157,11 +30,314 @@ h2{
     text-align: center;
 }
 
+/* button & link styles */
+
 a{
     text-decoration: none; /* remove the underline from links */
 }
 
-/* style for the text appearing on the swatch */
+.btn{
+    /* styling button appearance */
+    border: 0px;
+    border-radius: 10px;
+    width: 80%;
+    padding: 4%;
+    /* styling button text */
+    color: #fff9f5;
+    font-family: 'Quicksand', sans-serif;
+    /* to align them center */
+    display: block;
+    margin: auto;
+    /* box shadow behind buttons (source: https://developer.mozilla.org/en-US/docs/Web/CSS/box-shadow)*/
+    /* offset-x | offset-y | blur-radius | color */
+    box-shadow: 3px 5px rgba(28, 147, 173, 0.6);
+    transition: 0.2s; /* gradual change */
+}
+
+/* create slight press effect on hover (source: https://www.w3schools.com/howto/howto_css_animate_buttons.asp) */
+.btn:hover{
+    box-shadow: 3px 3px rgba(28, 147, 173, 0.8);
+    transform: translateY(3px);
+    transition: 0.2s; /* gradual change */
+}
+
+/* press effect on click */
+.btn:active{
+    border: 1px solid #ACCF42;
+    background-color: pink;
+    outline: none;
+}
+
+.btn-primary{ /* primary buttons */
+    border: 1px solid rgba(172, 207, 66, 1);
+    /* styling button bg */
+    background-color: rgba(28, 147, 173, 1); /* backup in case linear gradient does not work */
+    background-image: linear-gradient(to left, rgba(28, 147, 173, 1), rgba(172, 207, 66, 1)); /* linear-gradient(to direction, color stop 1, color stop 2) source: https://developer.mozilla.org/en-US/docs/Web/CSS/gradient/linear-gradient */
+    /* style text */
+    font-size: 1.1rem;
+    font-family: "Fredericka the Great", sans-serif;
+    /* add glow around text */
+    /* offset-x | offset-y | how much blur | color */
+    text-shadow: 0px 0px 4px #011627;
+}
+
+/* to darken the button when hover over it */
+.btn-primary:hover{
+    border: 1px solid rgba(28, 147, 173, 0.5);
+    /* styling button bg */
+    background-color: #1C93AD; /* backup in case linear gradient does not work */
+    background-image: linear-gradient(to left, rgba(28, 147, 173, 0.5), rgba(172, 207, 66, 0.5));
+    background-size: cover;
+    color: rgb(255, 249, 245);
+}
+
+.btn-primary:active{
+    border: 1px solid #ACCF42 !important; /* need !important to override some bootstrap classes (source: https://stackoverflow.com/questions/35709447/why-does-bootstrap-use-important-for-responsive-classes)*/
+    background-image: linear-gradient(to left, rgba(28, 147, 173, 0.5), rgba(172, 207, 66, 0.5)) !important;
+}
+
+.btn-outline-secondary{
+    background-color: #011627;
+    border: 1px solid rgba(172, 207, 66, 1);
+    font-size: 1rem;
+    transition-duration: 0.2s;
+}
+
+.btn-outline-secondary:hover{
+    background-color: rgba(172, 207, 66, 0);
+    border: 1px solid #1C93AD;
+    color: #fff9f5;
+}
+
+.btn-outline-secondary:active{
+    background-color: #1C93AD !important;
+}
+
+/*** BODY STYLE ***/
+body{
+    background-color: #011627; /* backup bg col */
+    /* background-image: linear-gradient(to left, #ACCF42, #1C93AD); */
+    background-image: url(../resources/gridBg.jpg);
+    background-size: cover;
+    color: rgb(255, 249, 245);
+    font-family: 'Quicksand', sans-serif;
+    /* name of animation | type of change | duration of change */
+    /* animation: fadeIn ease 2s;
+    /* perform the animation once */
+    animation-iteration-count: 1;
+    /* prevent scrolling between title screen & generator */
+    height: 100%;
+    overflow: hidden;
+}
+
+/* container holding generator */
+#generator{
+    position: absolute;
+    /* set 100% distance between generator & top edge of body */
+    /* so that it is right below titleScreen */
+    top: 100%;
+}
+
+/*** HEADER STYLES ***/
+
+header{
+    background-color: #011627;
+    height: 10vh; /* 10 units to header, 90 units to content = 100vh = fixed to viewport size */
+}
+
+#title{
+    line-height: 10vh; /* centralises all text in header (source: https://stackoverflow.com/questions/15487408/buttons-text-vertical-align)*/
+}
+
+#logo{
+    font-family: 'Fredericka the Great', serif;
+    color: #ACCF42;
+    font-size: 2rem;
+    margin-left: 13%; /* align title content with #chartPrvws */
+}
+
+#tagline{
+    font-family: 'Quicksand', sans-serif;
+    color: #fff9f5;
+    font-size: 1rem;
+    margin-left: 5%; /* to put some spacing between "by Nadia Amir" and "charter#use" */
+}
+
+/** NAV STYLES (nav is also in header) **/
+/* for btns in nav */
+/* button slide animation setup guided by chatGPT */
+.navBtn{
+    /* overwrite general btn styling */
+    padding: 0;
+    background-color: transparent;
+    border: 0px;
+    color: #fff9f5;
+    /* take full height & width of its place in header */
+    height: 10vh;
+    width: 100%;
+    /* so that it can go on top of the div */
+    position: relative;
+    /* put it on top of btnBg */
+    /* z-index determines stacking order (source: https://www.w3schools.com/cssref/pr_pos_z-index.php) */
+    z-index: 1;
+    /* gradual change when unhover */
+    transition: all 0.3s;
+}
+
+.navBtn:hover{
+    /* overwrite general btn styling */
+    background-color: transparent;
+    box-shadow: none;
+    border: 0px;
+    /* put it on top of btnBg */
+    z-index: 1;
+    /* make it move up */
+    transform: translateY(5px);
+    transition: all 0.2s;
+}
+
+.btnCont{
+    /* if left out, btnBg will fill the whole screen */
+    position: relative;
+}
+
+.btnBg{
+    /* fix it exactly behind button */
+    position: absolute;
+    /* sets distance between btnBg edges & edge of containing element */
+    top: auto; /* btnBg bottom edge aligns with btnCont bottom edge */
+    bottom: 0;
+    /* this helps the width "grow" left instead of right */
+    /* it flushes btnBg to the left of the btnCont */
+    right: auto; /* trial and error: having opposite values gives desired effect */
+    left: 0;
+    /* put it behind button */
+    z-index: 0;
+    /* set the background */
+    background-color: #1c93ad; /* backup bg colour */
+    background-image: linear-gradient(to right, #ACCF42, #1c93ad);
+    height: 5%;
+    border-radius: 20px; /* curve only on left side */
+    /* starting width is 0 */
+    width: 0;
+    transition: all 0.2s linear;
+}
+
+.btnCont:hover{
+    background-color: rgba(28, 147, 173, 0.2);
+    background-image: linear-gradient(to right, rgba(172, 207, 66, 0.2), rgba(28, 147, 173, 0.2));;
+    transition: all 0.2s linear;
+}
+
+/* change btnBg when btnCont hovered over */
+.btnCont:hover .btnBg{
+    background-color: #1c93ad; /* backup bg colour */
+    background-image: linear-gradient(to right, #ACCF42, #1c93ad);
+    /* ending width is navBtn width + 2 * navBtn margin */
+    width: 100%;
+    /* transitions the other way */
+    right: 0;
+    left: auto;
+    /* put it behind button */
+    z-index: 0;
+    /* transition settings */
+    /* property | duration | timing fn | ease | delay */
+    transition: all 0.2s linear;
+}
+
+/*** CHART PREVIEW AREA STYLES ***/
+
+/* the box that the canvas(es) are in */
+#chartPrvws{
+    /* behaviour */
+    transition-duration: 0.5s; /* for gradual colour change between dark mode & light mode */
+    /* layout */
+    width: 90%;
+    height: auto; /* if set to, for e.g., 100%, it may not enclose all the charts especially when they stack on smaller screens */
+    margin: auto;
+    padding: 3%;
+    /* aesthetics */
+    background: #011627;
+    border-radius: 20px;
+}
+
+/* row for chart options buttons */
+#chartOpt{
+    padding-bottom: 3%;
+    margin-bottom: 3%;
+}
+
+/* box that each chart is in */
+.canvasBox{
+    padding: 5%;
+}
+
+/* buttons in the chart preview area */
+#prvwBox .btn{
+    width: auto;
+    padding: 1% 2%; /* 1% top bottom, 2% right left */
+    display: inline-block; /* so that the buttons will be next to each other, i don't know why they weren't ;; */
+    margin: 0 2%;
+}
+
+/* when viewport is smaller than 768px... */
+@media screen and (max-width: 768px){
+    #chartPrvws{ /* this is the box where all the charts are */
+        /* Max the width across the screen */
+        width: 100%;
+        /* to prevent horizontal scrolling */
+        overflow-x: hidden;
+        /* remove rounded corners */
+        border-radius: 0;
+    }
+    .canvasBox{ /* this is the box wrapped around each chart */
+        width: 50%;
+    }
+}
+
+/*** RESPONSIVE SIDE COLUMNS ***/
+
+/* wrapped around the entire second column */
+#options{
+    background-color: #011627; /* bg colour of sidebar */
+}
+
+/* source: https://www.w3schools.com/css/css3_mediaqueries.asp */
+@media screen and (min-width: 768px){ /* overflow-y only scrolls if the screen is 768px or bigger */
+    /*
+    #options: contains the two columns
+    #swatchBox: where the colours are
+    #ctrlPanel: where the buttons are
+    */
+    #prvwBox, #options, #swatchBox, #ctrlPanel{
+        overflow-y: scroll;
+        overflow-x: hidden; /* to prevent horizontal scrolling */
+        height: 90vh;
+    }
+}
+
+/* when the viewport is smaller than 768px. */
+@media screen and (max-width: 768px){
+    #swatchBox{
+        /* height will be set to = #ctrlPanel through js */
+        overflow-x: hidden; /* to prevent horizontal scrolling */
+    }
+    #ctrlPanel{
+        height: auto; /* set height as needed to contain all elements */
+    }
+}
+
+/*** STYLING SWATCH BAR ***/
+
+/* each coloured rectangle swatch */
+.swatch{
+    width: 100%;
+    height: 20%;
+    border-bottom: 2px solid rgb(255, 249, 245); /* bottom only so they don't double */
+    transition-duration: 0.5s; /* colour change slows down (source: https://stackoverflow.com/questions/70993915/how-to-change-the-speed-of-the-color-switch-when-button-is-clicked) */
+}
+
+/* text appearing on the swatch */
 .colourLabel{
     /* layout */
     display: inline-block; /* so the colour text doesn't line break with the lock button even as a div */
@@ -172,22 +348,58 @@ a{
     text-align: center; /* align colourLabel in the middle */
 }
 
-/* styling quote & quote source */
-.quote, .quoteSource{
-    margin: 2%; /* so that it's indented from main paragraphs */
-    font-size: 1.2rem;
+/* styling buttons on the swatch (copy, lock, edit) */
+.optBtn{
+    /* styling button bg */
+    background-color: transparent;
+    /* styling button appearance */
+    border: 0px;
+    border-radius: 10px;
+    width: 70%; /* takes up 70% of the column width */
+    padding: 0;
+    /* styling button text */
+    color: inherit;
 }
 
-.quote{
-    border-top: 1px solid #ACCF42;
-    padding-top: 3%; /* space between text & top border */
+.optBtn:hover{
+    transform: translateY(-3px);
+    transition: 0.2s; /* gradual change */
 }
 
-.quoteSource{
-    text-align: right; /* to align the name to the right */
-    border-bottom: 1px solid #ACCF42;
-    padding-bottom: 3%; /* space between text & bottom border */
-    margin-bottom: 5%; /* space between bottom border & text below */
+/*** STYLING CONTROL PANEL ***/
+
+#ctrlPanel{ /* column with buttons */
+    padding-top: 0%;
+}
+
+/* box for each section of control panel */
+.ctrlBox{
+    padding: 5% 10%;
+    border-bottom: 1px solid #1c93ad;
+}
+
+/* for btns in .ctrlBox */
+.ctrlBox .btn{
+    /* set width to 100% */
+    width: 100%;
+    /* add space in between */
+    margin: 10% 0; /* space on top  & bottom, none on the sides */
+}
+
+/* for p elements within .ctrlBox & header */
+.ctrlBox p{
+    /* remove all spacing */
+    margin: 0;
+    padding: 0;
+}
+
+/* text area for all the colour codes */
+#allCodes{
+    padding: 5%; /* space between content & edge of text box */
+    border: solid 1px #1c93ad;
+    border-radius: 10px;
+    margin-top: 10%; /* to match margin-bottom of buttons */
+    height: auto;  
 }
 
 /* styling checkboxes (source: https://www.w3schools.com/css/css_form.asp) */
@@ -199,88 +411,9 @@ input[type=checkbox]{
     margin: 10% 0; /* add space between select all & Export options */
 }
 
-/* STYLING BUTTONS */
+/*** TOP PRIORITY STYLES ***/
 
-.btn{
-    /* styling button appearance */
-    border: 0px;
-    border-radius: 10px;
-    width: 80%;
-    padding: 4%;
-    /* styling button text */
-    color: rgb(255, 249, 245);
-    font-family: 'Quicksand', sans-serif;
-    /* to align them center */
-    display: block;
-    margin: auto;
-    /* gradual colour change for all buttons on hover */
-}
-
-/* for btns in .ctrlBox */
-.ctrlBox .btn{
-    /* set width to 100% */
-    width: 100%;
-    /* add space in between */
-    margin: 10% 0; /* space on top  & bottom, none on the sides */
-}
-
-.gradBtn{ /* primary buttons */
-    /* styling button bg */
-    background-color: rgba(28, 147, 173, 0.8); /* backup in case linear gradient does not work */
-    background: linear-gradient(to right, rgba(28, 147, 173, 0.8), rgba(172, 207, 66,0.8)); /* linear-gradient(to direction, color stop 1, color stop 2) source: https://developer.mozilla.org/en-US/docs/Web/CSS/gradient/linear-gradient */
-    /* style text */
-    font-size: 1rem;
-    font-family: "Yeseva One", sans-serif;
-    /* add glow around text */
-    /* offset-x | offset-y | how much blur | color */
-    text-shadow: 0px 0px 2px #011627;
-    /* gradual change – use transition all since gradient bg */
-    transition: all 0.5s ease-in-out;
-}
-
-/* to darken the button when hover over it */
-.gradBtn:hover{
-    /* styling button bg */
-    background-color: #1C93AD; /* backup in case linear gradient does not work */
-    background: linear-gradient(to right, #1c93ad, rgba(172, 207, 66, 1));
-    color: rgb(255, 249, 245);
-}
-
-/* all outline buttons */
-.outlineBtn{
-    /* styling button bg */
-    background-color: #011627;
-    border: 1px solid rgba(172, 207, 66, 1);
-    font-size: 1rem;
-    transition-duration: 0.2s;
-}
-
-.outlineBtn:hover{
-    /* styling button bg */
-    background-color: #1C93AD;
-    color: #fff9f5;
-}
-
-/* styling slightly different layout options for randomise & reset data & mode buttons */
-/* # styling takes priority over . styling (source: https://www.bestcolleges.com/bootcamps/guides/css-class-vs-id/)*/
-#randBtn, #resetBtn, #modeBtn{
-    width: auto;
-    padding: 1% 2%; /* 1% top bottom, 2% right left */
-    display: inline-block; /* so that the buttons will be next to each other, i don't know why they weren't ;; */
-    margin-top: 0; /* overwrite the margin-top that .outlineBtn has */
-}
-
-/* styling buttons on the swatch (copy, lock, edit) */
-.optBtn{
-    /* styling button bg */
-    background-color: transparent;
-    /* styling button appearance */
-    border: 0px;
-    border-radius: 10px;
-    width: 100%; /* takes up 90% of the width in col-4 */
-    height: auto;
-    padding: 0;
-    /* styling button text */
-    font-family: 'Quicksand', sans-serif;
-    color: inherit;
+/* remove bottom border */
+.lastBox{
+    border-bottom: 0px;
 }
