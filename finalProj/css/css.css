@@ -2,11 +2,6 @@
 
 /*** GENERAL STYLES ***/
 
-html{
-    /* source: https://blog.hubspot.com/website/css-rem */
-    font-size: 18px; /* base font size */
-}
-
 .center{
     text-align: center;
 }
