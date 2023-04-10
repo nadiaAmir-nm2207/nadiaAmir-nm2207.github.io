@@ -15,17 +15,15 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.0.1/chart.js"></script>
         <!-- fontawesome kit -->
         <script src="https://kit.fontawesome.com/845e277b28.js" crossorigin="anonymous"></script>
-        <!-- my general stylesheet -->
+        <!-- my stylesheet -->
         <link rel="stylesheet" type="text/css" href="css/css.css">
-        <!-- my stylesheet for title screen animation (separated because it's very long!)-->
-        <link rel="stylesheet" type="text/css" href="css/title.css">
         <!-- my JS -->
         <script defer type="text/javascript" src="js/main.js"></script>
         <title>Charter#use – chart colour generator</title>
     </head>
-    <!-- g-0 is the Bootstrap class for no-gutters, which clears the margins & padding for the columns. I did this so that my columns will not have a gap between them -->
-    <!-- I added the class container-fluid because I read that without it, rows will cause horizontal scrolling on some screens (source: https://stackoverflow.com/questions/61003484/i-need-to-fix-bootstrap-h-100-class-it-is-not-working)-->
-    <body class="container-fluid g-0">
+    <!-- g-0 = no-gutters -->
+    <!-- onload="location.href = '#titleScreen'" determines element that shows on load (source: https://stackoverflow.com/questions/16368129/how-to-make-the-page-load-to-an-anchor-tag)-->
+    <body class="container-fluid g-0" onload="location.href = '#titleScreen'">
         <!-- title screen -->
         <!--
             d-flex: class for flexbox
@@ -41,8 +39,14 @@
                 <div id="title">
                     <a href="#generator"><h1>charter#use</h1></a>
                     <div class="row g-0 d-flex">
-                        <div class="col-6"><p class="p-0 m-0">click to start.</p></div>
-                        <div class="col-6"><p class="p-0 m-0 right">best accessed on a computer.</p></div>
+                        <div class="col-6">
+                            <p class="p-1 m-0">click to start. </p>
+                            <p class="p-1 m-0">best accessed on a computer.</p>
+                        </div>
+                        <div class="col-6">
+                            <p class="p-1 m-0 right">&nbsp;</p><!-- spacer -->
+                            <p class="p-1 m-0 right">by nadia amir</p>
+                        </div>
                     </div>
                 </div>
                 <!-- lines for animation (inspo: https://codepen.io/lycanone/pen/BpMLEW)-->
@@ -60,35 +64,35 @@
         <div id="generator">
             <header id="header">
                 <div class="row g-0">
-                    <div class="col-6" id="title">
-                        <p><span id="logo">charter#use</span>&nbsp;<span id="tagline">by Nadia Amir</span></p> <!-- had to make new h1 & h2 classes because using the tags and then display:inline still wasn't putting them side by side for me-->
+                    <div class="col-7" id="title">
+                        <p id="logo">charter#use</p>
                     </div>
-                    <nav class="col-6" id="nav"> <!-- nav for navigation -->
+                    <nav class="col-5" id="nav"> <!-- nav for navigation -->
                         <!-- row to put buttons in columns-->
                         <div class="row g-0">
-                            <div class="col-6"></div> <!-- spacer -->
-                            <div class="col-2"> <!-- about -->
+                            <div class="col-md-3"></div><!-- spacer-->
+                            <div class="col-4 col-md-3"> <!-- back -->
                                 <div class="btnCont"><!-- to contain button & div behind button for animation-->
                                     <a href="#titleScreen">
-                                        <button class="navBtn"><i class="fa-solid fa-info"></i>&nbsp;&nbsp;back</button>
+                                        <button class="navBtn"><i class="fa-solid fa-arrow-left"></i>&nbsp;back</button>
                                     </a>
                                     <!-- the background (z-index 0)-->
                                     <div class="btnBg"></div>
                                 </div>
                             </div>
-                            <div class="col-2"> <!-- diary button -->
+                            <div class="col-4 col-md-3"> <!-- diary button -->
                                 <div class="btnCont"><!-- to contain button & div behind button for animation-->
                                     <a href="https://nadiaamir-nm2207.github.io/projDiary/index.html">
-                                        <button class="navBtn"><i class="fa-solid fa-book"></i>&nbsp;&nbsp;diary</button>
+                                        <button class="navBtn"><i class="fa-solid fa-book"></i>&nbsp;diary</button>
                                     </a>
                                     <!-- the background (z-index 0)-->
                                     <div class="btnBg"></div>
                                 </div>
                             </div>
-                            <div class="col-2"> <!-- home button -->
+                            <div class="col-4 col-md-3"> <!-- home button -->
                                 <div class="btnCont"><!-- to contain button & div behind button for animation-->
                                     <a href="https://nadiaamir-nm2207.github.io" target="_blank"> <!-- open in new tab -->
-                                        <button class="navBtn"><i class="fa-solid fa-home"></i>&nbsp;&nbsp;home</button>
+                                        <button class="navBtn"><i class="fa-solid fa-home"></i>&nbsp;home</button>
                                     </a>
                                     <!-- the background (z-index 0)-->
                                     <div class="btnBg"></div>
@@ -109,11 +113,11 @@
                             <!-- charts options buttons area -->
                             <div id="chartOpt">
                                 <div class="row g-0"> <!-- to style the row for the data options -->
-                                    <div class = "col-7">
+                                    <div class = "col-8">
                                         <button id="randBtn" class="btn btn-outline-secondary"><i class="fa-solid fa-dice-three"></i> randomise data</button>
                                         <button id="resetBtn" class="btn btn-outline-secondary"><i class="fa-solid fa-arrow-rotate-right"></i> reset data</button>
                                     </div>
-                                    <div class="col-5 right">
+                                    <div class="col-4 right">
                                         <button id="modeBtn" class="btn btn-outline-secondary"><i class="fa-solid fa-sun"></i> light bg</button><!-- text always opposite of the default mode. default mode is light, .: text should read dark mode -->
                                     </div>
                                 </div>
