@@ -1,17 +1,4 @@
-/*** ANIMATIONS ***/
-/* animation to fade in (source: https://www.geeksforgeeks.org/how-to-create-fade-in-effect-on-page-load-using-css/) */
-@keyframes fadeIn {
-    /* set a "stop" at the start...*/
-    0% {
-        /* with 0 opacity */
-        opacity: 0;
-    }
-    /* set a "stop" at the end...*/
-    100% {
-        /* with full opacity */
-        opacity: 1;
-     }
-}
+/********** STYLES FOR GENERATOR **********/
 
 /*** GENERAL STYLES ***/
 
@@ -114,20 +101,32 @@ a{
 }
 
 /*** BODY STYLE ***/
+
+/* animation to fade in (source: https://www.geeksforgeeks.org/how-to-create-fade-in-effect-on-page-load-using-css/) */
+@keyframes fadeIn {
+    /* set a "stop" at the start...*/
+    0% {
+        /* with 0 opacity */
+        opacity: 0;
+    }
+    /* set a "stop" at the end...*/
+    100% {
+        /* with full opacity */
+        opacity: 1;
+     }
+}
+
 body{
     background-color: #011627; /* backup bg col */
     /* background-image: linear-gradient(to left, #ACCF42, #1C93AD); */
-    background-image: url(../resources/gridBg.jpg);
+    background-image: url(../resources/title.jpg);
     background-size: cover;
     color: rgb(255, 249, 245);
     font-family: 'Quicksand', sans-serif;
     /* name of animation | type of change | duration of change */
-    /* animation: fadeIn ease 2s;
+    animation: fadeIn ease 2s;
     /* perform the animation once */
     animation-iteration-count: 1;
-    /* prevent scrolling between title screen & generator */
-    height: 100%;
-    overflow: hidden;
 }
 
 /* container holding generator */
@@ -136,6 +135,10 @@ body{
     /* set 100% distance between generator & top edge of body */
     /* so that it is right below titleScreen */
     top: 100%;
+    /* make sure it always scrolls to top of #generator */
+    /* direction (x/y) | what type */
+    /* source: https://developer.mozilla.org/en-US/docs/Web/CSS/scroll-snap-type */
+    scroll-snap-type: y mandatory;
 }
 
 /*** HEADER STYLES ***/
@@ -152,15 +155,8 @@ header{
 #logo{
     font-family: 'Fredericka the Great', serif;
     color: #ACCF42;
-    font-size: 2rem;
+    font-size: 1.9rem;
     margin-left: 13%; /* align title content with #chartPrvws */
-}
-
-#tagline{
-    font-family: 'Quicksand', sans-serif;
-    color: #fff9f5;
-    font-size: 1rem;
-    margin-left: 5%; /* to put some spacing between "by Nadia Amir" and "charter#use" */
 }
 
 /** NAV STYLES (nav is also in header) **/
@@ -247,6 +243,13 @@ header{
 
 /*** CHART PREVIEW AREA STYLES ***/
 
+/* box of the box for the canvases */
+#prvwBox{
+    background-color: #1C93AD; /* backup bg colour */
+    background-image: url(../resources/gridBg.jpg);
+    background-size: cover;
+}
+
 /* the box that the canvas(es) are in */
 #chartPrvws{
     /* behaviour */
@@ -295,7 +298,7 @@ header{
     }
 }
 
-/*** RESPONSIVE SIDE COLUMNS ***/
+/*** RESPONSIVE ***/
 
 /* wrapped around the entire second column */
 #options{
@@ -305,11 +308,12 @@ header{
 /* source: https://www.w3schools.com/css/css3_mediaqueries.asp */
 @media screen and (min-width: 768px){ /* overflow-y only scrolls if the screen is 768px or bigger */
     /*
+    body: body
     #options: contains the two columns
     #swatchBox: where the colours are
     #ctrlPanel: where the buttons are
     */
-    #prvwBox, #options, #swatchBox, #ctrlPanel{
+    body, #prvwBox, #options, #swatchBox, #ctrlPanel{
         overflow-y: scroll;
         overflow-x: hidden; /* to prevent horizontal scrolling */
         height: 90vh;
@@ -416,4 +420,196 @@ input[type=checkbox]{
 /* remove bottom border */
 .lastBox{
     border-bottom: 0px;
+}
+
+/********** STYLES FOR TITLE SCREEN **********/
+
+/* all responsive class properties are marked as !important in bootstrap, so we have to do that too to override */
+
+/*** STYLES FOR MAIN CONTAINERS ***/
+#titleScreen{
+    background-color: #011627; /* backup */
+    background-image: url(../resources/title.jpg);
+    background-size: cover;
+    height: 100vh;
+    padding-top: 2%;
+    overflow: hidden;
+    /* make sure it always scrolls to top of #titleScreen */
+    /* direction (x/y) | what type */
+    scroll-snap-type: y mandatory;
+}
+
+/*** STYLES FOR LOGO ***/
+h1{
+    /* font size change with viewport width (source: https://www.w3schools.com/howto/howto_css_responsive_text.asp)*/
+    /* setting this also lets animated lines squish on smaller screens */
+    font-size: 10vw;
+    text-align: center;
+    color: #ACCF42;
+    font-family: "Fredericka the Great";
+    /* glow shows gradually */
+    transition: all 0.2s linear;
+}
+
+.p-1{
+    font-size: 0.8rem;
+    line-height: 0.8rem;
+}
+
+.right{
+    text-align: right !important;
+}
+
+#title{
+    position: relative;
+}
+
+#titleCont{
+    position: relative;
+}
+
+/*** ANIMATION STYLES ***/
+/** INSPIRATION: https://codepen.io/lycanone/pen/BpMLEW**/
+
+.line{
+    /* fix it exactly behind logo */
+    position: absolute;
+    /* put it behind button */
+    z-index: 0;
+    /* set the background */
+    background-color: #1c93ad; /* backup bg colour */
+    background-image: linear-gradient(to right, #ACCF42, #1c93ad);
+    height: 5px;
+    width: 5px;
+    border-radius: 2.5px; /* curve tip */
+    transition: all 0.2s linear;
+}
+
+/* position lines 
+line1 & line2: move left
+line3 & line4: move right
+line5 & line6: move up
+line7 & line8: move down
+*/
+
+#line1{
+    /* -value above/below the edge */
+    /* choose based on which direction line will move in (easier) */
+    /* move up, make sense to start from bottom & vice versa. property = opposite of movement direction */
+    top: -20%;
+    /* side position */
+    right: -25%;
+    /* width */
+    width: 80%;
+}
+
+#line2{
+    /* -value above/below the edge */
+    top: -20%;
+    /* side position */
+    right: 60%;
+    /* width */
+    width: 10%;
+}
+
+#line3{
+    /* -value above/below the edge */
+    bottom: -35%;
+    /* side position */
+    left: 50%;
+    /* width */
+    width: 8%;
+}
+
+#line4{
+    /* -value above/below the edge */
+    bottom: -35%;
+    /* side position */
+    left: -30%;
+    /* width */
+    width: 75%;
+}
+
+#line5{
+    /* -value above/below the edge */
+    bottom: -100%;
+    /* side position */
+    left: -8%;
+    /* height */
+    height: 30%;
+}
+
+#line6{
+    /* -value above/below the edge */
+    bottom: -50%;
+    /* side position */
+    left: -8%;
+    /* height */
+    height: 230%;
+}
+
+#line7{
+    /* -value above/below the edge */
+    top: -80%;
+    /* side position */
+    right: -8%;
+    /* height */
+    height: 200%;
+}
+
+#line8{
+    /* -value above/below the edge */
+    top: -130%;
+    /* side position */
+    right: -8%;
+    /* height */
+    height: 20%;
+}
+
+/* transform position */
+
+#titleCont:hover #line1{
+    transform: translateX(25%);
+    box-shadow: 0px 0px 8px #1c93ad;
+}
+
+#titleCont:hover #line2{
+    transform: translateX(100%);
+    box-shadow: 0px 0px 8px #1c93ad;
+}
+
+#titleCont:hover #line3{
+    transform: translateX(-100%);
+    box-shadow: 0px 0px 8px #1c93ad;
+}
+
+#titleCont:hover #line4{
+    transform: translateX(-25%);
+    box-shadow: 0px 0px 8px #1c93ad;
+}
+
+#titleCont:hover #line5{
+    transform: translateY(-150%);
+    box-shadow: 0px 0px 8px #1c93ad;
+}
+
+#titleCont:hover #line6{
+    transform: translateY(-40%);
+    box-shadow: 0px 0px 8px #1c93ad;
+}
+
+#titleCont:hover #line7{
+    transform: translateY(52%);
+    box-shadow: 0px 0px 8px #1c93ad;
+}
+
+#titleCont:hover #line8{
+    transform: translateY(500%);
+    box-shadow: 0px 0px 8px #1c93ad;
+}
+
+/* add "glow" to logo on hover */
+#titleCont:hover h1{
+    /* offset-x | offset-y | how much blur | color */
+    text-shadow: 0px 0px 8px #3dacc5;
 }
