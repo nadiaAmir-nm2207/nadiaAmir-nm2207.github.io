@@ -9,9 +9,6 @@
 
 // --- Get HTML elements
 
-// Get optBtns
-const optBtnArr = Array.from(document.getElementsByClassName("optBtn"));
-
 // ---------- LOCKING FEATURES ----------
 // Get the lock buttons from the html
 let lockArr = Array.from(document.getElementsByClassName("lock"));
@@ -31,23 +28,23 @@ let lockState = [false, false, false, false, false];
 // Apply eventListener to all class=".lock" elements (source: https://flaviocopes.com/how-to-add-event-listener-multiple-elements-javascript/)
 lockArr.forEach((lock, x) => {
     lock.addEventListener("click", event => {
-        // Get the lightness levels of the colours
-        const lvals = lvals1.concat(lvals2, lvals3);
-        // If the background is dark
         if(lockState[x] == true){ // if lock is locked
             lockState[x] = false; // then unlock it
             // and display unlocked icon
-            lock.innerHTML = '<i class="fa-solid fa-lock-open"></i>'
+            lock.innerHTML = '<i class="fa-solid fa-lock-open fa-lg"></i>'
         }
         else if (lockState[x] == false){ // if lock is unlocked
             lockState[x] = true; // then lock it
             // and display locked icon
-            lock.innerHTML = '<i class="fa-solid fa-lock"></i>'
+            lock.innerHTML = '<i class="fa-solid fa-lock fa-lg"></i>'
         };
     });
 });
 
 // --- for mass locking & unlocking
+// Get HTML elements for #unlockAll & #lockAll
+let unlockBtn = document.getElementById("unlockAll");
+let lockBtn = document.getElementById("lockAll")
 
 // Unlock all colours by clicking #unlockAll
 function unlockAll(){
@@ -56,8 +53,15 @@ function unlockAll(){
     // Loop through all lock buttons to...
     for (let x = 0; x < lockArr.length; x++){
         // ...change to the unlock icon
-        lockArr[x].innerHTML = '<i class="fa-solid fa-lock-open">'
+        lockArr[x].innerHTML = '<i class="fa-solid fa-lock-open fa-lg"></i>'
     };
+    // Change text to indicate unlocked
+    unlockBtn.innerHTML = '<i class="fa-solid fa-lock-open"></i> All unlocked!';
+    // Wait some seconds and...
+    setTimeout(function(){
+        // Return to original text
+        unlockBtn.innerHTML = '<i class="fa-solid fa-lock-open"></i> Unlock All';
+    }, 2000) // 1s = 1000ms
 };
 
 // Lock all colours by clicking #lockAll
@@ -67,13 +71,20 @@ function lockAll(){
     // Loop through all lock buttons to...
     for (let x = 0; x < lockArr.length; x++){
         // ...change to the lock icon
-        lockArr[x].innerHTML = '<i class="fa-solid fa-lock">'
+        lockArr[x].innerHTML = '<i class="fa-solid fa-lock fa-lg">'
     };
+    // Change text to indicate locked
+    lockBtn.innerHTML = '<i class="fa-solid fa-lock fa-lg"></i> All locked!';
+    // Wait some seconds and...
+    setTimeout(function(){
+        // Return to original text
+        lockBtn.innerHTML = '<i class="fa-solid fa-lock fa-lg"></i> Lock All';
+    }, 2000) // 1s = 1000ms
 };
 
 // addEventListeners to #unlockAll & #lockAll
-document.getElementById("unlockAll").addEventListener("click", function(){unlockAll()});
-document.getElementById("lockAll").addEventListener("click", function(){lockAll()});
+unlockBtn.addEventListener("click", function(){unlockAll()});
+lockBtn.addEventListener("click", function(){lockAll()});
 
 // Alert user if they are clicking #changeBtn when all colours locked
 function lockAllError(){
@@ -104,7 +115,8 @@ function changeMode(){
         document.getElementById("chartPrvws").style.backgroundColor = "#011627";
         return mode;
     }
-    else if (mode == false){ // if mode is false, i.e. in dark mode
+    // if in dark mode
+    else if (mode == false){
         // reassign value to indicate light mode
         mode = true;
         // change text to "dark bg" instead of "light bg"
@@ -114,8 +126,56 @@ function changeMode(){
         return mode;
     };
 };
-// eventlistener for modeBtn
-modeBtn.addEventListener("click", function(){changeMode()});
+
+// Change backgrounds of buttons on chartPrvw according to the mode
+function btnBg(){
+    // Get the buttons in #chartPrvws
+    let btns = [document.getElementById("randBtn"), document.getElementById("resetBtn"), document.getElementById("modeBtn")];
+    console.log(btns);
+    // For all of the elements in btns...
+    btns.forEach((btn) => {
+        // if in light mode
+        if (mode == true){
+            // set btn background colour to lighter colour
+            btn.style.backgroundColor = "#fff9f5";
+            // set btn text colour to darker colour
+            btn.style.color = "#1C93AD";
+            // set border colour to blue
+            btn.style.borderColor = "#1C93AD";
+            // when hover...
+            btn.onmouseover = function(){
+                // Set background to blue
+                btn.style.backgroundColor = "#1C93AD";
+                btn.style.color = "#fff9f5";
+            };
+            // when not hovering...
+            btn.onmouseout = function(){
+                // Set background back to lighter colour
+                btn.style.backgroundColor = "#fff9f5";
+            };
+        }
+        // if in dark mode
+        else if(mode == false){
+            // set btn background colour to dark colour
+            btn.style.backgroundColor = "#011627";
+            // set btn text colour to light colour
+            btn.style.color = "#fff9f5";
+            // when hover...
+            btn.onmouseover = function(){
+                // Set background to blue
+                btn.style.backgroundColor = "#1C93AD";
+            };
+            // when not hovering...
+            btn.onmouseout = function(){
+                // Set background back to darker colour
+                btn.style.backgroundColor = "#011627";
+            };
+        };
+    });
+};
+
+// eventlisteners for modeBtn
+modeBtn.addEventListener("click", function(){changeMode(), btnBg()});
 
 // ---------- COLOUR CHANGING ALGORITHM, #changeBtn ----------
 // --- Get HTML elements
@@ -163,7 +223,7 @@ const sat3 = [];
 const rgbVal = [];
 
 // Push hex codes for colours (for #allCodes textarea)
-const codesArr = [];
+const hexCodes = [];
 
 // --- Basic Functions
 // clear arrays to prevent stacking
@@ -576,11 +636,11 @@ function changeColour(){
             // Change colour code to read the hex code
             colourLabels[x].innerHTML = hexCode;
             // Add a space in front of hexCode & put into codesArr (for #allCodes textarea)
-            codesArr[x]=(" " + hexCode);
+            hexCodes[x]=(" " + hexCode);
         }
     };
     // Show hex colour codes in #allCodes textarea
-    allCodes.innerHTML = codesArr;
+    allCodes.innerHTML = hexCodes;
     // Update charts for changes to show
     updateChart();
 };
@@ -1006,6 +1066,9 @@ let resetBtn = document.getElementById("resetBtn");
 // Add eventListener to resetBtn
 resetBtn.addEventListener("click", function(){reset()});
 
+// call changeColour once when page is loaded
+changeColour();
+
 // ---------- CODE EXPORTING CHART IMAGES ----------
 
 // --- checkbox code (feature to select specific charts to download)
@@ -1051,7 +1114,7 @@ allDl.addEventListener("click", function(){selectAll()});
 // --- Downloading (image data for each chart is stored in imgData)
 // source: https://stackoverflow.com/questions/4405336/how-to-copy-contents-of-one-canvas-to-another-canvas-locally
 
-// Create a new canvas that will hold all the images
+// --- Create a new canvas that will hold all the images
 let exportCanvas = document.createElement("canvas");
 // Set width & height of canvas (source: https://www.educative.io/answers/how-to-add-an-id-to-element-in-javascript)
 // Use setAttribute(), style won't work (source: https://stackoverflow.com/questions/15793702/drawing-image-on-canvas-larger-than-real)
@@ -1059,6 +1122,67 @@ exportCanvas.setAttribute("width", 1080); // set width to 1080
 exportCanvas.setAttribute("height", 720); // set height to 720
 // Get the context of this new canvas
 let ctx = exportCanvas.getContext("2d"); 
+
+// --- Drawing basic background elements in exportCanvas
+function canvasBg(){
+    // Drawing background (comes first so everything else goes on top)
+    // Background colour changes based on whether it's light or dark mode
+    // source: https://stackoverflow.com/questions/71014611/can-anyone-tell-me-how-to-save-a-canvas-image-with-the-background-color
+    // If in light mode
+    if (mode == true){
+        // Fill all elements with light colour
+        ctx.fillStyle = "#fff9f5";
+        // Create a solid rectangle that starts at 0, 0 and is size 1080 x 720 (same as exportCanvas)
+        ctx.fillRect(0, 0, 1080, 720);
+    }
+    // If in dark mode
+    else if(mode==false){
+        // Fill all elements with dark colour
+        ctx.fillStyle = "#011627";
+        // Create a solid rectangle that starts at 0, 0 and is size 1080 x 720 (same as exportCanvas)
+        ctx.fillRect(0, 0, 1080, 720);
+    };
+    // Header rectangle with "logo" on it
+    // Create linear gradient rectangle – createLinearGradient(x0, y0, x1, y1) (source: https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/createLinearGradient)
+    let gradient = ctx.createLinearGradient(0, 0, 1080, 150);
+    // Gradient colour stops
+    gradient.addColorStop(0, "#1C93AD"); // blue at start
+    gradient.addColorStop(1, "#ACCF42"); // green at end
+    // Set fill as gradient
+    ctx.fillStyle = gradient;
+    // Draw header rectangle sized 1080 x 80
+    ctx.fillRect(0, 0, 1080, 80);
+    // Write text charter#use (source: https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Drawing_text)
+    ctx.fillStyle = "#fff9f5"; // font colour
+    ctx.font = "40px YesevaOne"; // font family & size
+    ctx.fillText("charter#use", 40, 55); // where to put text
+};
+
+// --- Draw palette onto exportCanvas
+function drawPalette(){
+    // For each swatch...
+    for (let i = 0; i < Swatches.length; i++){
+        // Set the fill colour to the corresponding colour
+        ctx.fillStyle = hexCodes[i];
+        // Start at (815, 100 + (i*(104+20) i.e. height of swatch + padding)
+        ctx.fillRect(20, 100 + (i*124), 245, 104);
+        // Write colourLabel
+        // Get all lightness values
+        const lvals = lvals1.concat(lvals2,lvals3);
+        // If background is dark...
+        if (between(lvals[i], 0, 50)){
+            // Make text in swatch light
+            ctx.fillStyle = "#fff9f5";
+        }
+        // If background is light...
+        else if (between(lvals[i], 50, 100)){
+            // Make colour code dark
+            ctx.fillStyle = "#011627";
+        };
+        ctx.font = "25px serif"; // font family & size
+        ctx.fillText(hexCodes[i], 40, 160 + (i*124)); // where to put text
+    };
+};
 
 // Create empty array to push chartImgs when created
 const chartImgArr = [];
@@ -1086,6 +1210,7 @@ function loadChartImgs(){
                 // Declare a new Image called chartImg
                 let chartImg = new Image;
                 // Make sure image loads (source: https://stackoverflow.com/questions/8404937/drawing-multiple-images-on-one-canvas)
+                // set onload to function that returns promise when chartImg loads
                 chartImg.onload = () => resolve(chartImg);
                 // If chartImg does not load, put this error message in console
                 chartImg.onerror = () => reject("chartImg did not load");
@@ -1105,12 +1230,14 @@ function loadChartImgs(){
                 // If it is one of the first 3 charts...
                 if (counter <= 2){
                     // Set the chart y-coord to upper row
-                    ctx.drawImage(chartImgArr[counter], 360 * counter, 0, 360, 360);
+                    // start at x = 20 + 245 + 20 = 285, leave space of (245 + 20) * counter
+                    ctx.drawImage(chartImgArr[counter], 285 + 265 * counter, 100, 245, 245);
                 }
                 // If it is one of the last 3 charts...
                 else if (counter >= 3){
-                    // Set the chart y-coord to lower row
-                    ctx.drawImage(chartImgArr[counter], 360 * (counter-3), 360, 360, 360);
+                    // Set the chart y-coord to lower row (720 - 80 - (20 * 2) - (245 * 2) = 110, y-coord = 110 + 80 + 20 + 245 = 455)
+                    // start at x = 20 + 245 + 20 = 285, leave space of (245 + 20) * (counter - 3)
+                    ctx.drawImage(chartImgArr[counter], 285 + 265 * (counter-3), 455, 245, 245);
                 };
             })
             .catch(error => { // To tell me where in the promise chain did the error occur
@@ -1128,6 +1255,10 @@ function download(){
     ctx.clearRect(0, 0, exportCanvas.width, exportCanvas.height);
     // Clear downloadLink link reference (to prevent downloading of previous chart)
     downloadLink.setAttribute("href", "#");
+    // Fill canvas with bg
+    canvasBg();
+    // Draw the palette
+    drawPalette();
     // Load the chart images
     loadChartImgs();
     // Check that all promises have been fulfilled (i.e. all images have been loaded) (source: chatGPT)
@@ -1162,42 +1293,61 @@ const downloadLink = document.getElementById("downloadLink");
 // Get the download button html element
 let downloadBtn = document.getElementById("download");
 
-// --- Keeping downloads updated
+// --- Keeping exportCanvas updated
 // Reload chartImgs when colour of charts are changed
-changeBtn.addEventListener("click", loadChartImgs());
+changeBtn.addEventListener("click", function(){loadChartImgs(), drawPalette()});
 // Reload chartImgs when data is randomised/reset
-randBtn.addEventListener("click", loadChartImgs());
-resetBtn.addEventListener("click", loadChartImgs());
+randBtn.addEventListener("click", function(){loadChartImgs()});
+resetBtn.addEventListener("click", function(){loadChartImgs()});
 
 // Call download() when #download clicked
 downloadBtn.addEventListener("click", function(){download()});
 
-// /** Loading the chartImgs immediately when checkbox is ticked
-//  *
-//  *
-//  * @param checkbox The checkbox HTML element from checkBoxArr.
-//  * @param x The index of checkboxArr (source: https://www.w3schools.com/jsref/jsref_foreach.asp)
-//  */
-// checkboxArr.forEach((checkbox, x)=>{
-//     // When checkbox tick changes...
-//     checkbox.addEventListener("change", event =>{
-//         // Load the images if checked
-//         loadChartImgs(x);
-//     });
-// });
-
 // ---------- COPY PASTING COLOUR CODES ----------
 // library used: https://clipboardjs.com
 
-// Get all .copy buttons to attach clipboard eventListener
+// Get all .copy buttons to attach clipboard eventListener (collection)
 let copyBtns = document.getElementsByClassName("copy");
 // Pass copyBtns collection through ClipboardJS
 let clipboard = new ClipboardJS(copyBtns);
-// ELEPHANT find a way to do user feedback
-function copyCol(){
-    copyBtns.innerHTML = "copied!";
+
+// ---------- BUTTON FEEDBACK ----------
+
+// --- For copy buttons in swatch
+// Get all copy buttons in the swatch in an array
+let copyBtnArr = Array.from(document.getElementsByClassName("copyOpt"));
+
+function copied(btn){
+    // Change icon to one of a clipboard with a tick
+    btn.innerHTML = '<i class="fa-solid fa-clipboard-check fa-lg"></i>';
+    // Wait some seconds and...
+    setTimeout(function(){
+        // Return to copy icon
+        btn.innerHTML = '<i class="fa-solid fa-copy fa-lg"></i>'
+    }, 2000) // 1s = 1000ms
 };
 
+// Get all to...
+copyBtnArr.forEach((btn) => {
+    // Listen for a click and call copied()
+    btn.addEventListener("click", function(){copied(btn)});
+});
+
+// --- For #copyAll button
+// Get #copyAll
+let copyAll = document.getElementById("copyAll");
+
+function copiedAll(){
+    // Change text & icon to one of a clipboard with a tick
+    copyAll.innerHTML = '<i class="fa-solid fa-clipboard-check fa-lg"></i> Copied!';
+    // Wait some seconds and...
+    setTimeout(function(){
+        // Return to copy icon
+        copyAll.innerHTML = '<i class="fa-solid fa-copy fa-lg"></i> Copy All'
+    }, 2000) // 1s = 1000ms
+};
+
+copyAll.addEventListener("click", function(){copiedAll()})
 
 // ---------- RESPONSIVE STYLING ----------
 
@@ -1232,9 +1382,10 @@ windowRespond();
 window.addEventListener("resize", function(){windowRespond()});
 
 // --- optBtn height = optBtn width, while optBtn width = 20%
-
+// Get optBtns
+const optBtnArr = Array.from(document.getElementsByClassName("optBtn"));
 // Get optBtnWidth
-// Do this outside function so that it can be accessed for other things like svg viewbox later
+// Do this outside command center so that it can be accessed for other things later
 function optBtnWidth(){
     // Specify one particular button out of the array, all of them have equal widths so I just pick the first one
     let optBtnWidth = optBtnArr[0].offsetWidth;
@@ -1254,43 +1405,7 @@ optBtnHt();
 // Listen for window resize to recalculate optBtn height
 window.addEventListener("resize", function(){optBtnHt()});
 
-// --- Show background for optBtn on hover
-// Do this in JS instead of CSS because want to change colour based on swatch, but JS can't access CSS pseudostates
-
-/** Loop through optBtn elements & apply eventListener (source: https://flaviocopes.com/how-to-add-event-listener-multiple-elements-javascript/)
- * .querySelectorAll returns all elements that matches the class optBtn (source: https://www.w3schools.com/jsref/met_document_queryselectorall.asp)
- * forEach iterates over each .optBtn item and applies the EventListener to it
- * must put ".optBtn" not "optBtn" (source: https://forum.freecodecamp.org/t/mouseover-mouseout-not-working/202846/4)
- * 
- * @param {string[]} item The .optBtn
- * @param {number} index index of the .optBtn being iterated over (source: https://www.w3schools.com/jsref/jsref_foreach.asp)
- */
-document.querySelectorAll(".optBtn"). forEach((item, index) => {
-    // When the .optBtn is moused over, do... (source: https://www.w3schools.com/jsref/event_onmouseover.asp)
-    item.addEventListener("mouseover", event => {
-        // Create an array with lightness values for each generated colour repeated 3 times
-        const lvals = [lvals1[0], lvals1[0], lvals1[0], lvals1[1], lvals1[1], lvals1[1], lvals2[0], lvals2[0], lvals2[0], lvals2[1], lvals2[1], lvals2[1], lvals3[0], lvals3[0], lvals3[0]]
-        // If background is dark...
-        if (between(lvals[index], 0, 50)){
-            // Change the .optBtn bg color to light
-            item.style.backgroundColor = "rgba(255, 249, 245, 0.2)";
-        }
-        // If background is light...
-        else {
-            // Change the .optBtn bg color to dark
-            item.style.backgroundColor = "rgba(1, 22, 39, 0.2)";
-        }
-        // Gradual colour change
-        item.style.transitionDuration = "0.5s";
-    });
-    // When cursor leaves .optBtn...
-    item.addEventListener("mouseout", event => {
-        // Set background of .optBtn to no colour
-        item.style.backgroundColor = "transparent";
-        // Gradual colour change
-        item.style.transitionDuration = "0.5s";
-    });
-});
+// ---------- RESPONSIVE STYLING: VERTICAL CENTRALISING ----------
 
 /** --- General function to calculate padding/margin needed for vertical centralising
  *
@@ -1307,8 +1422,9 @@ function vertCentral(container, content){
     let smallHt = content.offsetHeight;
     // Calculate difference between containing element & content element
     let diff = bigHt - smallHt;
+    console.log(diff/2);
     return diff/2;
-}
+};
 
 // --- Vertically centralise content in swatches
 
@@ -1320,27 +1436,19 @@ function swatchSpace(){
     });
 };
 
-// Set swatch padding onload
+// --- Vertically centralise #chartPrvws in #prvwBox
+function chartSpace(){
+    // Get #chartPrvws
+    let chartPrvws = document.getElementById("chartPrvws");
+    // Get #prvwBox
+    let prvwBox = document.getElementById("prvwBox");
+    // Set padding for #prvwBox to vertically centralise
+    chartPrvws.style.margin = vertCentral(prvwBox, chartPrvws) + "px auto";
+};
+
+// Vertically centralise on load
 swatchSpace();
+chartSpace();
 
-// Listen for window resize to recalculate swatch padding
-window.addEventListener("resize", function(){swatchSpace()});
-
-// --- Vertically centralise content in header
-function headerSpace(){
-    // Get header element
-    let header = document.getElementById("header"); // must use id, TagName won't work
-    // Get biggest content element (eyeballing, looks like the nav buttons)
-    let content = document.getElementById("nav");
-    // Get all children of header (source: https://developer.mozilla.org/en-US/docs/Web/API/Element/children)
-    for(const child of header.children){
-        /* for each child of header, set the padding */
-        child.style.padding = vertCentral(header, content) + "px 0";
-    };
-}
-// Set header padding on load
-headerSpace();
-
-
-// ALWAYS LAST: call changeColour once when page is loaded. put at the end so it can access everything it needs.
-changeColour();
+// Vertically centralise on window resize
+window.addEventListener("resize", function(){swatchSpace(), chartSpace()});
