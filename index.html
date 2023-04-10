@@ -1,281 +1,48 @@
 <!DOCTYPE html>
 <meta charset="UTF-8">
 
-<html lang="en">
+<html>
     <head>
         <!-- linking to google fonts -->
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500&family=Fredericka+the+Great&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200&family=Quicksand&display=swap" rel="stylesheet">
         <!-- Bootstrap https://getbootstrap.com/docs/5.3/getting-started/introduction/ -->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
-        <!-- Clipboard.js plugin for copy-paste https://preview.keenthemes.com/good/documentation/forms/clipboard.html-->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.10/clipboard.min.js"></script>
-        <!-- chartjs -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.0.1/chart.js"></script>
-        <!-- fontawesome kit -->
-        <script src="https://kit.fontawesome.com/845e277b28.js" crossorigin="anonymous"></script>
         <!-- my stylesheet -->
-        <link rel="stylesheet" type="text/css" href="css/css.css">
+        <link rel="stylesheet" type="text/css" href="styles/style.css">
+        <title>Nadia's Homepage</title>
+        <!-- Fontawesome link -->
+        <script src="https://kit.fontawesome.com/845e277b28.js" crossorigin="anonymous"></script> <!-- using the CSS method doesn't work as well -->
         <!-- my JS -->
-        <script defer type="text/javascript" src="js/main.js"></script>
-        <title>Charter#use – chart colour generator</title>
+        <script defer type="text/javascript" src="scripts/main.js">
+        </script>
     </head>
-    <!-- g-0 = no-gutters -->
-    <!-- onload="location.href = '#titleScreen'" determines element that shows on load (source: https://stackoverflow.com/questions/16368129/how-to-make-the-page-load-to-an-anchor-tag)-->
-    <body class="container-fluid g-0" onload="location.href = '#titleScreen'">
-        <!-- title screen -->
-        <!--
-            d-flex: class for flexbox
-            flex-column: to make it a column so that flex items stack on top of each other
-            justify-content-center: horizontal centralise
-            align-items-center: vertical centralise (source: (source: https://www.tutorialrepublic.com/faq/how-to-vertical-align-a-div-in-bootstrap.php))
-            source: trial & error + https://getbootstrap.com/docs/4.0/utilities/flex/#wrap
-        -->
-        <div id="titleScreen" class="d-flex flex-column justify-content-center align-items-center">
-            <!-- make titleCont bigger than title -->
-            <div id="titleCont" class="d-flex">
-                <!-- link to charter#use -->
-                <div id="titleBox">
-                    <a href="#generator"><div id="titleText"><h1>charter#use</h1></a></div>
-                    <div class="row g-0 d-flex">
-                        <div class="col-6">
-                            <p class="p-1 m-0">click to start. </p>
-                            <p class="p-1 m-0">best accessed on a computer.</p>
-                        </div>
-                        <div class="col-6">
-                            <p class="p-1 m-0 right">&nbsp;</p><!-- spacer -->
-                            <p class="p-1 m-0 right">by nadia amir</p>
-                        </div>
-                    </div>
+    <body>
+        <!-- to contain all the content -->
+        <div class="container">
+            <section id="main" class="row">
+                <div class="col col-md-4">
+                    <!-- profile picture here -->
+                    <img src="resources/profilePic.png" id="profilePic">
                 </div>
-                <!-- lines for animation (inspo: https://codepen.io/lycanone/pen/BpMLEW)-->
-                <div class="line horiz" id="line1"></div>
-                <div class="line horiz" id="line2"></div>
-                <div class="line horiz" id="line3"></div>
-                <div class="line horiz" id="line4"></div>
-                <div class="line vert" id="line5"></div>
-                <div class="line vert" id="line6"></div>
-                <div class="line vert" id="line7"></div>
-                <div class="line vert" id="line8"></div>
-            </div>
-        </div>
-        <!-- start of generator -->
-        <div id="generator">
-            <header id="header">
-                <div class="row g-0">
-                    <div class="col-7" id="title">
-                        <p id="logo">charter#use</p>
-                    </div>
-                    <nav class="col-5" id="nav"> <!-- nav for navigation -->
-                        <!-- row to put buttons in columns-->
-                        <div class="row g-0">
-                            <div class="col-md-3"></div><!-- spacer-->
-                            <div class="col-4 col-md-3"> <!-- back -->
-                                <div class="btnCont"><!-- to contain button & div behind button for animation-->
-                                    <a href="#titleScreen">
-                                        <button class="navBtn" id="backBtn"><i class="fa-solid fa-arrow-left"></i>&nbsp;back</button>
-                                    </a>
-                                    <!-- the background (z-index 0)-->
-                                    <div class="btnBg"></div>
-                                </div>
-                            </div>
-                            <div class="col-4 col-md-3"> <!-- diary button -->
-                                <div class="btnCont"><!-- to contain button & div behind button for animation-->
-                                    <a href="https://nadiaamir-nm2207.github.io/projDiary/index.html">
-                                        <button class="navBtn"><i class="fa-solid fa-book"></i>&nbsp;diary</button>
-                                    </a>
-                                    <!-- the background (z-index 0)-->
-                                    <div class="btnBg"></div>
-                                </div>
-                            </div>
-                            <div class="col-4 col-md-3"> <!-- home button -->
-                                <div class="btnCont"><!-- to contain button & div behind button for animation-->
-                                    <a href="https://nadiaamir-nm2207.github.io" target="_blank"> <!-- open in new tab -->
-                                        <button class="navBtn"><i class="fa-solid fa-home"></i>&nbsp;home</button>
-                                    </a>
-                                    <!-- the background (z-index 0)-->
-                                    <div class="btnBg"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </nav>
+                <div class="col col-md-8">
+                    <hr>
+                    <h1 class="display-3">Nadia Amir</h1>
+                    <p><i class="fa-solid fa-school"></i> Y2 | CNM & Sociology | NUS</p>
+                    <p><i class="fa-solid fa-envelope"></i> nadia.amir@u.nus.edu</p>
+                    <hr>
                 </div>
-            </header>
-            <div class="row g-0"> <!-- g-0 class for rows prevents horizontal scroll (bootstrap class) -->
-                <!-- col col-md means (class for all columns)(class for screens >= 768px) -->
-                <!-- one row has 12 units -->
-                <!-- content preview area -->
-                <div class="col-12 col-md-8">
-                    <div id="prvwBox"><!-- invisible element containing chartPrvws -->
-                        <!--charts area-->
-                        <div id="chartPrvws">
-                            <!-- charts options buttons area -->
-                            <div id="chartOpt">
-                                <div class="row g-0"> <!-- to style the row for the data options -->
-                                    <div class = "col-8">
-                                        <button id="randBtn" class="btn btn-outline-secondary"><i class="fa-solid fa-dice-three"></i> randomise data</button>
-                                        <button id="resetBtn" class="btn btn-outline-secondary"><i class="fa-solid fa-arrow-rotate-right"></i> reset data</button>
-                                    </div>
-                                    <div class="col-4 right">
-                                        <button id="modeBtn" class="btn btn-outline-secondary"><i class="fa-solid fa-sun"></i> light bg</button><!-- text always opposite of the default mode. default mode is light, .: text should read dark mode -->
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- chart preview section here -->
-                            <!-- first row of charts -->
-                            <div class ="row g-0"> <!-- make it easier to put the canvases side by side-->
-                                <!-- 3 charts in one row -->
-                                <div class="col-4"><canvas id="lnPrvw" class="canvasBox"></canvas></div>
-                                <div class="col-4"><canvas id="barPrvw" class="canvasBox"></canvas></div>
-                                <div class="col-4"><canvas id="piePrvw" class="canvasBox"></canvas></div>
-                            </div>
-                            <!-- second row of charts -->
-                            <div class ="row g-0"> <!-- make it easier to put the canvases side by side-->
-                                <div class="col-4"><canvas id="donutPrvw" class="canvasBox"></canvas></div>
-                                <div class="col-4"><canvas id="polarPrvw" class="canvasBox"></canvas></div>
-                                <div class="col-4"><canvas id="bubblePrvw" class="canvasBox"></canvas></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- sidebar -->
-                <div class="col-12 col-md-4 g-0">
-                    <div id="options" class="g-0 row">
-                        <!-- SWATCHES half -->
-                        <div class="col col-md-6 g-0">
-                            <div id="swatchBox">
-                                <!-- each div should have unique ID & a <p> with an ID to be linked to the JS for style & innerHTML changes -->
-                                <!-- add the lock ids for the locking & unlocking. has to be ids because each one will have unique counter & action when clicked -->
-                                <!-- add the copy ids for Raphael -->
-                                <div class="swatch baseHue hue1" id="topSwatch">
-                                    <div class="colOpt">
-                                        <div class="row g-0">
-                                            <!-- no need col-md-x because it will take up same amount of the space on any viewport size -->
-                                            <div class="col-6">
-                                                <div class="colourLabel" id="label1">#colour</div>
-                                            </div>
-                                            <div class="col-6">
-                                                <!-- row so each button can go into a column -->
-                                                <div class="row g-0">
-                                                    <!-- data-clipboard-target should go to the trigger element i.e. the thing that is being clicked to activate the copying-->
-                                                    <!-- .copy for clipboardJS, .copyOpt to differentiate swatch copy buttons from copyAll button -->
-                                                    <div class="col-2 g-0"><!--spacer--></div>
-                                                    <div class="col-5 g-0 optBtnBox"><button class="copyOpt copy optBtn" id="copy1" data-clipboard-target="#label1"><i class="fa-solid fa-copy fa-lg"></i></button> <!-- copy button --></div>
-                                                    <div class="col-5 g-0 optBtnBox"><button class="lock optBtn" id="lock1"><i class="fa-solid fa-lock-open fa-lg"></i></button><!-- lock button --></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="swatch hue1">
-                                    <div class="colOpt">
-                                        <div class ="row g-0">
-                                            <div class="col-6">
-                                                <div class="colourLabel" id="label2">#colour</div>
-                                            </div>
-                                            <div class="col-6">
-                                                <div class="row g-0">
-                                                    <div class="col-2 g-0"><!--spacer--></div>
-                                                    <div class="col-5 g-0 optBtnBox"><button class="copyOpt copy optBtn" id="copy2" data-clipboard-target="#label2"><i class="fa-solid fa-copy fa-lg"></i></button></div>
-                                                    <div class="col-5 g-0 optBtnBox"><button class="lock optBtn" id="lock2"><i class="fa-solid fa-lock-open fa-lg"></i></button></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="swatch baseHue hue2">
-                                    <div class="colOpt">
-                                        <div class ="row g-0">
-                                            <div class="col-6">
-                                                <div class="colourLabel" id="label3">#colour</div>
-                                            </div>
-                                            <div class="col-6">
-                                                <div class="row g-0">
-                                                    <div class="col-2 g-0"><!--spacer--></div>
-                                                    <div class="col-5 g-0 optBtnBox"><button class="copyOpt copy optBtn" id="copy3" data-clipboard-target="#label3"><i class="fa-solid fa-copy fa-lg"></i></button></div>
-                                                    <div class="col-5 g-0 optBtnBox"><button class="lock optBtn" id="lock3"><i class="fa-solid fa-lock-open fa-lg"></i></button></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="swatch hue2">
-                                    <div class="colOpt">
-                                        <div class ="row g-0">
-                                            <div class="col-6">
-                                                <div class="colourLabel" id="label4">#colour</div>
-                                            </div>
-                                            <div class="col-6">
-                                                <div class="row g-0">
-                                                    <div class="col-2 g-0"><!--spacer--></div>
-                                                    <div class="col-5 g-0 optBtnBox"><button class="copyOpt copy optBtn" id="copy4" data-clipboard-target="#label4"><i class="fa-solid fa-copy fa-lg"></i></button></div>
-                                                    <div class="col-5 g-0 optBtnBox"><button class="lock optBtn" id="lock4"><i class="fa-solid fa-lock-open fa-lg"></i></button></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="swatch hue3" data-clipboard-target="#label5">
-                                    <div class="colOpt">
-                                        <div class ="row g-0">
-                                            <div class="col-6">
-                                                <div class="colourLabel" id="label5">#colour</div>
-                                            </div>
-                                            <div class="col-6">
-                                                <div class="row g-0">
-                                                    <div class="col-2 g-0"><!--spacer--></div>
-                                                    <div class="col-5 g-0 optBtnBox"><button class="copyOpt copy optBtn" id="copy5" data-clipboard-target="#label5"><i class="fa-solid fa-copy fa-lg"></i></button></div>
-                                                    <div class="col-5 g-0 optBtnBox"><button class="lock optBtn" id="lock5"><i class="fa-solid fa-lock-open fa-lg"></i></button></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Control Panel (where all the buttons go) -->
-                        <div class="col col-md-6 g-0" id="ctrlPanel">
-                            <!-- colour controls -->
-                            <div class="ctrlBox">
-                                <p><button id="changeBtn" class="btn btn-primary"><i class="fa-solid fa-wand-magic-sparkles"></i> Generate</button></p>
-                                <p><button id="unlockAll" class="btn btn-outline-secondary"><i class="fa-solid fa-lock-open"></i> Unlock All </button></p>
-                                <p><button id="lockAll" class="btn btn-outline-secondary"><i class="fa-solid fa-lock"></i> Lock All </button></p><!-- text always opposite of the default mode. default mode is light, .: text should read dark mode -->
-                            </div>
-                            <!-- copy all option -->
-                            <div class="ctrlBox">
-                                <div class="row g-0"><!-- textarea with all codes (source: https://www.w3schools.com/tags/tag_textarea.asp)-->
-                                    <p><label for="allCodes" hidden="hidden">Colour Codes</label></p> <!-- hidden because I don't want it to show, but kept for accessibility -->
-                                    <textarea id="allCodes" name="allCodes" rows="4" cols="50"></textarea>
-                                    <br>
-                                    <button id="copyAll" class="btn btn-outline-secondary copy" data-clipboard-target="#allCodes"><i class="fa-solid fa-copy"></i> Copy All</button> <!-- add .copy so that it will take on the clipboardJS function -->
-                                </div>
-                            </div>
-                            <!-- export options-->
-                            <div class="ctrlBox lastBox"> <!-- download/export options -->
-                                <h2>Export Charts</h2>
-                                <!-- select all btn -->
-                                <div class="row g-0">
-                                    <div class="col"><p><input type="checkbox" id="allDl"><label for="allDl">&nbsp;select all charts</label></p></div> <!-- if don't use &nbsp; the space is ignored-->
-                                </div>
-                                <!-- indiv options btns -->
-                                <div class="row g-0">
-                                    <div>
-                                        <p><input type="checkbox" id="lnDl"><label for="lnDl">&nbsp;linechart</label></p>
-                                        <p><input type="checkbox" id="barDl"><label for="barDl">&nbsp;barchart</label></p>
-                                        <p><input type="checkbox" id="pieDl"><label for="pieDl">&nbsp;piechart</label></p>
-                                        <p><input type="checkbox" id="donutDl"><label for="donutDl">&nbsp;donut chart</label></p>
-                                        <p><input type="checkbox" id="polarDl"><label for="polarDl">&nbsp;polar area chart</label></p>
-                                        <p><input type="checkbox" id="bubbleDl"><label for="bubbleDl">&nbsp;bubble chart</label></p>
-                                    </div>
-                                    <p><a id="downloadLink"><button id="download" class="btn btn-primary"><i class="fa-solid fa-download"></i> Download </button></a></p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            </section>
+            <section id="links">
+                <h2 class="display-5" id="navHeading"><i class="fa-solid fa-folder"></i> Projects</h2>
+                <nav>
+                    <a href ="storyboard.html"><button>Storyboard</button></a>
+                    <a href ="projDiary/index.html"><button>Project Diary</button></a>
+                    <a href ="finalProj/index.html"><button>Final Project</button></a>
+                </nav>
+                <hr>
+            </section>
         </div>
     </body>
-
 </html>
