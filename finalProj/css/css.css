@@ -2,6 +2,20 @@
 
 /*** GENERAL STYLES ***/
 
+/* getting fonts */
+/* using this instead of link to google fonts because want to use in canvas too */
+/* source: https://stackoverflow.com/questions/2608022/how-can-i-use-custom-fonts-in-an-html5-canvas-element */
+@font-face{
+    font-family: "Fredericka"; /* Fredericka the Great Regular */
+    src: url(../resources/FrederickatheGreat-Regular.ttf);
+}
+
+@font-face{
+    font-family: "Quicksand";  /* Quicksand Medium */
+    src: url(../resources/Quicksand-Medium.ttf);
+}
+
+/* alignment classes */
 .center{
     text-align: center;
 }
@@ -62,10 +76,10 @@ a{
     background-image: linear-gradient(to left, rgba(28, 147, 173, 1), rgba(172, 207, 66, 1)); /* linear-gradient(to direction, color stop 1, color stop 2) source: https://developer.mozilla.org/en-US/docs/Web/CSS/gradient/linear-gradient */
     /* style text */
     font-size: 1.1rem;
-    font-family: "Fredericka the Great", sans-serif;
+    font-family: "Fredericka", serif;
     /* add glow around text */
     /* offset-x | offset-y | how much blur | color */
-    text-shadow: 0px 0px 4px #011627;
+    text-shadow: 1px 1px 4px #011627;
 }
 
 /* to darken the button when hover over it */
@@ -141,7 +155,7 @@ header{
 }
 
 #logo{
-    font-family: 'Fredericka the Great', serif;
+    font-family: 'Fredericka', serif;
     color: #ACCF42;
     font-size: 2rem;
     margin-left: 10%; /* align title content with #chartPrvws */
@@ -447,7 +461,7 @@ h1{
     font-size: 10vw;
     text-align: center;
     color: #ACCF42;
-    font-family: "Fredericka the Great";
+    font-family: "Fredericka", serif;
     /* glow shows gradually */
     transition: all 0.2s linear;
 }
@@ -602,7 +616,9 @@ line7 & line8: move down
     height: 20%;
 }
 
-/* add "glow" to elements on hover */
+/* add "glow" to child elements when hover over titleCont */
+/* source: https://www.tutorialspoint.com/how-to-affect-other-elements-when-one-element-is-hovered-in-html */
+
 #titleCont:hover h1{
     /* offset-x | offset-y | how much blur | color */
     text-shadow: 0px 0px 5px #3dacc5;

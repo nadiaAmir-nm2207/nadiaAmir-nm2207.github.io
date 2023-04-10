@@ -1155,7 +1155,7 @@ function canvasBg(){
     ctx.fillRect(0, 0, 1080, 80);
     // Write text charter#use (source: https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Drawing_text)
     ctx.fillStyle = "#fff9f5"; // font colour
-    ctx.font = "40px YesevaOne"; // font family & size
+    ctx.font = "40px Fredericka"; // font family & size
     ctx.fillText("charter#use", 40, 55); // where to put text
 };
 
@@ -1180,7 +1180,7 @@ function drawPalette(){
             // Make colour code dark
             ctx.fillStyle = "#011627";
         };
-        ctx.font = "25px serif"; // font family & size
+        ctx.font = "25px Quicksand"; // font family & size
         ctx.fillText(hexCodes[i], 40, 160 + (i*124)); // where to put text
     };
 };
@@ -1255,7 +1255,9 @@ function download(){
     // Clear exportCanvas (source: https://stackoverflow.com/questions/2142535/how-to-clear-the-canvas-for-redrawing)
     ctx.clearRect(0, 0, exportCanvas.width, exportCanvas.height);
     // Clear downloadLink link reference (to prevent downloading of previous chart)
-    downloadLink.setAttribute("href", "#");
+    // used # at first, but it scrolls to titleScreen now that I included it
+    // source of solution: https://stackoverflow.com/questions/924790/how-to-make-an-anchor-tag-refer-to-nothing
+    downloadLink.setAttribute("href", "javascript:void(0);");
     // Fill canvas with bg
     canvasBg();
     // Draw the palette
@@ -1312,7 +1314,7 @@ let copyBtns = document.getElementsByClassName("copy");
 // Pass copyBtns collection through ClipboardJS
 let clipboard = new ClipboardJS(copyBtns);
 
-// ---------- BUTTON FEEDBACK ----------
+// ---------- COPY BUTTON FEEDBACK ----------
 
 // --- For copy buttons in swatch
 // Get all copy buttons in the swatch in an array
@@ -1500,7 +1502,7 @@ titleBtn.addEventListener("mouseout", function(){returnLines()})
 // Set lines to translated position and then back to normal position on load
 // source: https://www.w3schools.com/jsref/event_onload.asp
 
-// offscreen position
+// start lines at offscreen position
 function linesOffscreen(){
     // loop through lines
     lines.forEach((line, i) => {
@@ -1526,4 +1528,5 @@ function startLines(){
     setTimeout(returnLines, 800); // 1s = 1000ms
 };
 
+// trigger the animation on load
 startLines();
