@@ -1,13 +1,4 @@
 // how to comment code: https://javascript.info/comments
-// ELEPHANT: things I need to pay attention to & remove
-/**
- * sources:
- * library: https://dmitrybaranovskiy.github.io/raphael/
- * steps for drawing Raphael icons: https://code.tutsplus.com/tutorials/an-introduction-to-the-raphael-js-library--net-7186
- * Adobe Illustrator to Raphael: https://snugug.com/musings/illustrator-to-raphael-js-guide/
- */
-
-// --- Get HTML elements
 
 // ---------- LOCKING FEATURES ----------
 // Get the lock buttons from the html
@@ -91,7 +82,6 @@ function lockAllError(){
     // Test if all the colours are locked
     if (lockState[0] == true && lockState[1] == true && lockState[2] == true && lockState[3] == true && lockState[4] == true){
         // Create an alert (source: https://www.w3schools.com/jsref/met_win_alert.asp)
-        // ELEPHANT replace with popup in future https://www.w3schools.com/howto/howto_js_popup.asp
         alert("All the colours are currently locked. Please unlock at least one colour for it to change.");
     };
 };
@@ -428,6 +418,7 @@ function baseHueGen(){
     // Push first base hue into baseHueArray
     baseHueArray.push(baseHue1);
     // baseHue1 + 137 (golden angle) to generate contrasting hue value for baseHue2
+    // source: Fgblanch: https://stackoverflow.com/questions/43044/algorithm-to-randomly-generate-an-aesthetically-pleasing-color-palette/43235#43235
     let baseHue2 = circleBack(baseHue1, 360, 137);
     // Push second base hue into baseHueArray
     baseHueArray.push(baseHue2);
@@ -538,8 +529,8 @@ function hslString(y, hueArray, satArray, lvalsArray){
     satLightGen(hueArray, satArray, lvalsArray);
     // Within each hueArray...
     for (let i = 0; i < hueArray.length; i++){
-        // for colour[i], give it H: value of base hue[y], S: saturation[i], L: lightness[i]
-        // (baseHueArray[y] + (i * constant)) so that the hue value increases by constant for the next swatch
+        // For colour[i], give it H: value of base hue[y], S: saturation[i], L: lightness[i]
+        // (baseHueArray[y] + (i * constant)) so that the hue value increases by i*10 for the next swatch
         let newHSLstring = "hsl(" + (baseHueArray[y] + (i*10)) + ", " + satArray[i] + "%, " + lvalsArray[i] + "%)";
         // Push HSL string to HSLstringsArray
         HSLstringsArray.push(newHSLstring);
@@ -1070,7 +1061,7 @@ resetBtn.addEventListener("click", function(){reset()});
 // call changeColour once when page is loaded
 changeColour();
 
-// ---------- CODE EXPORTING CHART IMAGES ----------
+// ---------- DOWNLOADING CHART IMAGES ----------
 
 // --- checkbox code (feature to select specific charts to download)
 
@@ -1113,7 +1104,6 @@ function selectAll(){
 allDl.addEventListener("click", function(){selectAll()});
 
 // --- Downloading (image data for each chart is stored in imgData)
-// source: https://stackoverflow.com/questions/4405336/how-to-copy-contents-of-one-canvas-to-another-canvas-locally
 
 // --- Create a new canvas that will hold all the images
 let exportCanvas = document.createElement("canvas");
@@ -1224,6 +1214,7 @@ function loadChartImgs(){
             // Once chartImg has loaded...
             promise.then((result) => {
                 // Add 1 to the counter for every chart ticked
+                // This is to track the index
                 counter += 1;
             })
             .then((result) => {
@@ -1458,6 +1449,7 @@ window.addEventListener("resize", function(){swatchSpace(), chartSpace()});
 // ---------- ANIMATIONS ----------
 
 // GOAL: get lines to start at hover position on load, before transitioning to CSS position
+// inspiration: https://codepen.io/lycanone/pen/BpMLEW
 // Get the lines
 let lines = Array.from(document.getElementsByClassName("line"));
 
