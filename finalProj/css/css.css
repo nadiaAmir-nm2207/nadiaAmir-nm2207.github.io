@@ -454,8 +454,7 @@ input[type=checkbox]{
     overflow: hidden;
     /* make sure it always scrolls to top of #titleScreen */
     /* direction (x/y) | what type */
-    /* scroll-snap-type: y mandatory; */
-    border: 1px solid red!important;
+    scroll-snap-type: y mandatory;
 }
 
 /*** STYLES FOR LOGO ***/
