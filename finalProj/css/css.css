@@ -129,6 +129,7 @@ body{
     animation: fadeIn 10ms ease-in-out 0ms 1;
     /* keeps the styles after the animation so that it won't become invisible again */
     animation-fill-mode: forwards;
+    overflow-x: hidden;
 }
 
 /* container holding generator */
@@ -148,6 +149,7 @@ body{
 header{
     background-color: #011627;
     height: 10vh; /* 10 units to header, 90 units to content = 100vh = fixed to viewport size */
+    width: 100vw; /* without this, will create a gap on the right */
 }
 
 #title{
@@ -447,11 +449,13 @@ input[type=checkbox]{
     background-image: url(../resources/title.jpg);
     background-size: cover;
     height: 100vh;
+    width: 100vw;
     padding-top: 2%;
     overflow: hidden;
     /* make sure it always scrolls to top of #titleScreen */
     /* direction (x/y) | what type */
-    scroll-snap-type: y mandatory;
+    /* scroll-snap-type: y mandatory; */
+    border: 1px solid red!important;
 }
 
 /*** STYLES FOR LOGO ***/
