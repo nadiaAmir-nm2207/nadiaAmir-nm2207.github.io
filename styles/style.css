@@ -21,6 +21,10 @@ nav{
     height: 10%;
 }
 
+#content{
+    margin-top: 5%;
+}
+
 /* styling text */
 h1{
     font-family: "Poppins", "sans-serif";
@@ -47,7 +51,7 @@ p{
     margin: 8% 0 0 1%;
 }
 
-.col-sm-8, .col-sm-4{
+.col col-md-8, .col col-md-4{
     padding: 1%;
 }
 
@@ -70,18 +74,19 @@ hr{
 /* styling buttons */
 button{
     /* button text */
-    padding: 1%;
+    padding: 2% 4%;
     text-align: center;
     font-family: "Quicksand", sans-serif;
+    font-size: 1.2rem;
     color: white;
     /* button size */
-    width: 20%;
+    width: auto;
     height: 5%;
     margin: 1%;
     /* button color etc. */
     background-color: rgba(221, 122, 94, 0.8);
     border: 0px;
-    border-radius: 10px;
+    border-radius: 50px;
 }
 
 button:hover{
