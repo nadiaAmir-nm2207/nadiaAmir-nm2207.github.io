@@ -149,7 +149,6 @@
                             <div id="swatchBox">
                                 <!-- each div should have unique ID & a <p> with an ID to be linked to the JS for style & innerHTML changes -->
                                 <!-- add the lock ids for the locking & unlocking. has to be ids because each one will have unique counter & action when clicked -->
-                                <!-- add the copy ids for Raphael -->
                                 <div class="swatch baseHue hue1" id="topSwatch">
                                     <div class="colOpt">
                                         <div class="row g-0">
@@ -250,7 +249,8 @@
                                     <p><label for="allCodes" hidden="hidden">Colour Codes</label></p> <!-- hidden because I don't want it to show, but kept for accessibility -->
                                     <textarea id="allCodes" name="allCodes" rows="4" cols="50"></textarea>
                                     <br>
-                                    <button id="copyAll" class="btn btn-outline-secondary copy" data-clipboard-target="#allCodes"><i class="fa-solid fa-copy"></i> Copy All</button> <!-- add .copy so that it will take on the clipboardJS function -->
+                                    <!-- add .copy so that it will take on the clipboardJS function -->
+                                    <button id="copyAll" class="btn btn-outline-secondary copy" data-clipboard-target="#allCodes"><i class="fa-solid fa-copy"></i> Copy All</button>
                                 </div>
                             </div>
                             <!-- export options-->
@@ -260,7 +260,7 @@
                                 <div class="row g-0">
                                     <div class="col"><p><input type="checkbox" id="allDl"><label for="allDl">&nbsp;select all charts</label></p></div> <!-- if don't use &nbsp; the space is ignored-->
                                 </div>
-                                <!-- indiv options btns -->
+                                <!-- indiv chart options btns -->
                                 <div class="row g-0">
                                     <div>
                                         <p><input type="checkbox" id="lnDl"><label for="lnDl">&nbsp;linechart</label></p>
