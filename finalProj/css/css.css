@@ -622,16 +622,19 @@ line7 & line8: move down
 /* add "glow" to child elements when hover over titleCont */
 /* source: https://www.tutorialspoint.com/how-to-affect-other-elements-when-one-element-is-hovered-in-html */
 
+/* when titleCont is hovered over, do this to h1 */
 #titleCont:hover h1{
     /* offset-x | offset-y | how much blur | color */
     text-shadow: 0px 0px 5px #3dacc5;
 }
 
+/* when titleCont is hovered over, do this to vertical lines */
 #titleCont:hover .vert{
     /* box-shadow angled to the upper left */
     box-shadow: -2px -2px 5px #1C93AD;
 }
 
+/* when titleCont is hovered over, do this to horizontal lines */
 #titleCont:hover .horiz{
     /* box-shadow angled to the upper left */
     box-shadow: -2px -2px 5px #1C93AD;
