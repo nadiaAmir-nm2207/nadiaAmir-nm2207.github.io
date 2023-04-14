@@ -1246,7 +1246,7 @@ function download(){
     // Clear exportCanvas (source: https://stackoverflow.com/questions/2142535/how-to-clear-the-canvas-for-redrawing)
     ctx.clearRect(0, 0, exportCanvas.width, exportCanvas.height);
     // Clear downloadLink link reference (to prevent downloading of previous chart)
-    // used # at first, but it scrolls to titleScreen now that I included it
+    // used # at first, but it scrolls to titleScreen now that I included it at the top of the page
     // source of solution: https://stackoverflow.com/questions/924790/how-to-make-an-anchor-tag-refer-to-nothing
     downloadLink.setAttribute("href", "javascript:void(0);");
     // Fill canvas with bg
@@ -1522,3 +1522,5 @@ function startLines(){
 
 // trigger the animation on load
 startLines();
+
+// the end (:
